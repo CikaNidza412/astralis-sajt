@@ -786,7 +786,7 @@
         // =========================================================================
         // 1. KONFIGURACIJA GOOGLE OAUTH & ASTROLOŠKE BAZE PODATAKA
         // =========================================================================
-        const DEFAULT_GOOGLE_CLIENT_ID = 988944893320-s4atn1i6nttbmf1man6qe3imt9jalm2s.apps.googleusercontent.com;
+        const DEFAULT_GOOGLE_CLIENT_ID = '988944893320-s4atn1i6nttbmf1man6qe3imt9jalm2s.apps.googleusercontent.com';
 
         function getActiveGoogleClientId() {
             try {
@@ -1672,25 +1672,6 @@
                         : 'Vaši natalni podaci su sačuvani u pregledaču!',
                     'success'
                 );
-            });
-
-            // Forma za dnevni horoskop
-            document.getElementById('natal-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                runCalculation(true);
-            });
-
-            // Čuvanje profila
-            document.getElementById('btn-save-profile').addEventListener('click', () => {
-                const profileData = {
-                    name: document.getElementById('user-name').value.trim(),
-                    birthDate: document.getElementById('birth-date').value,
-                    birthTime: document.getElementById('birth-time').value,
-                    cityIdx: document.getElementById('birth-city').value,
-                    unknownTime: document.getElementById('unknown-time').checked
-                };
-                localStorage.setItem('astralis_user_profile_v1', JSON.stringify(profileData));
-                showToast('Vaši natalni podaci su sačuvani u pregledaču!', 'success');
             });
 
             // Kopiranje dnevnog horoskopa
