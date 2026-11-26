@@ -729,20 +729,44 @@
                         </svg>
                         <span id="btn-google-signin-label">Nastavi sa Google nalogom</span>
                     </button>
+
+                    <!-- Brzo podešavanje Client ID-a ako još nije upisan u kod -->
+                    <div id="oauth-setup-helper" class="hidden mt-3 p-3 rounded-xl bg-amber-500/10 border border-amber-400/30 text-[11px] text-amber-200 space-y-2">
+                        <p class="font-semibold">⚠️ Potreban je vaš Google OAuth Client ID za izbor Google naloga:</p>
+                        <p class="text-slate-300 leading-relaxed">
+                            Kreirajte besplatan <strong>OAuth Client ID</strong> na <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer" class="underline text-amber-300">Google Cloud Console</a> (dodajte adresu <code id="current-origin-display" class="bg-black/40 px-1 py-0.5 rounded text-amber-300"></code> u <em>Authorized JavaScript origins</em>) i nalepite ga ovde ili u fajl <code class="bg-black/40 px-1 py-0.5 rounded">index.html</code>:
+                        </p>
+                        <div class="flex gap-1.5">
+                            <input type="text" id="input-google-client-id" placeholder="123456789-abc...apps.googleusercontent.com" class="flex-1 px-2.5 py-1.5 rounded-lg bg-cosmic-950 border border-white/15 text-white text-[11px] focus:outline-none focus:border-amber-400">
+                            <button type="button" id="btn-save-client-id" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-cosmic-950 font-bold text-[11px] shrink-0">
+                                Sačuvaj
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dugme za odjavu / promenu naloga unutar modala -->
+                    <div id="modal-logout-bar" class="hidden mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-xs">
+                        <span class="text-slate-400">Želite drugi Google nalog?</span>
+                        <button type="button" onclick="logoutGoogleUser()" class="px-3 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 text-rose-300 font-semibold transition">
+                            🚪 Odjavi se
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Korak 2: Zaprati Instagram -->
-                <div id="auth-step-2-box" class="p-4 rounded-xl bg-white/5 border border-white/10">
+                <!-- Korak 2: Zaprat Instagram stranice -->
+                <div class="p-4 rounded-xl bg-white/5 border border-white/10">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-bold uppercase tracking-wider text-pink-300">Korak 2: Zaprati @astralis.astro</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-pink-300">Korak 2: Zapratite Instagram</span>
                         <span id="auth-step-2-badge" class="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">Nije potvrđeno</span>
                     </div>
-                    <p class="text-xs text-slate-400 mb-3">Otvorite naš zvanični Instagram profil, zapratite ga za dnevne astrološke zanimljivosti, a zatim potvrdite.</p>
+                    <p class="text-xs text-slate-400 mb-3">
+                        Zapratite našu zvaničnu stranicu <strong class="text-pink-200">@astralis.astro</strong> za svakodnevne astrološke zanimljivosti i tranzite.
+                    </p>
                     <div class="flex flex-col sm:flex-row gap-2">
-                        <a href="https://www.instagram.com/astralis.astro/" target="_blank" rel="noopener noreferrer" id="btn-visit-ig" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-fuchsia-600 via-pink-600 to-amber-500 hover:opacity-95 text-white font-semibold text-xs text-center shadow transition">
+                        <a href="https://www.instagram.com/astralis.astro/" target="_blank" rel="noopener noreferrer" class="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-fuchsia-600 to-amber-500 hover:opacity-95 text-white font-semibold text-xs text-center shadow transition">
                             📸 Otvori @astralis.astro
                         </a>
-                        <button type="button" id="btn-confirm-ig-follow" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-semibold text-xs transition">
+                        <button type="button" id="btn-confirm-ig-follow" class="flex-1 py-2 px-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-slate-200 font-semibold text-xs transition">
                             ✓ Zapratio sam stranicu
                         </button>
                     </div>
@@ -760,98 +784,95 @@
 
     <script>
         // =========================================================================
-        // 0. GOOGLE OAUTH 2.0 KONFIGURACIJA
-        // =========================================================================
-        const GOOGLE_CLIENT_ID = 'VAS_GOOGLE_CLIENT_ID_OVDE.apps.googleusercontent.com';
-
-        // =========================================================================
-        // 1. ASTROLOŠKE BAZE PODATAKA I PODACI O GRADOVIMA
-        // =========================================================================
-        const CITIES_DATA = [
-            { name: "Beograd, Srbija", lat: 44.8176, lng: 20.4633 },
-            { name: "Novi Sad, Srbija", lat: 45.2671, lng: 19.8335 },
-            { name: "Niš, Srbija", lat: 43.3209, lng: 21.8958 },
-            { name: "Kragujevac, Srbija", lat: 44.0128, lng: 20.9114 },
-            { name: "Subotica, Srbija", lat: 46.1005, lng: 19.6651 },
-            { name: "Čačak, Srbija", lat: 43.8914, lng: 20.3497 },
-            { name: "Kraljevo, Srbija", lat: 43.7258, lng: 20.6896 },
-            { name: "Užice, Srbija", lat: 43.8586, lng: 19.8488 },
-            { name: "Valjevo, Srbija", lat: 44.2751, lng: 19.8982 },
-            { name: "Zrenjanin, Srbija", lat: 45.3814, lng: 20.3861 },
-            { name: "Pančevo, Srbija", lat: 44.8708, lng: 20.6403 },
-            { name: "Šabac, Srbija", lat: 44.7489, lng: 19.6908 },
-            { name: "Novi Pazar, Srbija", lat: 43.1367, lng: 20.5122 },
-            { name: "Leskovac, Srbija", lat: 42.9981, lng: 21.9461 },
-            { name: "Vranje, Srbija", lat: 42.5514, lng: 21.9003 },
-            { name: "Zagreb, Hrvatska", lat: 45.8150, lng: 15.9819 },
-            { name: "Split, Hrvatska", lat: 43.5081, lng: 16.4402 },
-            { name: "Rijeka, Hrvatska", lat: 45.3271, lng: 14.4422 },
-            { name: "Sarajevo, BiH", lat: 43.8563, lng: 18.4131 },
-            { name: "Banja Luka, BiH", lat: 44.7722, lng: 17.1910 },
-            { name: "Mostar, BiH", lat: 43.3438, lng: 17.8078 },
-            { name: "Podgorica, Crna Gora", lat: 42.4304, lng: 19.2594 },
-            { name: "Nikšić, Crna Gora", lat: 42.7731, lng: 18.9445 },
-            { name: "Budva, Crna Gora", lat: 42.2911, lng: 18.8403 },
-            { name: "Skoplje, S. Makedonija", lat: 41.9973, lng: 21.4280 },
-            { name: "Ljubljana, Slovenija", lat: 46.0569, lng: 14.5058 },
-            { name: "Beč, Austrija", lat: 48.2082, lng: 16.3738 },
-            { name: "Minhen, Nemačka", lat: 48.1351, lng: 11.5820 },
-            { name: "Cirih, Švajcarska", lat: 47.3769, lng: 8.5417 }
-        ];
-
-        const ZODIAC_SIGNS = [
-            { id: 0, name: "Ovan", symbol: "♈", dates: "21. mar – 19. apr", element: "Vatra", ruler: "Mars", color: "Crvena i zlatna", startMonth: 3, startDay: 21 },
-            { id: 1, name: "Bik", symbol: "♉", dates: "20. apr – 20. maj", element: "Zemlja", ruler: "Venera", color: "Smaragdno zelena", startMonth: 4, startDay: 20 },
-            { id: 2, name: "Blizanci", symbol: "♊", dates: "21. maj – 20. jun", element: "Vazduh", ruler: "Merkur", color: "Svetlo žuta i srebrna", startMonth: 5, startDay: 21 },
-            { id: 3, name: "Rak", symbol: "♋", dates: "21. jun – 22. jul", element: "Voda", ruler: "Mesec", color: "Biserno bela", startMonth: 6, startDay: 21 },
-            { id: 4, name: "Lav", symbol: "♌", dates: "23. jul – 22. avg", element: "Vatra", ruler: "Sunce", color: "Kraljevsko zlatna", startMonth: 7, startDay: 23 },
-            { id: 5, name: "Devica", symbol: "♍", dates: "23. avg – 22. sep", element: "Zemlja", ruler: "Merkur", color: "Maslinasta i teget", startMonth: 8, startDay: 23 },
-            { id: 6, name: "Vaga", symbol: "♎", dates: "23. sep – 22. okt", element: "Vazduh", ruler: "Venera", color: "Pastelno ružičasta", startMonth: 9, startDay: 23 },
-            { id: 7, name: "Škorpija", symbol: "♏", dates: "23. okt – 21. nov", element: "Voda", ruler: "Pluton / Mars", color: "Bordo i crna", startMonth: 10, startDay: 23 },
-            { id: 8, name: "Strelac", symbol: "♐", dates: "22. nov – 21. dec", element: "Vatra", ruler: "Jupiter", color: "Kraljevsko ljubičasta", startMonth: 11, startDay: 22 },
-            { id: 9, name: "Jarac", symbol: "♑", dates: "22. dec – 19. jan", element: "Zemlja", ruler: "Saturn", color: "Tamno siva i braon", startMonth: 12, startDay: 22 },
-            { id: 10, name: "Vodolija", symbol: "♒", dates: "20. jan – 18. feb", element: "Vazduh", ruler: "Uran / Saturn", color: "Električno plava", startMonth: 1, startDay: 20 },
-            { id: 11, name: "Ribe", symbol: "♓", dates: "19. feb – 20. mar", element: "Voda", ruler: "Neptun / Jupiter", color: "Morsko tirkizna", startMonth: 2, startDay: 19 }
-        ];
-
-        const ASPECTS_POOL = [
-            { title: "Trigon Sunca i Jupitera", type: "Harmoničan", desc: "Donosi širenje vidika, podršku autoriteta i iznenadne prilike za napredak." },
-            { title: "Sekstil Venere i Merkura", type: "Povoljan", desc: "Olakšava iskrene razgovore, dogovore i romantično razumevanje." },
-            { title: "Konjunkcija Meseca i Neptuna", type: "Intuitivan", desc: "Pojačava kreativnost, snove i unutrašnji osećaj za prave odluke." },
-            { title: "Trigon Marsa i Saturna", type: "Stabilan", desc: "Daje istrajnost, fokus i snagu da završite važne poslovne obaveze." },
-            { title: "Kvadrat Merkura i Urana", type: "Dinamičan", desc: "Donosi nagle promene planova — budite fleksibilni u komunikaciji." },
-            { title: "Sekstil Sunca i Meseca", type: "Balans", desc: "Usklađuje svesne ciljeve i emotivne potrebe tokom celog dana." }
-        ];
-
-        const NARRATIVE_TEMPLATES = {
-            high: {
-                work: "Danas imate snažnu podršku tranzitnog Jupitera i Sunca u polju karijere. Idealan je trenutak za pregovore, pokretanje novih projekata i donošenje hrabrih finansijskih odluka.",
-                love: "Venera pravi skladan aspekt sa vašim natalnim poljem odnosa. Očekuju vas topli razgovori, produbljivanje poverenja i prijatna iznenađenja u ljubavi.",
-                health: "Vitalnost je na visokom nivou. Fizička aktivnost na svežem vazduhu i dobar ritam sna doneće vam dodatni nalet energije.",
-                luck: "Intuicija vam je danas izuzetno izoštrena — obratite pažnju na male znakove i slučajne susrete koji otvaraju nova vrata."
-            },
-            medium: {
-                work: "Stabilan radni dan bez velikih potresa. Fokusirajte se na završavanje tekućih obaveza i detaljnu proveru dokumentacije pre potpisivanja.",
-                love: "U emotivnim odnosima je važno strpljenje i pažljivo slušanje partnera. Mali gest pažnje danas vredi više od velikih reči.",
-                health: "Održavajte balans između posla i odmora. Više hidratacije i kraća šetnja u popodnevnim satima prijaće vašem organizmu.",
-                luck: "Sreća vam je naklonjena u popodnevnim satima, naročito kroz kontakte sa prijateljima i kolegama."
-            },
-            low: {
-                work: "Moguća su manja odlaganja ili nesporazumi u komunikaciji. Ne žurite sa krupnim troškovima i sačekajte povoljniji trenutak za rizične poteze.",
-                love: "Osetljivost je danas pojačana — izbegavajte impulsivne reakcije i dajte sebi i partneru malo prostora za miran razgovor.",
-                health: "Potreban vam je kvalitetniji odmor i opuštanje. Izbegavajte kasne obroke i preopterećenje obavezama.",
-                luck: "Danas se oslonite na proverene metode i sopstveno iskustvo umesto na faktor sreće."
-            }
-        };
-
-        // =========================================================================
-        // 2. UPRAVLJANJE NALOGOM (GOOGLE OAUTH + INSTAGRAM ZAPRAT)
+        // 2. UPRAVLJANJE NALOGOM (GOOGLE OAUTH + INSTAGRAM ZAPRAT + ČUVANJE PO NALOGU)
         // =========================================================================
         const AUTH_STORAGE_KEY = 'astralis_auth_state_v1';
+        const PROFILES_BY_EMAIL_KEY = 'astralis_profiles_by_email_v1';
         let appAuthState = {
             user: null,
             igFollowed: false
         };
+
+        function getCurrentFormSnapshot() {
+            return {
+                name: (document.getElementById('user-name')?.value || '').trim(),
+                birthDate: document.getElementById('birth-date')?.value || '1990-05-15',
+                birthTime: document.getElementById('birth-time')?.value || '12:00',
+                cityIdx: document.getElementById('birth-city')?.value || '0',
+                unknownTime: Boolean(document.getElementById('unknown-time')?.checked),
+                synName1: document.getElementById('syn-name-1')?.value || '',
+                synDate1: document.getElementById('syn-date-1')?.value || '',
+                synTime1: document.getElementById('syn-time-1')?.value || '',
+                synCity1: document.getElementById('syn-city-1')?.value || '0',
+                synName2: document.getElementById('syn-name-2')?.value || '',
+                synDate2: document.getElementById('syn-date-2')?.value || '',
+                synTime2: document.getElementById('syn-time-2')?.value || '',
+                synCity2: document.getElementById('syn-city-2')?.value || '1'
+            };
+        }
+
+        function applyFormSnapshot(data) {
+            if (!data) return;
+            if (data.name !== undefined) document.getElementById('user-name').value = data.name;
+            if (data.birthDate) document.getElementById('birth-date').value = data.birthDate;
+            if (data.birthTime) document.getElementById('birth-time').value = data.birthTime;
+            if (data.cityIdx !== undefined) document.getElementById('birth-city').value = data.cityIdx;
+            if (data.unknownTime !== undefined) {
+                const unknownCheck = document.getElementById('unknown-time');
+                const birthTimeInput = document.getElementById('birth-time');
+                unknownCheck.checked = Boolean(data.unknownTime);
+                birthTimeInput.disabled = unknownCheck.checked;
+            }
+            if (data.synName1) document.getElementById('syn-name-1').value = data.synName1;
+            if (data.synDate1) document.getElementById('syn-date-1').value = data.synDate1;
+            if (data.synTime1) document.getElementById('syn-time-1').value = data.synTime1;
+            if (data.synCity1 !== undefined) document.getElementById('syn-city-1').value = data.synCity1;
+            if (data.synName2) document.getElementById('syn-name-2').value = data.synName2;
+            if (data.synDate2) document.getElementById('syn-date-2').value = data.synDate2;
+            if (data.synTime2) document.getElementById('syn-time-2').value = data.synTime2;
+            if (data.synCity2 !== undefined) document.getElementById('syn-city-2').value = data.synCity2;
+        }
+
+        function saveUserAccountData() {
+            const snapshot = getCurrentFormSnapshot();
+            try {
+                // Uvek čuvaj i kao poslednji aktivni lokalni profil
+                localStorage.setItem('astralis_user_profile_v1', JSON.stringify(snapshot));
+
+                // Ako je korisnik prijavljen Google nalogom, sačuvaj podatke pod njegovim e-mailom
+                if (appAuthState.user && appAuthState.user.email) {
+                    const allAccounts = JSON.parse(localStorage.getItem(PROFILES_BY_EMAIL_KEY) || '{}');
+                    allAccounts[appAuthState.user.email.toLowerCase()] = {
+                        profile: snapshot,
+                        igFollowed: Boolean(appAuthState.igFollowed),
+                        updatedAt: new Date().toISOString()
+                    };
+                    localStorage.setItem(PROFILES_BY_EMAIL_KEY, JSON.stringify(allAccounts));
+                }
+            } catch (e) {
+                console.warn('Greška pri čuvanju podataka naloga:', e);
+            }
+        }
+
+        function restoreUserAccountData(email) {
+            if (!email) return false;
+            try {
+                const allAccounts = JSON.parse(localStorage.getItem(PROFILES_BY_EMAIL_KEY) || '{}');
+                const savedEntry = allAccounts[email.toLowerCase()];
+                if (savedEntry) {
+                    if (savedEntry.profile) {
+                        applyFormSnapshot(savedEntry.profile);
+                    }
+                    if (savedEntry.igFollowed) {
+                        appAuthState.igFollowed = true;
+                    }
+                    return true;
+                }
+            } catch (e) {
+                console.warn('Greška pri učitavanju podataka naloga:', e);
+            }
+            return false;
+        }
 
         function loadAuthState() {
             try {
@@ -892,11 +913,15 @@
                     headerSlot.innerHTML = `
                         <div class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 border border-white/15">
                             ${avatarHtml}
-                            <span class="text-slate-200 font-medium hidden md:inline">${appAuthState.user.name.split(' ')[0]}</span>
+                            <button type="button" onclick="openUnlockModal()" class="text-slate-200 hover:text-amber-300 font-medium hidden md:inline transition">
+                                ${appAuthState.user.name.split(' ')[0]}
+                            </button>
                             <span class="text-[10px] px-1.5 py-0.5 rounded-full ${unlocked ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">
                                 ${unlocked ? 'VIP ✓' : '1/2'}
                             </span>
-                            <button type="button" onclick="logoutGoogleUser()" title="Odjavi se" class="text-slate-400 hover:text-rose-300 ml-1 text-xs">✕</button>
+                            <button type="button" onclick="logoutGoogleUser()" title="Odjavi se sa naloga" class="px-2 py-0.5 rounded-full bg-rose-500/15 hover:bg-rose-500/30 border border-rose-400/30 text-rose-200 font-semibold text-[11px] transition">
+                                Odjavi se
+                            </button>
                         </div>
                     `;
                 } else {
@@ -918,17 +943,20 @@
             const step1Badge = document.getElementById('auth-step-1-badge');
             const btnGoogle = document.getElementById('btn-google-signin');
             const btnGoogleLabel = document.getElementById('btn-google-signin-label');
+            const modalLogoutBar = document.getElementById('modal-logout-bar');
             if (step1Badge) {
                 if (appAuthState.user) {
                     step1Badge.textContent = `Prijavljen (${appAuthState.user.email})`;
                     step1Badge.className = 'text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300';
                     if (btnGoogleLabel) btnGoogleLabel.textContent = `Prijavljeni ste kao ${appAuthState.user.name}`;
                     if (btnGoogle) btnGoogle.classList.add('opacity-75');
+                    if (modalLogoutBar) modalLogoutBar.classList.remove('hidden');
                 } else {
                     step1Badge.textContent = 'Čeka prijavu';
                     step1Badge.className = 'text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400';
                     if (btnGoogleLabel) btnGoogleLabel.textContent = 'Nastavi sa Google nalogom';
                     if (btnGoogle) btnGoogle.classList.remove('opacity-75');
+                    if (modalLogoutBar) modalLogoutBar.classList.add('hidden');
                 }
             }
 
@@ -999,9 +1027,29 @@
                     email: payload.email,
                     picture: payload.picture || null
                 };
+
+                // Proveri da li ovaj Google nalog već ima sačuvane natalne podatke
+                const hadSavedProfile = restoreUserAccountData(appAuthState.user.email);
+                if (!hadSavedProfile) {
+                    // Ako je prva prijava, popuni ime sa Google naloga ako polje nije već popunjeno
+                    const nameInput = document.getElementById('user-name');
+                    if (nameInput && !nameInput.value.trim()) {
+                        nameInput.value = appAuthState.user.name.split(' ')[0];
+                    }
+                    saveUserAccountData();
+                }
+
                 saveAuthState();
                 syncAuthAndUnlockUI();
-                showToast(`Dobrodošli, ${appAuthState.user.name}! Google OAuth prijava je uspešna.`, 'success');
+                runCalculation(false);
+                computeAndRenderSynastry();
+
+                showToast(
+                    hadSavedProfile
+                        ? `Dobrodošli nazad, ${appAuthState.user.name}! Vaši sačuvani podaci su učitani.`
+                        : `Dobrodošli, ${appAuthState.user.name}! Vaši podaci su sada povezani sa Google nalogom.`,
+                    'success'
+                );
             } catch (err) {
                 console.error('Greška pri obradi Google OAuth tokena:', err);
                 showToast('Došlo je do greške pri obradi Google prijave.', 'error');
@@ -1009,13 +1057,28 @@
         }
 
         function initGoogleOAuth() {
-            const isConfigured = GOOGLE_CLIENT_ID && !GOOGLE_CLIENT_ID.startsWith('VAS_GOOGLE_CLIENT_ID');
-            if (!isConfigured || typeof google === 'undefined' || !google.accounts || !google.accounts.id) {
+            const activeClientId = getActiveGoogleClientId();
+            const isConfigured = activeClientId && !activeClientId.startsWith('VAS_GOOGLE_CLIENT_ID');
+            const setupHelper = document.getElementById('oauth-setup-helper');
+            const originDisplay = document.getElementById('current-origin-display');
+
+            if (originDisplay) {
+                originDisplay.textContent = window.location.origin;
+            }
+
+            if (!isConfigured) {
+                if (setupHelper) setupHelper.classList.remove('hidden');
+                return false;
+            }
+
+            if (setupHelper) setupHelper.classList.add('hidden');
+
+            if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) {
                 return false;
             }
 
             google.accounts.id.initialize({
-                client_id: GOOGLE_CLIENT_ID,
+                client_id: activeClientId,
                 callback: handleGoogleCredentialResponse,
                 auto_select: false,
                 cancel_on_tap_outside: true
@@ -1051,13 +1114,23 @@
         }
 
         function logoutGoogleUser() {
+            // Pre odjave obavezno sačuvaj poslednje unete podatke za ovaj Google nalog
+            saveUserAccountData();
+
             if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
                 google.accounts.id.disableAutoSelect();
+                if (appAuthState.user && appAuthState.user.email) {
+                    try {
+                        google.accounts.id.revoke(appAuthState.user.email, () => {});
+                    } catch (e) {}
+                }
             }
             appAuthState.user = null;
+            appAuthState.igFollowed = false;
             saveAuthState();
             syncAuthAndUnlockUI();
-            showToast('Odjavili ste se sa Google naloga.', 'info');
+            initGoogleOAuth();
+            showToast('Odjavili ste se. Vaši uneti podaci ostaju sačuvani za sledeću prijavu.', 'info');
         }
 
         // =========================================================================
@@ -1487,11 +1560,7 @@
             try {
                 const savedProfile = JSON.parse(localStorage.getItem('astralis_user_profile_v1') || 'null');
                 if (savedProfile) {
-                    if (savedProfile.name) document.getElementById('user-name').value = savedProfile.name;
-                    if (savedProfile.birthDate) document.getElementById('birth-date').value = savedProfile.birthDate;
-                    if (savedProfile.birthTime) document.getElementById('birth-time').value = savedProfile.birthTime;
-                    if (savedProfile.cityIdx !== undefined) document.getElementById('birth-city').value = savedProfile.cityIdx;
-                    document.getElementById('unknown-time').checked = Boolean(savedProfile.unknownTime);
+                    applyFormSnapshot(savedProfile);
                 } else {
                     document.getElementById('birth-date').value = '1990-05-15';
                 }
@@ -1505,6 +1574,25 @@
             birthTimeInput.disabled = unknownCheck.checked;
             unknownCheck.addEventListener('change', () => {
                 birthTimeInput.disabled = unknownCheck.checked;
+                saveUserAccountData();
+            });
+
+            // Forma za dnevni horoskop (automatski čuva unete podatke)
+            document.getElementById('natal-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveUserAccountData();
+                runCalculation(true);
+            });
+
+            // Čuvanje profila
+            document.getElementById('btn-save-profile').addEventListener('click', () => {
+                saveUserAccountData();
+                showToast(
+                    appAuthState.user
+                        ? `Podaci su sačuvani na vaš nalog (${appAuthState.user.email})!`
+                        : 'Vaši natalni podaci su sačuvani u pregledaču!',
+                    'success'
+                );
             });
 
             // Forma za dnevni horoskop
@@ -1560,8 +1648,9 @@
             // Sinastrija forma i preuzimanje mojih podataka
             document.getElementById('synastry-form').addEventListener('submit', (e) => {
                 e.preventDefault();
+                saveUserAccountData();
                 computeAndRenderSynastry();
-                showToast('Uporedna natalna karta je izračunata!', 'success');
+                showToast('Uporedna natalna karta je izračunata i sačuvana!', 'success');
             });
 
             document.getElementById('btn-copy-my-data-to-synastry').addEventListener('click', () => {
@@ -1582,25 +1671,32 @@
             document.getElementById('btn-close-unlock-modal')?.addEventListener('click', closeUnlockModal);
 
             document.getElementById('btn-google-signin')?.addEventListener('click', () => {
-                if (initGoogleOAuth() && typeof google !== 'undefined') {
+                if (initGoogleOAuth() && typeof google !== 'undefined' && google.accounts?.id) {
                     google.accounts.id.prompt();
                     return;
                 }
-                const enteredName = document.getElementById('user-name').value.trim() || 'Nikola Petrović';
-                const slug = enteredName.toLowerCase().replace(/\s+/g, '.');
-                appAuthState.user = {
-                    name: enteredName,
-                    email: `${slug}@gmail.com`,
-                    picture: null
-                };
-                saveAuthState();
-                syncAuthAndUnlockUI();
-                showToast(`Probna Google prijava (${appAuthState.user.email}) — unesite GOOGLE_CLIENT_ID za pravi OAuth.`, 'info');
+                const helper = document.getElementById('oauth-setup-helper');
+                if (helper) {
+                    helper.classList.remove('hidden');
+                }
+                showToast('Unesite svoj Google Client ID da biste birali pravi Google nalog.', 'info');
+            });
+
+            document.getElementById('btn-save-client-id')?.addEventListener('click', () => {
+                const val = (document.getElementById('input-google-client-id')?.value || '').trim();
+                if (!val || !val.includes('.apps.googleusercontent.com')) {
+                    showToast('Unesite ispravan Google Client ID (završava se na .apps.googleusercontent.com).', 'error');
+                    return;
+                }
+                localStorage.setItem('astralis_google_client_id', val);
+                initGoogleOAuth();
+                showToast('Google Client ID je sačuvan! Sada možete izabrati svoj Google nalog.', 'success');
             });
 
             document.getElementById('btn-confirm-ig-follow')?.addEventListener('click', () => {
                 appAuthState.igFollowed = true;
                 saveAuthState();
+                saveUserAccountData();
                 syncAuthAndUnlockUI();
                 showToast('Praćenje stranice @astralis.astro je potvrđeno!', 'success');
             });
