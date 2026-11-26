@@ -227,13 +227,13 @@
                                 <input type="text" id="user-name" placeholder="e.g. Alex" class="w-full px-3.5 py-2 sm:py-2.5 rounded-xl bg-cosmic-950/80 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
                             </div>
 
-                            <div>
-                                <label id="lbl-birth-city" for="birth-city" class="block text-xs font-medium text-slate-300 mb-1">Birthplace (for accurate Rising sign)</label>
-                                <select id="birth-city" class="w-full px-3.5 py-2 sm:py-2.5 rounded-xl bg-cosmic-950/80 border border-white/10 text-white text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
-                                    <!-- Populated by JS -->
-                                </select>
+                            <div class="relative">
+                                <label id="lbl-birth-city" for="birth-city-input" class="block text-xs font-medium text-slate-300 mb-1">Birthplace (any city in the world)</label>
+                                <input type="text" id="birth-city-input" list="cities-datalist" autocomplete="off" placeholder="Type any city (e.g. Belgrade, Tokyo...)" class="w-full px-3.5 py-2 sm:py-2.5 rounded-xl bg-cosmic-950/80 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
+                                <span id="birth-city-coords-hint" class="text-[10px] text-amber-300/80 mt-0.5 block">51.51°N, -0.13°E</span>
                             </div>
                         </div>
+                        <datalist id="cities-datalist"></datalist>
 
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                             <div>
@@ -563,8 +563,8 @@
                                 <input type="text" id="syn-name-1" value="Alex" class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm">
                             </div>
                             <div>
-                                <label id="lbl-syn-city-1" class="block text-[11px] text-slate-400 mb-1">Birthplace</label>
-                                <select id="syn-city-1" class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm"></select>
+                                <label id="lbl-syn-city-1" class="block text-[11px] text-slate-400 mb-1">Birthplace (any city)</label>
+                                <input type="text" id="syn-city-input-1" list="cities-datalist" autocomplete="off" placeholder="Type any city..." class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm">
                             </div>
                             <div>
                                 <label id="lbl-syn-date-1" class="block text-[11px] text-slate-400 mb-1">Birth Date *</label>
@@ -589,8 +589,8 @@
                                 <input type="text" id="syn-name-2" value="Elena" class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm">
                             </div>
                             <div>
-                                <label id="lbl-syn-city-2" class="block text-[11px] text-slate-400 mb-1">Birthplace</label>
-                                <select id="syn-city-2" class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm"></select>
+                                <label id="lbl-syn-city-2" class="block text-[11px] text-slate-400 mb-1">Birthplace (any city)</label>
+                                <input type="text" id="syn-city-input-2" list="cities-datalist" autocomplete="off" placeholder="Type any city..." class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm">
                             </div>
                             <div>
                                 <label id="lbl-syn-date-2" class="block text-[11px] text-slate-400 mb-1">Birth Date *</label>
@@ -890,7 +890,8 @@
                 heroDesc: 'Enter your birth date, exact time, and birthplace to calculate your Sun sign, Rising sign (Ascendant), visual natal wheel, and daily cosmic favorability index.',
                 lblUserName: 'Your Name (optional)',
                 placeholderUserName: 'e.g. Alex',
-                lblBirthCity: 'Birthplace (for accurate Rising sign)',
+                lblBirthCity: 'Birthplace (any city in the world)',
+                placeholderBirthCity: 'Type any city (e.g. Belgrade, Tokyo...)',
                 lblBirthDate: 'Birth Date *',
                 lblBirthTime: 'Birth Time',
                 lblUnknownTime: 'Unknown time',
@@ -1048,7 +1049,8 @@
                 heroDesc: 'Unesite datum, tačno vreme i mesto rođenja kako bismo izračunali položaj Sunca, Podznaka (Ascendenta), vizuelni natalni krug i verovatnoću povoljnosti za danas.',
                 lblUserName: 'Vaše ime (opciono)',
                 placeholderUserName: 'npr. Nikola',
-                lblBirthCity: 'Grad rođenja (za tačan podznak)',
+                lblBirthCity: 'Mesto rođenja (bilo koji grad na svetu)',
+                placeholderBirthCity: 'Unesite bilo koji grad (npr. Kruševac, Tokio...)',
                 lblBirthDate: 'Datum rođenja *',
                 lblBirthTime: 'Vreme rođenja',
                 lblUnknownTime: 'Ne znam sat',
@@ -1206,210 +1208,167 @@
         }
 
         const CITIES_DATA = [
-            { name: { en: 'London, United Kingdom', sr: 'London, Velika Britanija' }, lat: 51.5074, lng: -0.1278 },
-            { name: { en: 'New York, USA', sr: 'Njujork, SAD' }, lat: 40.7128, lng: -74.0060 },
-            { name: { en: 'Los Angeles, USA', sr: 'Los Anđeles, SAD' }, lat: 34.0522, lng: -118.2437 },
+            // Serbia
             { name: { en: 'Belgrade, Serbia', sr: 'Beograd, Srbija' }, lat: 44.7866, lng: 20.4489 },
             { name: { en: 'Novi Sad, Serbia', sr: 'Novi Sad, Srbija' }, lat: 45.2671, lng: 19.8335 },
             { name: { en: 'Niš, Serbia', sr: 'Niš, Srbija' }, lat: 43.3209, lng: 21.8958 },
             { name: { en: 'Kragujevac, Serbia', sr: 'Kragujevac, Srbija' }, lat: 44.0128, lng: 20.9114 },
             { name: { en: 'Kruševac, Serbia', sr: 'Kruševac, Srbija' }, lat: 43.5800, lng: 21.3339 },
+            { name: { en: 'Subotica, Serbia', sr: 'Subotica, Srbija' }, lat: 46.1005, lng: 19.6651 },
+            { name: { en: 'Zrenjanin, Serbia', sr: 'Zrenjanin, Srbija' }, lat: 45.3816, lng: 20.3829 },
+            { name: { en: 'Pančevo, Serbia', sr: 'Pančevo, Srbija' }, lat: 44.8708, lng: 20.6403 },
+            { name: { en: 'Čačak, Serbia', sr: 'Čačak, Srbija' }, lat: 43.8914, lng: 20.3497 },
+            { name: { en: 'Kraljevo, Serbia', sr: 'Kraljevo, Srbija' }, lat: 43.7258, lng: 20.6896 },
+            { name: { en: 'Novi Pazar, Serbia', sr: 'Novi Pazar, Srbija' }, lat: 43.1367, lng: 20.5122 },
+            { name: { en: 'Leskovac, Serbia', sr: 'Leskovac, Srbija' }, lat: 42.9981, lng: 21.9461 },
+            { name: { en: 'Užice, Serbia', sr: 'Užice, Srbija' }, lat: 43.8586, lng: 19.8488 },
+            { name: { en: 'Valjevo, Serbia', sr: 'Valjevo, Srbija' }, lat: 44.2751, lng: 19.8982 },
+            { name: { en: 'Šabac, Serbia', sr: 'Šabac, Srbija' }, lat: 44.7467, lng: 19.6900 },
+            { name: { en: 'Smederevo, Serbia', sr: 'Smederevo, Srbija' }, lat: 44.6628, lng: 20.9300 },
+            { name: { en: 'Sombor, Serbia', sr: 'Sombor, Srbija' }, lat: 45.7742, lng: 19.1122 },
+            { name: { en: 'Požarevac, Serbia', sr: 'Požarevac, Srbija' }, lat: 44.6213, lng: 21.1878 },
+            { name: { en: 'Vranje, Serbia', sr: 'Vranje, Srbija' }, lat: 42.5514, lng: 21.9003 },
+            { name: { en: 'Pirot, Serbia', sr: 'Pirot, Srbija' }, lat: 43.1531, lng: 22.5861 },
+            { name: { en: 'Zaječar, Serbia', sr: 'Zaječar, Srbija' }, lat: 43.9036, lng: 22.2641 },
+            { name: { en: 'Jagodina, Serbia', sr: 'Jagodina, Srbija' }, lat: 43.9771, lng: 21.2612 },
+            { name: { en: 'Sremska Mitrovica, Serbia', sr: 'Sremska Mitrovica, Srbija' }, lat: 44.9764, lng: 19.6122 },
+            { name: { en: 'Vršac, Serbia', sr: 'Vršac, Srbija' }, lat: 45.1167, lng: 21.3036 },
+            { name: { en: 'Kikinda, Serbia', sr: 'Kikinda, Srbija' }, lat: 45.8297, lng: 20.4653 },
+            // Balkans / Region
             { name: { en: 'Podgorica, Montenegro', sr: 'Podgorica, Crna Gora' }, lat: 42.4304, lng: 19.2594 },
+            { name: { en: 'Nikšić, Montenegro', sr: 'Nikšić, Crna Gora' }, lat: 42.7731, lng: 18.9445 },
+            { name: { en: 'Budva, Montenegro', sr: 'Budva, Crna Gora' }, lat: 42.2911, lng: 18.8403 },
+            { name: { en: 'Bar, Montenegro', sr: 'Bar, Crna Gora' }, lat: 42.0931, lng: 19.1003 },
             { name: { en: 'Banja Luka, BiH', sr: 'Banja Luka, BiH' }, lat: 44.7722, lng: 17.1910 },
             { name: { en: 'Sarajevo, BiH', sr: 'Sarajevo, BiH' }, lat: 43.8563, lng: 18.4131 },
+            { name: { en: 'Mostar, BiH', sr: 'Mostar, BiH' }, lat: 43.3438, lng: 17.8078 },
+            { name: { en: 'Tuzla, BiH', sr: 'Tuzla, BiH' }, lat: 44.5384, lng: 18.6671 },
+            { name: { en: 'Bijeljina, BiH', sr: 'Bijeljina, BiH' }, lat: 44.7587, lng: 19.2144 },
             { name: { en: 'Zagreb, Croatia', sr: 'Zagreb, Hrvatska' }, lat: 45.8150, lng: 15.9819 },
+            { name: { en: 'Split, Croatia', sr: 'Split, Hrvatska' }, lat: 43.5081, lng: 16.4402 },
+            { name: { en: 'Rijeka, Croatia', sr: 'Rijeka, Hrvatska' }, lat: 45.3271, lng: 14.4422 },
+            { name: { en: 'Osijek, Croatia', sr: 'Osijek, Hrvatska' }, lat: 45.5550, lng: 18.6955 },
             { name: { en: 'Skopje, N. Macedonia', sr: 'Skoplje, S. Makedonija' }, lat: 41.9981, lng: 21.4254 },
+            { name: { en: 'Bitola, N. Macedonia', sr: 'Bitolj, S. Makedonija' }, lat: 41.0297, lng: 21.3292 },
             { name: { en: 'Ljubljana, Slovenia', sr: 'Ljubljana, Slovenija' }, lat: 46.0569, lng: 14.5058 },
+            { name: { en: 'Maribor, Slovenia', sr: 'Maribor, Slovenija' }, lat: 46.5547, lng: 15.6459 },
+            // Europe & World
+            { name: { en: 'London, United Kingdom', sr: 'London, Velika Britanija' }, lat: 51.5074, lng: -0.1278 },
+            { name: { en: 'New York, USA', sr: 'Njujork, SAD' }, lat: 40.7128, lng: -74.0060 },
+            { name: { en: 'Los Angeles, USA', sr: 'Los Anđeles, SAD' }, lat: 34.0522, lng: -118.2437 },
+            { name: { en: 'Chicago, USA', sr: 'Čikago, SAD' }, lat: 41.8781, lng: -87.6298 },
+            { name: { en: 'Miami, USA', sr: 'Majami, SAD' }, lat: 25.7617, lng: -80.1918 },
             { name: { en: 'Vienna, Austria', sr: 'Beč, Austrija' }, lat: 48.2082, lng: 16.3738 },
             { name: { en: 'Zurich, Switzerland', sr: 'Cirih, Švajcarska' }, lat: 47.3769, lng: 8.5417 },
+            { name: { en: 'Geneva, Switzerland', sr: 'Ženeva, Švajcarska' }, lat: 46.2044, lng: 6.1432 },
             { name: { en: 'Paris, France', sr: 'Pariz, Francuska' }, lat: 48.8566, lng: 2.3522 },
             { name: { en: 'Berlin, Germany', sr: 'Berlin, Nemačka' }, lat: 52.5200, lng: 13.4050 },
+            { name: { en: 'Munich, Germany', sr: 'Minhen, Nemačka' }, lat: 48.1351, lng: 11.5820 },
+            { name: { en: 'Frankfurt, Germany', sr: 'Frankfurt, Nemačka' }, lat: 50.1109, lng: 8.6821 },
+            { name: { en: 'Rome, Italy', sr: 'Rim, Italija' }, lat: 41.9028, lng: 12.4964 },
+            { name: { en: 'Milan, Italy', sr: 'Milano, Italija' }, lat: 45.4642, lng: 9.1900 },
+            { name: { en: 'Madrid, Spain', sr: 'Madrid, Španija' }, lat: 40.4168, lng: -3.7038 },
+            { name: { en: 'Barcelona, Spain', sr: 'Barselona, Španija' }, lat: 41.3851, lng: 2.1734 },
+            { name: { en: 'Amsterdam, Netherlands', sr: 'Amsterdam, Holandija' }, lat: 52.3676, lng: 4.9041 },
+            { name: { en: 'Stockholm, Sweden', sr: 'Stokholm, Švedska' }, lat: 59.3293, lng: 18.0686 },
+            { name: { en: 'Oslo, Norway', sr: 'Oslo, Norveška' }, lat: 59.9139, lng: 10.7522 },
+            { name: { en: 'Athens, Greece', sr: 'Atina, Grčka' }, lat: 37.9838, lng: 23.7275 },
+            { name: { en: 'Istanbul, Turkey', sr: 'Istanbul, Turska' }, lat: 41.0082, lng: 28.9784 },
+            { name: { en: 'Moscow, Russia', sr: 'Moskva, Rusija' }, lat: 55.7558, lng: 37.6173 },
+            { name: { en: 'Dubai, UAE', sr: 'Dubai, UAE' }, lat: 25.2048, lng: 55.2708 },
+            { name: { en: 'Tokyo, Japan', sr: 'Tokio, Japan' }, lat: 35.6762, lng: 139.6503 },
             { name: { en: 'Toronto, Canada', sr: 'Toronto, Kanada' }, lat: 43.6532, lng: -79.3832 },
-            { name: { en: 'Sydney, Australia', sr: 'Sidnej, Australija' }, lat: -33.8688, lng: 151.2093 }
+            { name: { en: 'Sydney, Australia', sr: 'Sidnej, Australija' }, lat: -33.8688, lng: 151.2093 },
+            { name: { en: 'Melbourne, Australia', sr: 'Melburn, Australija' }, lat: -37.8136, lng: 144.9631 },
+            { name: { en: 'Buenos Aires, Argentina', sr: 'Buenos Ajres, Argentina' }, lat: -34.6037, lng: -58.3816 }
         ];
 
-        const ZODIAC_SIGNS = [
-            { id: 0, symbol: '♈', name: { en: 'Aries', sr: 'Ovan' }, element: { en: 'Fire', sr: 'Vatra' }, ruler: { en: 'Mars', sr: 'Mars' }, dates: { en: 'Mar 21 – Apr 19', sr: '21. mart – 19. april' }, startMonth: 3, startDay: 21, color: { en: 'Crimson Red', sr: 'Vatreno crvena' } },
-            { id: 1, symbol: '♉', name: { en: 'Taurus', sr: 'Bik' }, element: { en: 'Earth', sr: 'Zemlja' }, ruler: { en: 'Venus', sr: 'Venera' }, dates: { en: 'Apr 20 – May 20', sr: '20. april – 20. maj' }, startMonth: 4, startDay: 20, color: { en: 'Emerald Green', sr: 'Smaragdno zelena' } },
-            { id: 2, symbol: '♊', name: { en: 'Gemini', sr: 'Blizanci' }, element: { en: 'Air', sr: 'Vazduh' }, ruler: { en: 'Mercury', sr: 'Merkur' }, dates: { en: 'May 21 – Jun 20', sr: '21. maj – 20. jun' }, startMonth: 5, startDay: 21, color: { en: 'Sunlit Yellow', sr: 'Sunčano žuta' } },
-            { id: 3, symbol: '♋', name: { en: 'Cancer', sr: 'Rak' }, element: { en: 'Water', sr: 'Voda' }, ruler: { en: 'Moon', sr: 'Mesec' }, dates: { en: 'Jun 21 – Jul 22', sr: '21. jun – 22. jul' }, startMonth: 6, startDay: 21, color: { en: 'Silver White', sr: 'Srebrno bela' } },
-            { id: 4, symbol: '♌', name: { en: 'Leo', sr: 'Lav' }, element: { en: 'Fire', sr: 'Vatra' }, ruler: { en: 'Sun', sr: 'Sunce' }, dates: { en: 'Jul 23 – Aug 22', sr: '23. jul – 22. avgust' }, startMonth: 7, startDay: 23, color: { en: 'Royal Gold', sr: 'Kraljevsko zlatna' } },
-            { id: 5, symbol: '♍', name: { en: 'Virgo', sr: 'Devica' }, element: { en: 'Earth', sr: 'Zemlja' }, ruler: { en: 'Mercury', sr: 'Merkur' }, dates: { en: 'Aug 23 – Sep 22', sr: '23. avgust – 22. septembar' }, startMonth: 8, startDay: 23, color: { en: 'Navy Blue', sr: 'Teget plava' } },
-            { id: 6, symbol: '♎', name: { en: 'Libra', sr: 'Vaga' }, element: { en: 'Air', sr: 'Vazduh' }, ruler: { en: 'Venus', sr: 'Venera' }, dates: { en: 'Sep 23 – Oct 22', sr: '23. septembar – 22. oktobar' }, startMonth: 9, startDay: 23, color: { en: 'Pastel Rose', sr: 'Pastelno roze' } },
-            { id: 7, symbol: '♏', name: { en: 'Scorpio', sr: 'Škorpija' }, element: { en: 'Water', sr: 'Voda' }, ruler: { en: 'Pluto', sr: 'Pluton' }, dates: { en: 'Oct 23 – Nov 21', sr: '23. oktobar – 21. novembar' }, startMonth: 10, startDay: 23, color: { en: 'Deep Burgundy', sr: 'Bordo crvena' } },
-            { id: 8, symbol: '♐', name: { en: 'Sagittarius', sr: 'Strelac' }, element: { en: 'Fire', sr: 'Vatra' }, ruler: { en: 'Jupiter', sr: 'Jupiter' }, dates: { en: 'Nov 22 – Dec 21', sr: '22. novembar – 21. decembar' }, startMonth: 11, startDay: 22, color: { en: 'Royal Purple', sr: 'Kraljevsko ljubičasta' } },
-            { id: 9, symbol: '♑', name: { en: 'Capricorn', sr: 'Jarac' }, element: { en: 'Earth', sr: 'Zemlja' }, ruler: { en: 'Saturn', sr: 'Saturn' }, dates: { en: 'Dec 22 – Jan 19', sr: '22. decembar – 19. januar' }, startMonth: 12, startDay: 22, color: { en: 'Graphite Grey', sr: 'Grafitno siva' } },
-            { id: 10, symbol: '♒', name: { en: 'Aquarius', sr: 'Vodolija' }, element: { en: 'Air', sr: 'Vazduh' }, ruler: { en: 'Uranus', sr: 'Uran' }, dates: { en: 'Jan 20 – Feb 18', sr: '20. januar – 18. februar' }, startMonth: 1, startDay: 20, color: { en: 'Electric Blue', sr: 'Elektrik plava' } },
-            { id: 11, symbol: '♓', name: { en: 'Pisces', sr: 'Ribe' }, element: { en: 'Water', sr: 'Voda' }, ruler: { en: 'Neptune', sr: 'Neptun' }, dates: { en: 'Feb 19 – Mar 20', sr: '19. februar – 20. mart' }, startMonth: 2, startDay: 19, color: { en: 'Turquoise Sea', sr: 'Tirkizno morska' } }
-        ];
-
-        const ASPECTS_POOL = {
-            en: [
-                { title: 'Sun Trine Jupiter', type: 'Harmonious (120°)', desc: 'Opens doors to fresh career opportunities, support from mentors, and bold expansion.' },
-                { title: 'Venus Sextile Mercury', type: 'Favorable (60°)', desc: 'Brings effortless conversation, sweet messages from someone special, and smooth agreements.' },
-                { title: 'Moon Trine Saturn', type: 'Grounded (120°)', desc: 'Emotional maturity, laser focus, and the discipline to complete long-standing tasks.' },
-                { title: 'Sun Conjunct Mercury', type: 'Potent (0°)', desc: 'Heightened mental clarity, swift decisions, and success in negotiations or writing.' },
-                { title: 'Mars Square Moon', type: 'Dynamic (90°)', desc: 'Elevated drive and emotional intensity — channel your energy into productive action over arguments.' },
-                { title: 'Jupiter Sextile Uranus', type: 'Fortunate (60°)', desc: 'A sudden lucky breakthrough or unexpected idea that sparks constructive progress.' },
-                { title: 'Venus Trine Neptune', type: 'Romantic (120°)', desc: 'Heightened inspiration, tenderness, and deep unspoken understanding with loved ones.' },
-                { title: 'Sun Sextile Mars', type: 'Active (60°)', desc: 'Decisiveness, courage, and steady execution of goals you have been preparing.' },
-                { title: 'Mercury Trine Uranus', type: 'Inventive (120°)', desc: 'Original solutions, brilliant insights, and surprising news that works in your favor.' },
-                { title: 'Venus Conjunct Jupiter', type: 'Abundant (0°)', desc: 'One of the brightest transits for romance, generosity, pleasant surprises, and joy.' },
-                { title: 'Moon Opposite Jupiter', type: 'Expansive (180°)', desc: 'Big enthusiasm and a craving for fresh experiences — keep expectations realistic and balanced.' },
-                { title: 'Saturn Sextile Neptune', type: 'Wise (60°)', desc: 'The ability to turn creative visions into a structured, sustainable long-term plan.' },
-                { title: 'Mars Trine Pluto', type: 'Transformative (120°)', desc: 'Immense inner resilience and willpower to conquer your most demanding challenges.' },
-                { title: 'Mercury Square Saturn', type: 'Serious (90°)', desc: 'Calls for double-checking details and exercising patience in formal communication.' },
-                { title: 'Moon Sextile Venus', type: 'Harmonizing (60°)', desc: 'Warmth in family bonds, pleasant social encounters, and a calm sense of inner peace.' },
-                { title: 'Sun Trine Uranus', type: 'Liberating (120°)', desc: 'A refreshing twist in your routine, inspiring new connections, and a confident leap forward.' }
-            ],
-            sr: [
-                { title: 'Trigon Sunca i Jupitera', type: 'Harmoničan (120°)', desc: 'Otvara vrata novim poslovnim prilikama, podršci autoriteta i širenju planova.' },
-                { title: 'Sekstil Venere i Merkura', type: 'Povoljan (60°)', desc: 'Donosi lakoću u razgovoru, lepe vesti od drage osobe i povoljne dogovore.' },
-                { title: 'Trigon Meseca i Saturna', type: 'Stabilan (120°)', desc: 'Emotivna zrelost, fokus i sposobnost da uspešno privedete kraju započete obaveze.' },
-                { title: 'Konjunkcija Sunca i Merkura', type: 'Snažan (0°)', desc: 'Izražena mentalna jasnoća, brze odluke i uspeh u pregovorima i pisanju.' },
-                { title: 'Kvadrat Marsa i Meseca', type: 'Dinamičan (90°)', desc: 'Pojačana energija i emotivni naboj — usmerite snagu na konstruktivan rad umesto na rasprave.' },
-                { title: 'Sekstil Jupitera i Urana', type: 'Srećan (60°)', desc: 'Iznenadni povoljan preokret ili neočekivana ideja koja donosi konstruktivan pomak.' },
-                { title: 'Trigon Venere i Neptuna', type: 'Romantičan (120°)', desc: 'Pojačana inspiracija, nežnost i duboko razumevanje bez mnogo reči.' },
-                { title: 'Sekstil Sunca i Marsa', type: 'Aktivan (60°)', desc: 'Odlučnost, hrabrost i sigurna realizacija ciljeva koje ste dugo pripremali.' },
-                { title: 'Trigon Merkura i Urana', type: 'Kreativan (120°)', desc: 'Originalna rešenja, briljantne ideje i neočekivane korisne informacije.' },
-                { title: 'Konjunkcija Venere i Jupitera', type: 'Izobilan (0°)', desc: 'Jedan od najlepših aspekata za ljubav, poklone, lepe vesti i radost.' },
-                { title: 'Opozicija Meseca i Jupitera', type: 'Širok (180°)', desc: 'Veliki entuzijazam i potreba za promenom — zadržite realnu meru i balans.' },
-                { title: 'Sekstil Saturna i Neptuna', type: 'Mudar (60°)', desc: 'Sposobnost da svoje snove i vizije pretvorite u konkretan i održiv plan.' },
-                { title: 'Trigon Marsa i Plutona', type: 'Transformišući (120°)', desc: 'Ogromna unutrašnja snaga i izdržljivost za rešavanje najzahtevnijih zadataka.' },
-                { title: 'Kvadrat Merkura i Saturna', type: 'Ozbiljan (90°)', desc: 'Zahteva dodatnu proveru dokumenata i strpljenje u zvaničnoj komunikaciji.' },
-                { title: 'Sekstil Meseca i Venere', type: 'Harmonizujući (60°)', desc: 'Toplina u porodičnim odnosima, prijatni susreti i osećaj unutrašnjeg mira.' },
-                { title: 'Trigon Sunca i Urana', type: 'Oslobađajući (120°)', desc: 'Osveženje u svakodnevici, nova poznanstva i siguran iskorak iz rutine.' }
-            ]
+        // Dynamic city state & geocoding cache for ANY custom city worldwide
+        const selectedLocations = {
+            main: { label: 'Belgrade, Serbia', lat: 44.7866, lng: 20.4489 },
+            syn1: { label: 'Belgrade, Serbia', lat: 44.7866, lng: 20.4489 },
+            syn2: { label: 'London, United Kingdom', lat: 51.5074, lng: -0.1278 }
         };
+        const geocodeCache = {};
 
-        const NARRATIVE_TEMPLATES = {
-            en: {
-                high: {
-                    work: [
-                        'An exceptionally favorable day for negotiations, signing agreements, and launching new ventures. Your initiative yields tangible progress and financial reward.',
-                        'Your ideas receive strong backing from decision-makers and peers today. Use the morning hours to pitch the proposal you have been refining.',
-                        'Financial momentum points clearly upward. Expect a pleasant bonus, a settled invoice, or an opportunity for additional income.',
-                        'Your expertise and confidence take center stage today. An ideal window for pivotal business calls and expanding your professional network.',
-                        'Creative problem-solving sets you apart in the workplace today. A bold yet well-structured suggestion can earn lasting recognition.',
-                        'Doors that previously felt stuck open smoothly now. Take decisive action on long-term career goals while cosmic support is at its peak.',
-                        'Productive collaboration brings swift breakthroughs. Aligning with an ambitious colleague multiplies your results effortlessly.',
-                        'Clarity around budgets, pricing, and investments works strongly in your favor today. Trust your strategic instincts when closing deals.'
-                    ],
-                    love: [
-                        'Magnetism and warmth are at their peak. Singles may encounter an exciting spark, while couples deepen intimacy and mutual trust.',
-                        'You radiate an effortless charm that attracts genuine admiration and thoughtful gestures. Ideal evening for a romantic date or heartfelt talk.',
-                        'Harmony in close relationships brings a deep sense of joy and security. A partner or admirer may surprise you with meaningful affection.',
-                        'If someone has been on your mind lately, today offers the ideal cosmic timing to express your feelings openly and warmly.',
-                        'Shared laughter and spontaneous plans rekindle excitement in your love life. Make room tonight for uninterrupted quality time together.',
-                        'Emotional openness creates a magnetic bond today. Speaking from the heart invites immediate warmth and reciprocity.',
-                        'An uplifting social invitation or chance conversation carries strong romantic potential for singles and joyful energy for couples.',
-                        'Mutual appreciation flows naturally today. Small, sincere expressions of devotion strengthen your connection for weeks to come.'
-                    ],
-                    health: [
-                        'Vitality and physical stamina run remarkably high. A prime moment for outdoor movement, training, and recharging your body.',
-                        'You feel a crisp surge of positive energy and mental clarity. Channel this momentum into a workout or healthy daily habits.',
-                        'Your body responds wonderfully to active rest and fresh air today. Inner balance reflects directly in your mood and focus.',
-                        'Strong psychophysical resilience carries you smoothly through the day. Winding down with music or reading tonight restores your reserves.',
-                        'High endurance makes today ideal for tackling physically demanding tasks or starting a fresh fitness routine with enthusiasm.',
-                        'Mental sharpness and physical poise work in complete sync today. Nourishing meals and brisk movement amplify your natural glow.',
-                        'A refreshing wave of optimism lifts both mood and stamina. Enjoying nature or stretching outdoors keeps your energy vibrant.',
-                        'Your recovery rate and overall vigor are at a weekly high. Keep hydrated and enjoy the productive, energized rhythm of the day.'
-                    ],
-                    luck: [
-                        'Cosmic alignments are firmly in your corner — trust your first instinct, as odds for a fortunate turn of events are well above average.',
-                        'Fortune favors bold, well-timed steps today! You could discover a clever solution where you least expect it or meet someone inspiring.',
-                        'Synchronicities surround you — pay attention to subtle signs, recurring numbers, and chance encounters carrying timely clues.',
-                        'A supportive cosmic tailwind propels your plans forward. Even minor detours quickly turn to your advantage today.',
-                        'Serendipity shines on spontaneous decisions today. Saying yes to an unexpected invitation can lead to a memorable breakthrough.',
-                        'Your intuition is razor-sharp and remarkably accurate today. Follow the hunch that feels calm, clear, and energizing.',
-                        'Favorable timing aligns key people and opportunities in your path. Stay open to pleasant surprises throughout the afternoon.',
-                        'A wave of good fortune rewards your recent patience. Something you hoped for shows clear, encouraging signs of movement.'
-                    ]
-                },
-                medium: {
-                    work: [
-                        'A steady, productive pace. Focus on wrapping up ongoing tasks and double-checking details before committing to major expenses.',
-                        'A solid day for organization, clearing paperwork, and mapping out next steps. Methodical focus brings peace of mind.',
-                        'Teamwork flows smoothly without any need to rush. Stick to your proven schedule and skip unnecessary impulse purchases.',
-                        'Consistent progress is assured when you honor your top priorities. The afternoon brings a useful piece of career insight.',
-                        'Balanced focus helps you clear lingering items from your to-do list. Steady, reliable execution matters more than dramatic leaps today.',
-                        'A constructive day for refining budgets, organizing files, and preparing presentations for upcoming meetings.',
-                        'Routine duties move forward cleanly when you pace yourself. Taking short breaks keeps your accuracy high until evening.',
-                        'Practical cooperation with colleagues yields dependable results. Keep communication clear, polite, and focused on shared milestones.'
-                    ],
-                    love: [
-                        'Balanced communication restores calm. An honest, gentle conversation clears up minor misunderstandings and strengthens emotional security.',
-                        'A warm, easygoing tone prevails with loved ones. Enjoy simple shared rituals without forcing major relationship decisions today.',
-                        'A great moment to listen with extra patience. Kindness in small everyday gestures builds lasting trust.',
-                        'Lighthearted conversation brightens the day for singles, while couples find a comfortable rhythm between duties and quality time.',
-                        'Steady affection and mutual respect define the mood today. Sharing a quiet meal or walk deepens your sense of comfort.',
-                        'Consistency speaks louder than grand gestures right now. Showing up reliably for someone you care about means everything.',
-                        'A calm, grounded atmosphere makes it easy to discuss everyday plans together without tension or pressure.',
-                        'Warmth grows naturally when you stay present in the moment. Enjoy pleasant company without overanalyzing minor details.'
-                    ],
-                    health: [
-                        'Good baseline energy, though mindful hydration and consistent sleep will keep you sharp through the afternoon.',
-                        'Steady vitality paired with a need for brief screen breaks. A brisk walk after work helps clear mental clutter.',
-                        'Your system appreciates balanced meals and extra water today. Unplugging early tonight ensures deeper, restorative rest.',
-                        'Energy is evenly paced — invest it wisely without draining yourself over minor details.',
-                        'Moderate exercise like stretching, yoga, or a relaxed stroll supports circulation and keeps stiffness away.',
-                        'Maintaining regular meal times and posture checks during work keeps your physical comfort steady all day.',
-                        'A calm afternoon pace prevents unnecessary fatigue. Herbal tea and quiet downtime tonight recharge your focus.',
-                        'Your stamina holds steady when you balance active tasks with brief moments of deep breathing and rest.'
-                    ],
-                    luck: [
-                        'Moderate serendipity — patience and solid preparation outperform risky leaps today.',
-                        'Luck hides in smart timing today. Observe the full picture before making your decisive move.',
-                        'Intuition offers quiet guidance — listen to your inner voice when weighing two similar options.',
-                        'A calmer cosmic tempo helps you sidestep missteps and conserve energy for opportunities arriving later this week.',
-                        'Thoughtful planning brings steady, predictable rewards today rather than sudden windfalls.',
-                        'A helpful tip or reminder from a friend arrives right when you need it, saving you valuable time.',
-                        'Staying adaptable turns minor schedule shifts into quiet advantages. Keep an open, observant mindset.',
-                        'Small everyday wins add up nicely today when you stay patient and avoid rushing outcomes.'
-                    ]
-                },
-                low: {
-                    work: [
-                        'A day suited for behind-the-scenes analysis and quiet planning. Avoid reactive replies with colleagues and wait for clearer skies.',
-                        'Stay extra mindful of deadlines and numbers today. Review emails and figures twice before hitting send.',
-                        'Not the ideal moment for high-stakes risks or friction with authority. Complete routine duties and save bold pitches for later.',
-                        'Minor delays beyond your control may surface — handle them calmly and use the extra time to refine your strategy.',
-                        'Keep financial commitments conservative today. Postponing non-essential purchases protects your budget until momentum improves.',
-                        'Focus on solo tasks that require concentration rather than crowded meetings or tough negotiations.',
-                        'A slower work tempo invites you to organize your workspace and tie up loose ends without pressure.',
-                        'Patience is your strongest professional asset today — step back from office drama and let others rush.'
-                    ],
-                    love: [
-                        'Heightened emotional sensitivity calls for gentleness. Give yourself and your partner breathing room and avoid rehashing old topics.',
-                        'Small misunderstandings can feel larger than they truly are today. Pause before responding and choose softer words.',
-                        'A quiet evening in peaceful surroundings beats crowded social scenes right now. Be extra kind to yourself.',
-                        'Avoid jumping to conclusions over a single text or tone — tomorrow brings far greater clarity and warmth.',
-                        'Keep expectations gentle today and focus on emotional self-care rather than demanding immediate answers.',
-                        'Temporary distance or busy schedules may limit time together today; a brief, thoughtful message keeps warmth alive.',
-                        'Resist the urge to overanalyze past conversations. Letting minor tensions settle naturally preserves harmony.',
-                        'Solitude or low-key company feels most comforting today. Recharge your emotional battery without pressure.'
-                    ],
-                    health: [
-                        'A slight dip in focus or energy is possible. Gift yourself an earlier bedtime and lighter nourishment.',
-                        'Your body is signaling you to slow the tempo. Extra hydration, vitamins, and a short afternoon rest restore freshness.',
-                        'A more sensitive nervous system benefits from calm surroundings and less caffeine or late-night screen time.',
-                        'Dedicate tonight to relaxation, gentle stretching, or a warm bath to release accumulated tension.',
-                        'Avoid pushing through exhaustion with extra stimulants; a 20-minute power rest does far more good today.',
-                        'Keep your schedule light if possible and favor warm, easy-to-digest meals to support steady comfort.',
-                        'Fresh air and stepping away from noisy environments quickly soothe mental fatigue today.',
-                        'Prioritize quality sleep tonight — giving your body extra recovery hours restores full vitality by tomorrow.'
-                    ],
-                    luck: [
-                        'Rely on proven methods and personal experience rather than leaving outcomes to chance today.',
-                        'Skip games of luck or unverified offers — what you carefully plan yourself holds the highest value right now.',
-                        'Current transits advise discretion and patience; keep your best plans private until conditions ripen.',
-                        'A day for inner wisdom and poise — moving deliberately helps you bypass unnecessary obstacles.',
-                        'Double-check travel times, keys, and bookings today; staying organized prevents minor inconveniences.',
-                        'Avoid shortcuts or last-minute gambles — steady, cautious steps keep you firmly on safe ground.',
-                        'Quiet reflection reveals where you should conserve energy rather than chasing uncertain leads.',
-                        'Treat today as a reset button: clearing clutter and waiting patiently prepares you for stronger days ahead.'
-                    ]
+        function findLocalCityByName(query) {
+            if (!query) return null;
+            const q = query.trim().toLowerCase();
+            return CITIES_DATA.find(c =>
+                c.name.en.toLowerCase() === q ||
+                c.name.sr.toLowerCase() === q ||
+                c.name.en.toLowerCase().startsWith(q + ',') ||
+                c.name.sr.toLowerCase().startsWith(q + ',')
+            ) || null;
+        }
+
+        async function resolveCityCoordinates(query, slotKey) {
+            const trimmed = (query || '').trim();
+            if (!trimmed) return selectedLocations[slotKey];
+
+            // 1. Check built-in fast list first
+            const localMatch = findLocalCityByName(trimmed);
+            if (localMatch) {
+                selectedLocations[slotKey] = {
+                    label: localMatch.name[currentLang],
+                    lat: localMatch.lat,
+                    lng: localMatch.lng
+                };
+                updateCityHintUI();
+                return selectedLocations[slotKey];
+            }
+
+            // 2. Check session cache
+            const cacheKey = trimmed.toLowerCase();
+            if (geocodeCache[cacheKey]) {
+                selectedLocations[slotKey] = {
+                    label: trimmed,
+                    lat: geocodeCache[cacheKey].lat,
+                    lng: geocodeCache[cacheKey].lng
+                };
+                updateCityHintUI();
+                return selectedLocations[slotKey];
+            }
+
+            // 3. Query OpenStreetMap Nominatim for ANY city/village worldwide
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(trimmed)}`, {
+                    headers: { 'Accept-Language': currentLang }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        const lat = parseFloat(data[0].lat);
+                        const lng = parseFloat(data[0].lon);
+                        if (!Number.isNaN(lat) && !Number.isNaN(lng)) {
+                            geocodeCache[cacheKey] = { lat, lng };
+                            selectedLocations[slotKey] = { label: trimmed, lat, lng };
+                            updateCityHintUI();
+                            return selectedLocations[slotKey];
+                        }
+                    }
                 }
+            } catch (e) {}
+
+            // 4. Fallback: deterministic longitude estimate from city name if offline
+            let hash = 0;
+            for (let i = 0; i < trimmed.length; i++) {
+                hash = (hash * 31 + trimmed.charCodeAt(i)) % 360;
+            }
+            const fallbackLng = ((hash + 180) % 360) - 180;
+            selectedLocations[slotKey] = { label: trimmed, lat: 44.0, lng: fallbackLng };
+            updateCityHintUI();
+            return selectedLocations[slotKey];
+        }
+
+        function updateCityHintUI() {
+            const hintEl = document.getElementById('birth-city-coords-hint');
+            if (!hintEl) return;
+            const loc = selectedLocations.main;
+            const latDir = loc.lat >= 0 ? 'N' : 'S';
+            const lngDir = loc.lng >= 0 ? 'E' : 'W';
+            hintEl.textContent = `${Math.abs(loc.lat).toFixed(2)}°${latDir}, ${Math.abs(loc.lng).toFixed(2)}°${lngDir}`;
+        }
             },
             sr: {
                 high: {
@@ -1679,8 +1638,7 @@
             const birthTime = document.getElementById('unknown-time')?.checked
                 ? t().unknownHourValue
                 : (document.getElementById('birth-time')?.value || '12:00');
-            const cityIdx = Number(document.getElementById('birth-city')?.value || 0);
-            const cityName = (CITIES_DATA[cityIdx] || CITIES_DATA[0]).name[currentLang];
+            const cityName = (document.getElementById('birth-city-input')?.value || '').trim() || selectedLocations.main.label;
 
             if (compactSummary) {
                 compactSummary.textContent = `${birthDate} • ${birthTime} • ${cityName}`;
@@ -1744,6 +1702,7 @@
             document.getElementById('lbl-user-name').textContent = s.lblUserName;
             document.getElementById('user-name').placeholder = s.placeholderUserName;
             document.getElementById('lbl-birth-city').textContent = s.lblBirthCity;
+            document.getElementById('birth-city-input').placeholder = s.placeholderBirthCity;
             document.getElementById('lbl-birth-date').textContent = s.lblBirthDate;
             document.getElementById('lbl-birth-time').textContent = s.lblBirthTime;
             document.getElementById('lbl-unknown-time').textContent = s.lblUnknownTime;
@@ -1840,15 +1799,94 @@
         }
 
         function populateCitySelects() {
-            const ids = ['birth-city', 'syn-city-1', 'syn-city-2'];
-            const optionsHtml = CITIES_DATA.map((c, i) => `<option value="${i}">${c.name[currentLang]}</option>`).join('');
-            ids.forEach((id, idx) => {
-                const el = document.getElementById(id);
-                if (!el) return;
-                const prev = el.value !== '' ? el.value : (idx === 2 ? '1' : '0');
-                el.innerHTML = optionsHtml;
-                el.value = prev;
-            });
+            const datalist = document.getElementById('cities-datalist');
+            if (datalist) {
+                datalist.innerHTML = CITIES_DATA.map(c => `<option value="${c.name[currentLang]}"></option>`).join('');
+            }
+            const mainInput = document.getElementById('birth-city-input');
+            if (mainInput && !mainInput.value) {
+                mainInput.value = CITIES_DATA[0].name[currentLang];
+                selectedLocations.main = { label: mainInput.value, lat: CITIES_DATA[0].lat, lng: CITIES_DATA[0].lng };
+            }
+            const syn1Input = document.getElementById('syn-city-input-1');
+            if (syn1Input && !syn1Input.value) {
+                syn1Input.value = CITIES_DATA[0].name[currentLang];
+                selectedLocations.syn1 = { label: syn1Input.value, lat: CITIES_DATA[0].lat, lng: CITIES_DATA[0].lng };
+            }
+            const syn2Input = document.getElementById('syn-city-input-2');
+            if (syn2Input && !syn2Input.value) {
+                const defaultSecond = CITIES_DATA[42] || CITIES_DATA[1];
+                syn2Input.value = defaultSecond.name[currentLang];
+                selectedLocations.syn2 = { label: syn2Input.value, lat: defaultSecond.lat, lng: defaultSecond.lng };
+            }
+            updateCityHintUI();
+        }
+
+        // =========================================================================
+        // 4. ACCOUNT MANAGEMENT (GOOGLE OAUTH + INSTAGRAM FOLLOW + PER-EMAIL SAVE)
+        // =========================================================================
+        const AUTH_STORAGE_KEY = 'astralis_auth_state_v1';
+        const PROFILES_BY_EMAIL_KEY = 'astralis_profiles_by_email_v1';
+        let appAuthState = {
+            user: null,
+            igFollowed: false
+        };
+
+        function getCurrentFormSnapshot() {
+            return {
+                name: (document.getElementById('user-name')?.value || '').trim(),
+                birthDate: document.getElementById('birth-date')?.value || '1990-05-15',
+                birthTime: document.getElementById('birth-time')?.value || '12:00',
+                cityText: (document.getElementById('birth-city-input')?.value || '').trim(),
+                cityCoords: { ...selectedLocations.main },
+                unknownTime: Boolean(document.getElementById('unknown-time')?.checked),
+                synName1: document.getElementById('syn-name-1')?.value || '',
+                synDate1: document.getElementById('syn-date-1')?.value || '',
+                synTime1: document.getElementById('syn-time-1')?.value || '',
+                synCity1Text: (document.getElementById('syn-city-input-1')?.value || '').trim(),
+                synCity1Coords: { ...selectedLocations.syn1 },
+                synName2: document.getElementById('syn-name-2')?.value || '',
+                synDate2: document.getElementById('syn-date-2')?.value || '',
+                synTime2: document.getElementById('syn-time-2')?.value || '',
+                synCity2Text: (document.getElementById('syn-city-input-2')?.value || '').trim(),
+                synCity2Coords: { ...selectedLocations.syn2 }
+            };
+        }
+
+        function applyFormSnapshot(data) {
+            if (!data) return;
+            if (data.name !== undefined) document.getElementById('user-name').value = data.name;
+            if (data.birthDate) document.getElementById('birth-date').value = data.birthDate;
+            if (data.birthTime) document.getElementById('birth-time').value = data.birthTime;
+            if (data.cityText) {
+                document.getElementById('birth-city-input').value = data.cityText;
+                if (data.cityCoords) selectedLocations.main = { ...data.cityCoords };
+            } else if (data.cityIdx !== undefined && CITIES_DATA[Number(data.cityIdx)]) {
+                const legacyCity = CITIES_DATA[Number(data.cityIdx)];
+                document.getElementById('birth-city-input').value = legacyCity.name[currentLang];
+                selectedLocations.main = { label: legacyCity.name[currentLang], lat: legacyCity.lat, lng: legacyCity.lng };
+            }
+            if (data.unknownTime !== undefined) {
+                const unknownCheck = document.getElementById('unknown-time');
+                const birthTimeInput = document.getElementById('birth-time');
+                unknownCheck.checked = Boolean(data.unknownTime);
+                birthTimeInput.disabled = unknownCheck.checked;
+            }
+            if (data.synName1) document.getElementById('syn-name-1').value = data.synName1;
+            if (data.synDate1) document.getElementById('syn-date-1').value = data.synDate1;
+            if (data.synTime1) document.getElementById('syn-time-1').value = data.synTime1;
+            if (data.synCity1Text) {
+                document.getElementById('syn-city-input-1').value = data.synCity1Text;
+                if (data.synCity1Coords) selectedLocations.syn1 = { ...data.synCity1Coords };
+            }
+            if (data.synName2) document.getElementById('syn-name-2').value = data.synName2;
+            if (data.synDate2) document.getElementById('syn-date-2').value = data.synDate2;
+            if (data.synTime2) document.getElementById('syn-time-2').value = data.synTime2;
+            if (data.synCity2Text) {
+                document.getElementById('syn-city-input-2').value = data.synCity2Text;
+                if (data.synCity2Coords) selectedLocations.syn2 = { ...data.synCity2Coords };
+            }
+            updateCityHintUI();
         }
 
         // =========================================================================
@@ -2428,8 +2466,7 @@
             const birthTime = document.getElementById('birth-time').value || '12:00';
             const unknownTime = document.getElementById('unknown-time').checked;
             const targetDate = document.getElementById('target-date').value || new Date().toISOString().split('T')[0];
-            const cityIdx = Number(document.getElementById('birth-city').value || 0);
-            const cityObj = CITIES_DATA[cityIdx] || CITIES_DATA[0];
+            const cityObj = selectedLocations.main;
 
             const natal = calculateNatalChart(birthDate, birthTime, cityObj, unknownTime);
             const forecast = computeDailyForecast(natal, targetDate);
@@ -2514,8 +2551,8 @@
             const date2 = document.getElementById('syn-date-2').value || '1992-09-21';
             const time2 = document.getElementById('syn-time-2').value || '18:45';
 
-            const city1 = CITIES_DATA[Number(document.getElementById('syn-city-1').value || 0)] || CITIES_DATA[0];
-            const city2 = CITIES_DATA[Number(document.getElementById('syn-city-2').value || 1)] || CITIES_DATA[1];
+            const city1 = selectedLocations.syn1;
+            const city2 = selectedLocations.syn2;
 
             const natal1 = calculateNatalChart(date1, time1, city1, false);
             const natal2 = calculateNatalChart(date2, time2, city2, false);
@@ -2639,29 +2676,10 @@
                     document.getElementById('birth-date').value = '1990-05-15';
                 }
             } catch (e) {
-                document.getElementById('birth-date').value = '1990-05-15';
-            }
-
-            const unknownCheck = document.getElementById('unknown-time');
-            const birthTimeInput = document.getElementById('birth-time');
-            birthTimeInput.disabled = unknownCheck.checked;
-            unknownCheck.addEventListener('change', () => {
-                birthTimeInput.disabled = unknownCheck.checked;
-                saveUserAccountData();
-            });
-
-            // Toggle birth details form when logged in
-            document.getElementById('btn-toggle-birth-form')?.addEventListener('click', () => {
-                isBirthFormManuallyOpen = !isBirthFormManuallyOpen;
-                updatePostLoginLayout();
-            });
-            document.getElementById('btn-hide-birth-form')?.addEventListener('click', () => {
-                isBirthFormManuallyOpen = false;
-                updatePostLoginLayout();
-            });
-
-            document.getElementById('natal-form').addEventListener('submit', (e) => {
+            document.getElementById('natal-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                const cityText = document.getElementById('birth-city-input').value;
+                await resolveCityCoordinates(cityText, 'main');
                 if (appAuthState.user) {
                     isBirthFormManuallyOpen = false;
                 }
@@ -2669,7 +2687,26 @@
                 runCalculation(true);
             });
 
-            document.getElementById('btn-save-profile').addEventListener('click', () => {
+            document.getElementById('birth-city-input').addEventListener('change', async (e) => {
+                await resolveCityCoordinates(e.target.value, 'main');
+                saveUserAccountData();
+                runCalculation(false);
+            });
+
+            document.getElementById('syn-city-input-1').addEventListener('change', async (e) => {
+                await resolveCityCoordinates(e.target.value, 'syn1');
+                saveUserAccountData();
+                computeAndRenderSynastry();
+            });
+
+            document.getElementById('syn-city-input-2').addEventListener('change', async (e) => {
+                await resolveCityCoordinates(e.target.value, 'syn2');
+                saveUserAccountData();
+                computeAndRenderSynastry();
+            });
+
+            document.getElementById('btn-save-profile').addEventListener('click', async () => {
+                await resolveCityCoordinates(document.getElementById('birth-city-input').value, 'main');
                 saveUserAccountData();
                 showToast(
                     appAuthState.user
@@ -2705,11 +2742,10 @@
                             ? 'nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-cosmic-950 shadow transition'
                             : 'nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition';
                     });
-                });
-            });
-
-            document.getElementById('synastry-form').addEventListener('submit', (e) => {
+            document.getElementById('synastry-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                await resolveCityCoordinates(document.getElementById('syn-city-input-1').value, 'syn1');
+                await resolveCityCoordinates(document.getElementById('syn-city-input-2').value, 'syn2');
                 saveUserAccountData();
                 computeAndRenderSynastry();
                 showToast(t().toastSynSaved, 'success');
@@ -2719,7 +2755,8 @@
                 document.getElementById('syn-name-1').value = document.getElementById('user-name').value || (currentLang === 'en' ? 'Me' : 'Ja');
                 document.getElementById('syn-date-1').value = document.getElementById('birth-date').value;
                 document.getElementById('syn-time-1').value = document.getElementById('birth-time').value;
-                document.getElementById('syn-city-1').value = document.getElementById('birth-city').value;
+                document.getElementById('syn-city-input-1').value = document.getElementById('birth-city-input').value;
+                selectedLocations.syn1 = { ...selectedLocations.main };
                 computeAndRenderSynastry();
                 showToast(t().toastDataTransferred, 'info');
             });
