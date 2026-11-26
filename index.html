@@ -784,6 +784,85 @@
 
     <script>
         // =========================================================================
+        // 1. KONFIGURACIJA GOOGLE OAUTH & ASTROLOŠKE BAZE PODATAKA
+        // =========================================================================
+        const DEFAULT_GOOGLE_CLIENT_ID = 'VAS_GOOGLE_CLIENT_ID_OVDE.apps.googleusercontent.com';
+
+        function getActiveGoogleClientId() {
+            try {
+                const stored = localStorage.getItem('astralis_google_client_id');
+                if (stored && stored.includes('.apps.googleusercontent.com')) return stored.trim();
+            } catch (e) {}
+            return DEFAULT_GOOGLE_CLIENT_ID;
+        }
+
+        const CITIES_DATA = [
+            { name: 'Beograd, Srbija', lat: 44.7866, lng: 20.4489 },
+            { name: 'Novi Sad, Srbija', lat: 45.2671, lng: 19.8335 },
+            { name: 'Niš, Srbija', lat: 43.3209, lng: 21.8958 },
+            { name: 'Kragujevac, Srbija', lat: 44.0128, lng: 20.9114 },
+            { name: 'Kruševac, Srbija', lat: 43.5800, lng: 21.3339 },
+            { name: 'Subotica, Srbija', lat: 46.1005, lng: 19.6651 },
+            { name: 'Čačak, Srbija', lat: 43.8914, lng: 20.3497 },
+            { name: 'Kraljevo, Srbija', lat: 43.7258, lng: 20.6894 },
+            { name: 'Užice, Srbija', lat: 43.8586, lng: 19.8488 },
+            { name: 'Leskovac, Srbija', lat: 42.9981, lng: 21.9461 },
+            { name: 'Podgorica, Crna Gora', lat: 42.4304, lng: 19.2594 },
+            { name: 'Banja Luka, BiH', lat: 44.7722, lng: 17.1910 },
+            { name: 'Sarajevo, BiH', lat: 43.8563, lng: 18.4131 },
+            { name: 'Zagreb, Hrvatska', lat: 45.8150, lng: 15.9819 },
+            { name: 'Skoplje, S. Makedonija', lat: 41.9981, lng: 21.4254 },
+            { name: 'Ljubljana, Slovenija', lat: 46.0569, lng: 14.5058 },
+            { name: 'Beč, Austrija', lat: 48.2082, lng: 16.3738 },
+            { name: 'Cirih, Švajcarska', lat: 47.3769, lng: 8.5417 }
+        ];
+
+        const ZODIAC_SIGNS = [
+            { id: 0, name: 'Ovan', symbol: '♈', element: 'Vatra', ruler: 'Mars', dates: '21. mart – 19. april', startMonth: 3, startDay: 21, color: 'Vatreno crvena' },
+            { id: 1, name: 'Bik', symbol: '♉', element: 'Zemlja', ruler: 'Venera', dates: '20. april – 20. maj', startMonth: 4, startDay: 20, color: 'Smaragdno zelena' },
+            { id: 2, name: 'Blizanci', symbol: '♊', element: 'Vazduh', ruler: 'Merkur', dates: '21. maj – 20. jun', startMonth: 5, startDay: 21, color: 'Sunčano žuta' },
+            { id: 3, name: 'Rak', symbol: '♋', element: 'Voda', ruler: 'Mesec', dates: '21. jun – 22. jul', startMonth: 6, startDay: 21, color: 'Srebrno bela' },
+            { id: 4, name: 'Lav', symbol: '♌', element: 'Vatra', ruler: 'Sunce', dates: '23. jul – 22. avgust', startMonth: 7, startDay: 23, color: 'Kraljevsko zlatna' },
+            { id: 5, name: 'Devica', symbol: '♍', element: 'Zemlja', ruler: 'Merkur', dates: '23. avgust – 22. septembar', startMonth: 8, startDay: 23, color: 'Teget plava' },
+            { id: 6, name: 'Vaga', symbol: '♎', element: 'Vazduh', ruler: 'Venera', dates: '23. septembar – 22. oktobar', startMonth: 9, startDay: 23, color: 'Pastelno roze' },
+            { id: 7, name: 'Škorpija', symbol: '♏', element: 'Voda', ruler: 'Pluton', dates: '23. oktobar – 21. novembar', startMonth: 10, startDay: 23, color: 'Bordo crvena' },
+            { id: 8, name: 'Strelac', symbol: '♐', element: 'Vatra', ruler: 'Jupiter', dates: '22. novembar – 21. decembar', startMonth: 11, startDay: 22, color: 'Kraljevsko ljubičasta' },
+            { id: 9, name: 'Jarac', symbol: '♑', element: 'Zemlja', ruler: 'Saturn', dates: '22. decembar – 19. januar', startMonth: 12, startDay: 22, color: 'Grafitno siva' },
+            { id: 10, name: 'Vodolija', symbol: '♒', element: 'Vazduh', ruler: 'Uran', dates: '20. januar – 18. februar', startMonth: 1, startDay: 20, color: 'Elektrik plava' },
+            { id: 11, name: 'Ribe', symbol: '♓', element: 'Voda', ruler: 'Neptun', dates: '19. februar – 20. mart', startMonth: 2, startDay: 19, color: 'Tirkizno morska' }
+        ];
+
+        const ASPECTS_POOL = [
+            { title: 'Trigon Sunca i Jupitera', type: 'Harmoničan (120°)', desc: 'Otvara vrata novim poslovnim prilikama, podršci autoriteta i širenju planova.' },
+            { title: 'Sekstil Venere i Merkura', type: 'Povoljan (60°)', desc: 'Donosi lakoću u razgovoru, lepe vesti od drage osobe i povoljne dogovore.' },
+            { title: 'Trigon Meseca i Saturna', type: 'Stabilan (120°)', desc: 'Emotivna zrelost, fokus i sposobnost da uspešno privedete kraju započete obaveze.' },
+            { title: 'Konjunkcija Sunca i Merkura', type: 'Snažan (0°)', desc: 'Izražena mentalna jasnoća, brze odluke i uspeh u pregovorima i pisanju.' },
+            { title: 'Kvadrat Marsa i Meseca', type: 'Dinamičan (90°)', desc: 'Pojačana energija i impulsivnost — usmerite snagu na rad umesto na rasprave.' },
+            { title: 'Sekstil Jupitera i Urana', type: 'Srećan (60°)', desc: 'Iznenadni povoljan preokret ili neočekivana ideja koja donosi dobitak.' }
+        ];
+
+        const NARRATIVE_TEMPLATES = {
+            high: {
+                work: 'Izuzetno povoljan dan za pregovore, potpisivanje ugovora i pokretanje novih projekata. Vaša inicijativa donosi vidljive rezultate i finansijski pomak.',
+                love: 'Magnetizam i toplina su na vrhuncu. Slobodne očekuje uzbudljiv susret, dok zauzeti produbljuju bliskost i poverenje sa partnerom.',
+                health: 'Vitalnost i nivo energije su veoma visoki. Odličan trenutak za fizičku aktivnost, boravak na svežem vazduhu i obnovu snage.',
+                luck: 'Kosmički aspekti vam idu naruku — oslonite se na prvi instinkt jer su šanse za srećan splet okolnosti iznad proseka.'
+            },
+            medium: {
+                work: 'Stabilan radni ritam. Fokusirajte se na završavanje tekućih obaveza i proverite detalje pre donošenja većih finansijskih odluka.',
+                love: 'Harmonična komunikacija donosi mir. Iskren razgovor rešava sitne nesporazume i unosi dodatnu sigurnost u odnos.',
+                health: 'Dobar balans energije, ali obratite pažnju na redovan san i hidrataciju tokom popodnevnih sati.',
+                luck: 'Umeren faktor iznenađenja — strpljenje i dobra priprema danas donose više koristi nego rizični potezi.'
+            },
+            low: {
+                work: 'Dan za analizu i planiranje iza kulisa. Izbegavajte ishitrene reakcije u komunikaciji sa saradnicima i sačekajte povoljniji trenutak.',
+                love: 'Pojačana emotivna osetljivost. Dajte sebi i partneru malo više prostora i izbegavajte vraćanje na stare teme.',
+                health: 'Moguć je blagi pad koncentracije ili umor. Priuštite sebi raniji odmor i laganiju ishranu.',
+                luck: 'Danas se oslonite na proverene metode i sopstveno iskustvo umesto na faktor sreće.'
+            }
+        };
+
+        // =========================================================================
         // 2. UPRAVLJANJE NALOGOM (GOOGLE OAUTH + INSTAGRAM ZAPRAT + ČUVANJE PO NALOGU)
         // =========================================================================
         const AUTH_STORAGE_KEY = 'astralis_auth_state_v1';
