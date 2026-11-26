@@ -1369,6 +1369,121 @@
             const lngDir = loc.lng >= 0 ? 'E' : 'W';
             hintEl.textContent = `${Math.abs(loc.lat).toFixed(2)}°${latDir}, ${Math.abs(loc.lng).toFixed(2)}°${lngDir}`;
         }
+
+        const ZODIAC_SIGNS = [
+            { id: 0, symbol: '♈', startMonth: 3, startDay: 21, name: { en: 'Aries', sr: 'Ovan' }, dates: { en: 'March 21 – April 19', sr: '21. mart – 19. april' }, element: { en: 'Fire', sr: 'Vatra' }, ruler: { en: 'Mars', sr: 'Mars' }, color: { en: 'Crimson Red', sr: 'Vatreno crvena' } },
+            { id: 1, symbol: '♉', startMonth: 4, startDay: 20, name: { en: 'Taurus', sr: 'Bik' }, dates: { en: 'April 20 – May 20', sr: '20. april – 20. maj' }, element: { en: 'Earth', sr: 'Zemlja' }, ruler: { en: 'Venus', sr: 'Venera' }, color: { en: 'Emerald Green', sr: 'Smaragdno zelena' } },
+            { id: 2, symbol: '♊', startMonth: 5, startDay: 21, name: { en: 'Gemini', sr: 'Blizanci' }, dates: { en: 'May 21 – June 20', sr: '21. maj – 20. jun' }, element: { en: 'Air', sr: 'Vazduh' }, ruler: { en: 'Mercury', sr: 'Merkur' }, color: { en: 'Solar Yellow', sr: 'Sunčano žuta' } },
+            { id: 3, symbol: '♋', startMonth: 6, startDay: 21, name: { en: 'Cancer', sr: 'Rak' }, dates: { en: 'June 21 – July 22', sr: '21. jun – 22. jul' }, element: { en: 'Water', sr: 'Voda' }, ruler: { en: 'Moon', sr: 'Mesec' }, color: { en: 'Moonlight Silver', sr: 'Mesečevo srebrna' } },
+            { id: 4, symbol: '♌', startMonth: 7, startDay: 23, name: { en: 'Leo', sr: 'Lav' }, dates: { en: 'July 23 – August 22', sr: '23. jul – 22. avgust' }, element: { en: 'Fire', sr: 'Vatra' }, ruler: { en: 'Sun', sr: 'Sunce' }, color: { en: 'Royal Gold', sr: 'Kraljevsko zlatna' } },
+            { id: 5, symbol: '♍', startMonth: 8, startDay: 23, name: { en: 'Virgo', sr: 'Devica' }, dates: { en: 'August 23 – September 22', sr: '23. avgust – 22. septembar' }, element: { en: 'Earth', sr: 'Zemlja' }, ruler: { en: 'Mercury', sr: 'Merkur' }, color: { en: 'Olive Sage', sr: 'Maslinasto zelena' } },
+            { id: 6, symbol: '♎', startMonth: 9, startDay: 23, name: { en: 'Libra', sr: 'Vaga' }, dates: { en: 'September 23 – October 22', sr: '23. septembar – 22. oktobar' }, element: { en: 'Air', sr: 'Vazduh' }, ruler: { en: 'Venus', sr: 'Venera' }, color: { en: 'Rose Quartz', sr: 'Ružičasti kvarc' } },
+            { id: 7, symbol: '♏', startMonth: 10, startDay: 23, name: { en: 'Scorpio', sr: 'Škorpija' }, dates: { en: 'October 23 – November 21', sr: '23. oktobar – 21. novembar' }, element: { en: 'Water', sr: 'Voda' }, ruler: { en: 'Pluto', sr: 'Pluton' }, color: { en: 'Deep Burgundy', sr: 'Tamno bordo' } },
+            { id: 8, symbol: '♐', startMonth: 11, startDay: 22, name: { en: 'Sagittarius', sr: 'Strelac' }, dates: { en: 'November 22 – December 21', sr: '22. novembar – 21. decembar' }, element: { en: 'Fire', sr: 'Vatra' }, ruler: { en: 'Jupiter', sr: 'Jupiter' }, color: { en: 'Royal Purple', sr: 'Kraljevsko ljubičasta' } },
+            { id: 9, symbol: '♑', startMonth: 12, startDay: 22, name: { en: 'Capricorn', sr: 'Jarac' }, dates: { en: 'December 22 – January 19', sr: '22. decembar – 19. januar' }, element: { en: 'Earth', sr: 'Zemlja' }, ruler: { en: 'Saturn', sr: 'Saturn' }, color: { en: 'Obsidian Charcoal', sr: 'Antracit crna' } },
+            { id: 10, symbol: '♒', startMonth: 1, startDay: 20, name: { en: 'Aquarius', sr: 'Vodolija' }, dates: { en: 'January 20 – February 18', sr: '20. januar – 18. februar' }, element: { en: 'Air', sr: 'Vazduh' }, ruler: { en: 'Uranus', sr: 'Uran' }, color: { en: 'Electric Turquoise', sr: 'Električno tirkizna' } },
+            { id: 11, symbol: '♓', startMonth: 2, startDay: 19, name: { en: 'Pisces', sr: 'Ribe' }, dates: { en: 'February 19 – March 20', sr: '19. februar – 20. mart' }, element: { en: 'Water', sr: 'Voda' }, ruler: { en: 'Neptune', sr: 'Neptun' }, color: { en: 'Seafoam Indigo', sr: 'Morsko plava' } }
+        ];
+
+        const ASPECTS_POOL = {
+            en: [
+                { title: 'Sun Trine Jupiter', type: 'Harmony', desc: 'Expands optimism, confidence, and timely career opportunities.' },
+                { title: 'Venus Sextile Moon', type: 'Warmth', desc: 'Enhances emotional empathy, charm, and affectionate connections.' },
+                { title: 'Mercury Trine Saturn', type: 'Clarity', desc: 'Sharpens strategic thinking, focus, and practical agreements.' },
+                { title: 'Mars Sextile Sun', type: 'Vitality', desc: 'Boosts courage, physical stamina, and decisive momentum.' },
+                { title: 'Jupiter Sextile Venus', type: 'Abundance', desc: 'Attracts pleasant surprises, social harmony, and financial flow.' },
+                { title: 'Moon Trine Neptune', type: 'Intuition', desc: 'Deepens creative inspiration and accurate gut instincts.' }
+            ],
+            sr: [
+                { title: 'Sunce Trigon Jupiter', type: 'Harmonija', desc: 'Donosi optimizam, samopouzdanje i povoljne poslovne prilike.' },
+                { title: 'Venera Sekstil Mesec', type: 'Toplina', desc: 'Pojačava emotivnu bliskost, šarm i sklad u odnosima.' },
+                { title: 'Merkur Trigon Saturn', type: 'Jasnoća', desc: 'Izoštrava koncentraciju, logiku i uspešne dogovore.' },
+                { title: 'Mars Sekstil Sunce', type: 'Vitalnost', desc: 'Daje hrabrost, fizičku snagu i odlučnost u akciji.' },
+                { title: 'Jupiter Sekstil Venera', type: 'Izobilje', desc: 'Privlači lepa iznenađenja, društveni sklad i finansijski pomak.' },
+                { title: 'Mesec Trigon Neptun', type: 'Intuicija', desc: 'Produbljuje kreativnu inspiraciju i tačan unutrašnji osećaj.' }
+            ]
+        };
+
+        const NARRATIVE_TEMPLATES = {
+            en: {
+                high: {
+                    work: [
+                        'An exceptionally favorable day for negotiations, signing agreements, and launching new projects. Your initiative brings visible results.',
+                        'Your ideas receive strong support from colleagues and decision-makers today. Use the morning hours to present key proposals.',
+                        'Financial momentum shows a clear upward trend, with strong potential for a bonus, resolved payment, or new income stream.',
+                        'Your expertise and confidence stand out today. An ideal window for important calls and expanding your professional network.'
+                    ],
+                    love: [
+                        'Magnetism and warmth are at their peak. Singles can expect an exciting encounter, while couples deepen mutual trust.',
+                        'You radiate natural charisma that draws genuine affection. An ideal evening for a romantic date or heartfelt conversation.',
+                        'Emotional harmony brings a sense of joy and security. A thoughtful gesture from someone close brightens your day.',
+                        'Shared laughter and spontaneous plans refresh your love life. Make time tonight for meaningful connection.'
+                    ],
+                    health: [
+                        'Vitality and stamina are running high. Great timing for physical activity, fresh air, and recharging your body.',
+                        'You feel a clear surge of positive energy and mental clarity. Channel it into exercise or healthy routines.',
+                        'Your body responds wonderfully to active movement today. Inner balance reflects directly in your mood and focus.',
+                        'Strong mind-body alignment supports you from morning until evening. Hydrate well and enjoy your productive pace.'
+                    ],
+                    luck: [
+                        'Cosmic alignments work in your favor — trust your first instinct as the odds of a lucky break are well above average.',
+                        'Fortune favors bold, well-timed steps today. A timely conversation or discovery could shift your week positively.',
+                        'Synchronicities surround you — pay attention to subtle signs and chance encounters carrying helpful clues.',
+                        'A favorable tailwind supports your plans, turning minor obstacles into quick wins.'
+                    ]
+                },
+                medium: {
+                    work: [
+                        'A steady work rhythm prevails. Focus on completing ongoing tasks and double-check details before major financial decisions.',
+                        'A constructive day for organization, paperwork, and planning your next steps with precision.',
+                        'Collaboration flows smoothly without needing to rush. Stick to your schedule and avoid impulsive spending.',
+                        'Consistent progress is assured when you honor your priorities. Afternoon hours bring useful work news.'
+                    ],
+                    love: [
+                        'Calm, sincere communication clears minor misunderstandings and strengthens emotional security.',
+                        'A pleasant, grounded tone characterizes your close relationships today. Enjoy simple shared rituals.',
+                        'Listening with patience builds deeper trust and warmth in your closest connections.',
+                        'Steady affection speaks louder than grand gestures today; presence and kindness nurture closeness.'
+                    ],
+                    health: [
+                        'Balanced energy levels today — just remember to stay hydrated and get restful sleep tonight.',
+                        'Steady vitality paired with a need for short screen breaks. A light walk clears mental clutter.',
+                        'Moderation in meals and a calm evening routine will keep you feeling refreshed.',
+                        'Pacing yourself between active tasks and brief pauses keeps your stamina consistent all day.'
+                    ],
+                    luck: [
+                        'Moderate serendipity — patience and solid preparation yield better outcomes than risky shortcuts.',
+                        'Good timing comes from careful observation today. Look at the whole picture before committing.',
+                        'Your intuition offers quiet, practical guidance when choosing between two steady options.',
+                        'A calmer cosmic pace helps you avoid mistakes and conserve energy for upcoming opportunities.'
+                    ]
+                },
+                low: {
+                    work: [
+                        'A day best suited for quiet planning and analysis behind the scenes. Avoid rushed reactions in meetings.',
+                        'Be extra careful with deadlines and numbers today; double-check messages before hitting send.',
+                        'Not the ideal moment for high-risk bets. Wrap up routine tasks and save bold pitches for later.',
+                        'Minor delays outside your control may arise — stay patient and use the extra time to prepare.'
+                    ],
+                    love: [
+                        'Heightened emotional sensitivity calls for gentleness. Give yourself and your partner breathing room.',
+                        'Small disagreements may feel amplified today. Pause before replying and choose calm, kind words.',
+                        'A quiet, low-key evening brings far more comfort than crowded social gatherings today.',
+                        'Avoid jumping to conclusions over a single message — clarity and warmth return quickly.'
+                    ],
+                    health: [
+                        'Mild mental fatigue is possible. Prioritize an earlier bedtime and lighter, nourishing meals.',
+                        'Your body is signaling you to slow down. Extra water and a short afternoon rest restore freshness.',
+                        'A quieter environment and less late-night screen time will help release tension.',
+                        'Gentle stretching and deep breathing help dissolve stress accumulated during the day.'
+                    ],
+                    luck: [
+                        'Rely on proven methods and personal experience today rather than leaving things to chance.',
+                        'Avoid speculative risks — thorough planning is your most reliable advantage today.',
+                        'Cosmic aspects advise patience; keep your plans close until conditions mature.',
+                        'A reflective pace helps you spot where to save energy instead of chasing uncertain leads.'
+                    ]
+                }
             },
             sr: {
                 high: {
@@ -1376,41 +1491,25 @@
                         'Izuzetno povoljan dan za pregovore, potpisivanje ugovora i pokretanje novih projekata. Vaša inicijativa donosi vidljive rezultate i finansijski pomak.',
                         'Vaše ideje danas nailaze na snažnu podršku nadređenih i saradnika. Iskoristite prepodnevne sate da predstavite predlog koji dugo pripremate.',
                         'Finansijska situacija pokazuje jasan uzlazni trend. Moguć je neočekivan bonus, naplata starog potraživanja ili ponuda za dodatnu zaradu.',
-                        'Dan u kojem vaša stručnost i samopouzdanje dolaze u prvi plan. Odličan trenutak za važne poslovne pozive i širenje mreže kontakata.',
-                        'Kreativno rešavanje problema izdvaja vas u radnom okruženju. Hrabra, ali dobro osmišljena ideja donosi vam zasluženo priznanje.',
-                        'Vrata koja su delovala zatvoreno sada se otvaraju sa lakoćom. Povucite odlučne poteze ka dugoročnim karijernim ciljevima.',
-                        'Timski rad sa ambicioznim saradnicima donosi brz napredak. Zajednička inicijativa danas višestruko umnožava vaše rezultate.',
-                        'Jasnoća u vezi sa budžetom, ulaganjima i dogovorima ide vam snažno naruku. Oslonite se na svoju poslovnu intuiciju.'
+                        'Dan u kojem vaša stručnost i samopouzdanje dolaze u prvi plan. Odličan trenutak za važne poslovne pozive i širenje mreže kontakata.'
                     ],
                     love: [
                         'Magnetizam i toplina su na vrhuncu. Slobodne očekuje uzbudljiv susret, dok zauzeti produbljuju bliskost i poverenje sa partnerom.',
                         'Zračićete posebnom harizmom koja privlači iskrene poglede i lepe gestove. Idealno veče za romantičan izlazak ili otvoren razgovor o budućnosti.',
                         'Harmonija u emotivnim odnosima donosi osećaj sigurnosti i radosti. Partner će vas iznenaditi pažnjom koja vam vraća osmeh na lice.',
-                        'Ako postoji osoba o kojoj već neko vreme razmišljate, danas je pravi kosmički trenutak da otvoreno pokažete svoja osećanja.',
-                        'Zajednički smeh i spontani planovi unose novu svežinu u vaš ljubavni život. Odvojite veče za kvalitetno vreme udvoje.',
-                        'Emotivna otvorenost danas stvara snažnu povezanost. Iskrene reči nailaze na toplinu i razumevanje druge strane.',
-                        'Prijatan poziv za druženje ili slučajan susret nosi snažan romantični potencijal za slobodne i vedru energiju za zauzete.',
-                        'Uzajamno poštovanje i nežnost teku prirodno. Mali, iskreni znaci pažnje danas učvršćuju vaš odnos na duže staze.'
+                        'Zajednički smeh i spontani planovi unose novu svežinu u vaš ljubavni život. Odvojite veče za kvalitetno vreme udvoje.'
                     ],
                     health: [
                         'Vitalnost i nivo energije su veoma visoki. Odličan trenutak za fizičku aktivnost, boravak na svežem vazduhu i obnovu snage.',
                         'Osećate snažan priliv pozitivne energije i mentalne bistrine. Iskoristite ovaj zamah za trening, dužu šetnju ili uvođenje zdravijih navika.',
                         'Vaš organizam danas odlično reaguje na pokret i aktivan odmor. Unutrašnji balans se direktno odražava na vaše raspoloženje i fokus.',
-                        'Izuzetna psihofizička kondicija prati vas tokom celog dana. Večernje opuštanje uz omiljenu muziku ili knjigu dodatno će napuniti vaše baterije.',
-                        'Visoka izdržljivost čini današnji dan idealnim za zahtevnije fizičke aktivnosti ili početak novog programa vežbanja.',
-                        'Mentalna oštrina i telesna lakoća su u punom skladu. Lagani, hranljivi obroci i boravak napolju dodatno pojačavaju vašu energiju.',
-                        'Talas optimizma podiže i raspoloženje i imunitet. Kretanje na svežem vazduhu održava vašu vitalnost na visokom nivou.',
-                        'Brz oporavak i snažan elan prate vas od jutra do večeri. Unosite dovoljno vode i uživajte u produktivnom ritmu dana.'
+                        'Izuzetna psihofizička kondicija prati vas tokom celog dana. Večernje opuštanje dodatno će napuniti vaše baterije.'
                     ],
                     luck: [
                         'Kosmički aspekti vam idu naruku — oslonite se na prvi instinkt jer su šanse za srećan splet okolnosti iznad proseka.',
                         'Sreća prati hrabre odluke! Danas možete naći rešenje na mestu gde ga najmanje očekujete ili sresti osobu koja menja tok nedelje.',
                         'Sinhroniciteti su svuda oko vas — obratite pažnju na znakove, brojeve i slučajne susrete jer nose važnu poruku za vas.',
-                        'Povoljan vetar u leđa prati vaše planove. Čak i sitne prepreke danas se okreću u vašu korist brže nego što ste pretpostavljali.',
-                        'Srećne okolnosti prate spontane odluke. Prihvatanje neočekivanog poziva može vam doneti sjajno iskustvo ili poznanstvo.',
-                        'Vaša intuicija je danas izuzetno izoštrena i tačna. Poslušajte unutrašnji osećaj koji vam donosi mir i jasnoću.',
-                        'Povoljan tajming spaja prave ljude i prilike na vašem putu. Budite otvoreni za lepa iznenađenja tokom popodneva.',
-                        'Talas pozitivnih okolnosti nagrađuje vaše nedavno strpljenje. Nešto čemu se nadate konačno pokazuje jasne znake pomaka.'
+                        'Povoljan vetar u leđa prati vaše planove. Čak i sitne prepreke danas se okreću u vašu korist brže nego što ste pretpostavljali.'
                     ]
                 },
                 medium: {
@@ -1418,41 +1517,25 @@
                         'Stabilan radni ritam. Fokusirajte se na završavanje tekućih obaveza i proverite detalje pre donošenja većih finansijskih odluka.',
                         'Dobar dan za organizaciju, sređivanje dokumentacije i planiranje narednih koraka. Temeljnost vam danas donosi mirnu glavu.',
                         'Saradnja sa kolegama teče korektno, ali bez potrebe za žurbom. Držite se proverenog rasporeda i izbegavajte impulsivne kupovine.',
-                        'Postepeni napredak je zagarantovan ako ostanete dosledni svojim prioritetima. Popodne donosi korisnu informaciju vezanu za posao.',
-                        'Uravnotežen fokus pomaže vam da očistite zaostale stavke sa liste obaveza. Pouzdan rad danas vredi više od naglih poteza.',
-                        'Konstruktivan dan za sređivanje budžeta, arhiviranje dokumenata i pripremu za sastanke koji slede narednih dana.',
-                        'Rutinski zadaci napreduju glatko kada rasporedite snagu. Kratke pauze tokom dana čuvaju vašu preciznost do večeri.',
-                        'Praktična saradnja sa timom donosi stabilne rezultate. Neka komunikacija bude jasna, smirena i usmerena na konkretne ciljeve.'
+                        'Postepeni napredak je zagarantovan ako ostanete dosledni svojim prioritetima. Popodne donosi korisnu informaciju vezanu za posao.'
                     ],
                     love: [
                         'Harmonična komunikacija donosi mir. Iskren i blag razgovor rešava sitne nesporazume i unosi dodatnu sigurnost u odnos.',
                         'Prijatan, smiren ton u odnosima sa dragim ljudima. Uživajte u malim zajedničkim ritualima i ne forsirajte velike odluke danas.',
                         'Dobar trenutak da saslušate drugu stranu sa više strpljenja. Razumevanje i toplina u sitnicama grade čvršće poverenje.',
-                        'Lagano dopisivanje i vedar razgovor mogu ulepšati dan slobodnima, dok zauzeti pronalaze lep balans između obaveza i vremena za partnera.',
-                        'Postojana naklonost i uzajamno poštovanje obeležavaju današnji dan. Zajednička šetnja ili večera produbljuju osećaj bliskosti.',
-                        'Doslednost danas govori glasnije od velikih reči. Kada ste tu za dragu osobu u svakodnevnim sitnicama, poverenje raste.',
-                        'Smirena atmosfera olakšava dogovore oko zajedničkih planova bez ikakvog pritiska ili napetosti.',
-                        'Toplina u odnosima raste kada ste prisutni u trenutku. Uživajte u prijatnom društvu bez suvišnog analiziranja.'
+                        'Postojana naklonost i uzajamno poštovanje obeležavaju današnji dan. Zajednička šetnja ili večera produbljuju osećaj bliskosti.'
                     ],
                     health: [
                         'Dobar balans energije, ali obratite pažnju na redovan san i hidrataciju tokom popodnevnih sati.',
                         'Stabilna vitalnost uz potrebu za kratkim pauzama od ekrana. Lagana šetnja posle posla pomoći će vam da razbistrite misli.',
                         'Organizam traži umerenost u ishrani i više tečnosti. Večernji odmor bez telefona doneće vam kvalitetniji i dublji san.',
-                        'Energija vam je ravnomerno raspoređena — iskoristite je pametno, bez nepotrebnog iscrpljivanja oko sitnica.',
-                        'Umerena fizička aktivnost poput istezanja ili lagane šetnje prija cirkulaciji i oslobađa telo od ukočenosti.',
-                        'Redovni obroci i kratko razgibavanje tokom rada održavaju vaš telesni komfor stabilnim tokom celog dana.',
-                        'Mirniji popodnevni tempo sprečava nepotreban umor. Šolja biljnog čaja i tišina uveče vraćaju punu svežinu.',
-                        'Vaša izdržljivost ostaje stabilna kada smenjujete aktivne obaveze sa kratkim trenucima odmora i dubokog disanja.'
+                        'Energija vam je ravnomerno raspoređena — iskoristite je pametno, bez nepotrebnog iscrpljivanja oko sitnica.'
                     ],
                     luck: [
                         'Umeren faktor iznenađenja — strpljenje i dobra priprema danas donose više koristi nego rizični potezi.',
                         'Danas se sreća krije u dobroj proceni trenutka. Sagledajte celu sliku pre nego što povučete ključan potez.',
                         'Intuicija vam daje suptilne smernice — poslušajte unutrašnji glas kada birate između dve slične opcije.',
-                        'Mirniji kosmički ritam pomaže vam da izbegnete greške i sačuvate energiju za prilike koje stižu narednih dana.',
-                        'Promišljeno planiranje danas donosi sigurne, predvidljive rezultate umesto naglih obrta.',
-                        'Koristan savet ili podsetnik od prijatelja stiže u pravi čas i štedi vam dragoceno vreme.',
-                        'Prilagodljivost pretvara sitne izmene plana u tihe prednosti. Zadržite otvoren i smiren pogled na situaciju.',
-                        'Mali svakodnevni uspesi se lepo sabiraju kada ostanete strpljivi i ne požurujete ishode.'
+                        'Mirniji kosmički ritam pomaže vam da izbegnete greške i sačuvate energiju za prilike koje stižu narednih dana.'
                     ]
                 },
                 low: {
@@ -1460,41 +1543,25 @@
                         'Dan za analizu i tiho planiranje iza kulisa. Izbegavajte ishitrene reakcije u komunikaciji sa saradnicima i sačekajte povoljniji trenutak.',
                         'Oprezno sa rokovima i brojkama danas. Dvaput proverite svaku poruku ili tabelu pre slanja kako biste izbegli sitne previde.',
                         'Nije idealan trenutak za velike rizike ili rasprave sa autoritetima. Završite rutinske zadatke i sačuvajte najbolje ideje za kasnije.',
-                        'Moguća su manja odlaganja na koja ne možete da utičete — prihvatite ih smireno i iskoristite vreme za bolju pripremu.',
-                        'Budite oprezni sa većim troškovima danas. Odlaganje nepotrebnih kupovina čuva vaš budžet dok ne naiđe povoljniji talas.',
-                        'Fokusirajte se na samostalne zadatke koji traže koncentraciju umesto na naporne sastanke i teške pregovore.',
-                        'Sporiji poslovni tempo je idealan da sredite radni prostor i privedete kraju sitne obaveze bez pritiska.',
-                        'Strpljenje je danas vaš najjači adut na poslu — sklonite se od tuđe žurbe i držite svoj miran ritam.'
+                        'Moguća su manja odlaganja na koja ne možete da utičete — prihvatite ih smireno i iskoristite vreme za bolju pripremu.'
                     ],
                     love: [
                         'Pojačana emotivna osetljivost traži nežniji pristup. Dajte sebi i partneru malo više prostora i izbegavajte vraćanje na stare teme.',
                         'Sitne nesuglasice danas mogu delovati veće nego što jesu. Udahnite duboko pre odgovora i birajte blage reči.',
                         'Danas vam više prija mirno okruženje i tišina nego bučna okupljanja. Budite blagi i strpljivi prema sebi.',
-                        'Ne donosite ishitrene zaključke na osnovu jedne poruke ili tona — sutra će slika biti znatno jasnija i toplija.',
-                        'Smanjite pritisak očekivanja danas i posvetite se sopstvenom unutrašnjem miru umesto traženja brzih odgovora.',
-                        'Zauzetost obavezama može smanjiti vreme za zajedničke trenutke; kratka, topla poruka biće sasvim dovoljna da održite bliskost.',
-                        'Oduprite se potrebi da previše analizirate prošle razgovore. Kada pustite da se sitne tenzije same slegnu, mir se brzo vraća.',
-                        'Mirno veče kod kuće ili razgovor sa osobom od punog poverenja najviše će vam prijati danas.'
+                        'Ne donosite ishitrene zaključke na osnovu jedne poruke ili tona — sutra će slika biti znatno jasnija i toplija.'
                     ],
                     health: [
                         'Moguć je blagi pad koncentracije ili umor. Priuštite sebi raniji odmor i laganiju ishranu.',
                         'Telo vam šalje signal da usporite tempo. Više vode, vitamina i kraći popodnevni predah vratiće vam potrebnu svežinu.',
                         'Osetljiviji nervni sistem danas zahteva mirnije okruženje i manje kofeina ili kasnog gledanja u ekran.',
-                        'Posvetite veče relaksaciji, toploj kupki ili laganom istezanju kako biste otpustili nakupljenu napetost.',
-                        'Ne forsirajte organizam dodatnim naporima ako osetite umor — kratak popodnevni odmor doneće vam mnogo više snage.',
-                        'Birajte tople, lagane obroke i izbegavajte kasnu večeru kako bi vam san bio miran i okrepljujući.',
-                        'Boravak na svežem vazduhu i odmor od buke brzo će otkloniti mentalni zamor tokom dana.',
-                        'Kvalitetan san večeras je najbolji lek — raniji odlazak na spavanje vraća vam punu energiju već sutra ujutru.'
+                        'Posvetite veče relaksaciji, toploj kupki ili laganom istezanju kako biste otpustili nakupljenu napetost.'
                     ],
                     luck: [
                         'Danas se oslonite na proverene metode i sopstveno iskustvo umesto na faktor sreće.',
                         'Izbegavajte igre na sreću i neproverene ponude — danas najviše vredi ono što sami temeljno isplanirate.',
                         'Kosmički aspekti savetuju oprez i strpljenje; čuvajte svoje planove za sebe dok ne sazru pravi uslovi.',
-                        'Dan za unutrašnju mudrost i smirenost — kada ne žurite, izbegavate svaku nepotrebnu prepreku.',
-                        'Proverite na vreme ključeve, dokumenta i satnicu polaska — dobra organizacija danas sprečava sitne neprijatnosti.',
-                        'Izbegavajte prečice i rizične poteze u poslednjem trenutku — sigurni, odmereni koraci drže vas na pravom putu.',
-                        'Tiho preispitivanje pokazuje gde treba da sačuvate energiju umesto da je trošite na nesigurne prilike.',
-                        'Posmatrajte današnji dan kao priliku za reset: sređivanje obaveza i strpljenje pripremaju vas za znatno bolji period.'
+                        'Dan za unutrašnju mudrost i smirenost — kada ne žurite, izbegavate svaku nepotrebnu prepreku.'
                     ]
                 }
             }
@@ -1887,56 +1954,6 @@
                 if (data.synCity2Coords) selectedLocations.syn2 = { ...data.synCity2Coords };
             }
             updateCityHintUI();
-        }
-
-        // =========================================================================
-        // 4. ACCOUNT MANAGEMENT (GOOGLE OAUTH + INSTAGRAM FOLLOW + PER-EMAIL SAVE)
-        // =========================================================================
-        const AUTH_STORAGE_KEY = 'astralis_auth_state_v1';
-        const PROFILES_BY_EMAIL_KEY = 'astralis_profiles_by_email_v1';
-        let appAuthState = {
-            user: null,
-            igFollowed: false
-        };
-
-        function getCurrentFormSnapshot() {
-            return {
-                name: (document.getElementById('user-name')?.value || '').trim(),
-                birthDate: document.getElementById('birth-date')?.value || '1990-05-15',
-                birthTime: document.getElementById('birth-time')?.value || '12:00',
-                cityIdx: document.getElementById('birth-city')?.value || '0',
-                unknownTime: Boolean(document.getElementById('unknown-time')?.checked),
-                synName1: document.getElementById('syn-name-1')?.value || '',
-                synDate1: document.getElementById('syn-date-1')?.value || '',
-                synTime1: document.getElementById('syn-time-1')?.value || '',
-                synCity1: document.getElementById('syn-city-1')?.value || '0',
-                synName2: document.getElementById('syn-name-2')?.value || '',
-                synDate2: document.getElementById('syn-date-2')?.value || '',
-                synTime2: document.getElementById('syn-time-2')?.value || '',
-                synCity2: document.getElementById('syn-city-2')?.value || '1'
-            };
-        }
-
-        function applyFormSnapshot(data) {
-            if (!data) return;
-            if (data.name !== undefined) document.getElementById('user-name').value = data.name;
-            if (data.birthDate) document.getElementById('birth-date').value = data.birthDate;
-            if (data.birthTime) document.getElementById('birth-time').value = data.birthTime;
-            if (data.cityIdx !== undefined) document.getElementById('birth-city').value = data.cityIdx;
-            if (data.unknownTime !== undefined) {
-                const unknownCheck = document.getElementById('unknown-time');
-                const birthTimeInput = document.getElementById('birth-time');
-                unknownCheck.checked = Boolean(data.unknownTime);
-                birthTimeInput.disabled = unknownCheck.checked;
-            }
-            if (data.synName1) document.getElementById('syn-name-1').value = data.synName1;
-            if (data.synDate1) document.getElementById('syn-date-1').value = data.synDate1;
-            if (data.synTime1) document.getElementById('syn-time-1').value = data.synTime1;
-            if (data.synCity1 !== undefined) document.getElementById('syn-city-1').value = data.synCity1;
-            if (data.synName2) document.getElementById('syn-name-2').value = data.synName2;
-            if (data.synDate2) document.getElementById('syn-date-2').value = data.synDate2;
-            if (data.synTime2) document.getElementById('syn-time-2').value = data.synTime2;
-            if (data.synCity2 !== undefined) document.getElementById('syn-city-2').value = data.synCity2;
         }
 
         function saveUserAccountData() {
@@ -2676,6 +2693,23 @@
                     document.getElementById('birth-date').value = '1990-05-15';
                 }
             } catch (e) {
+                document.getElementById('birth-date').value = '1990-05-15';
+            }
+
+            document.getElementById('unknown-time')?.addEventListener('change', (e) => {
+                document.getElementById('birth-time').disabled = e.target.checked;
+            });
+
+            document.getElementById('btn-toggle-birth-form')?.addEventListener('click', () => {
+                isBirthFormManuallyOpen = !isBirthFormManuallyOpen;
+                updatePostLoginLayout();
+            });
+
+            document.getElementById('btn-hide-birth-form')?.addEventListener('click', () => {
+                isBirthFormManuallyOpen = false;
+                updatePostLoginLayout();
+            });
+
             document.getElementById('natal-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const cityText = document.getElementById('birth-city-input').value;
@@ -2742,6 +2776,9 @@
                             ? 'nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-cosmic-950 shadow transition'
                             : 'nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition';
                     });
+                });
+            });
+
             document.getElementById('synastry-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 await resolveCityCoordinates(document.getElementById('syn-city-input-1').value, 'syn1');
