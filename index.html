@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="sr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astralis — Dnevni Horoskop, Natalna Karta i Sinastrija</title>
+    <!-- Zvanična Google Identity Services (OAuth 2.0) biblioteka -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Cinzel za astrološke naslove -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        cosmic: {
+                            950: '#070913',
+                            900: '#0d1126',
+                            800: '#151b3b',
+                            700: '#1f2854',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #070913;
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.14) 0%, transparent 40%),
+                radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.10) 0%, transparent 38%),
+                radial-gradient(circle at 50% 85%, rgba(168, 85, 247, 0.12) 0%, transparent 45%);
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(15, 20, 44, 0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.55);
+        }
+
+        .glass-card-hover {
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-3px);
+            border-color: rgba(251, 191, 36, 0.35);
+            box-shadow: 0 18px 40px -10px rgba(245, 158, 11, 0.15);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .progress-bar-fill {
+            transition: width 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator,
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.85) sepia(0.3) saturate(2) hue-rotate(10deg);
+            cursor: pointer;
+        }
+
+        .locked-blur {
+            filter: blur(6px);
+            user-select: none;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-amber-500/30 selection:text-amber-200">
+
+    <!-- Gornja navigacija -->
+    <header class="sticky top-0 z-40 border-b border-white/10 bg-cosmic-950/85 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2.5 group shrink-0">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-cosmic-950 font-bold text-lg shadow-lg shadow-amber-500/20 group-hover:scale-105 transition">
+                    ✦
+                </div>
+                <div>
+                    <span class="font-serif font-bold text-lg tracking-wider gold-gradient-text block leading-none">ASTRALIS</span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] text-slate-400 block mt-0.5">Natalni Portal</span>
+                </div>
+            </a>
+
+            <!-- Glavni tabovi -->
+            <nav class="hidden md:flex items-center gap-1.5 bg-white/5 p-1 rounded-xl border border-white/10">
+                <button type="button" data-view="daily" class="nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-cosmic-950 shadow transition">
+                    🔮 Dnevni & Natalni Krug
+                </button>
+                <button type="button" data-view="synastry" class="nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition">
+                    💞 Uporedni Horoskop (Dvoje)
+                </button>
+            </nav>
+
+            <!-- Desna strana: Instagram link + Google OAuth prijava -->
+            <div class="flex items-center gap-2 text-xs">
+                <a href="https://www.instagram.com/astralis.astro/" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-fuchsia-600/25 to-amber-500/25 hover:from-fuchsia-600/40 hover:to-amber-500/40 border border-pink-400/30 text-pink-200 font-medium transition">
+                    <span>📸</span>
+                    <span>@astralis.astro</span>
+                    <span id="ig-status-dot" class="w-2 h-2 rounded-full bg-emerald-400 hidden" title="Zapraćeno"></span>
+                </a>
+
+                <div id="auth-header-slot">
+                    <button type="button" id="btn-open-auth-modal" class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/15 text-slate-200 font-medium flex items-center gap-1.5 transition">
+                        <span class="text-amber-300 font-bold">G</span>
+                        <span>Prijava</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobilna navigacija -->
+        <div class="md:hidden border-t border-white/10 px-3 py-2 flex items-center gap-1.5 bg-cosmic-950/90">
+            <button type="button" data-view="daily" class="nav-tab-btn flex-1 py-1.5 rounded-lg text-[11px] font-semibold bg-amber-500 text-cosmic-950 text-center">
+                🔮 Natalni & Dnevni
+            </button>
+            <button type="button" data-view="synastry" class="nav-tab-btn flex-1 py-1.5 rounded-lg text-[11px] font-semibold text-slate-300 bg-white/5 text-center">
+                💞 Za Dvoje
+            </button>
+            <a href="https://www.instagram.com/astralis.astro/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-pink-200 bg-pink-500/15 border border-pink-500/30 text-center">
+                📸 IG
+            </a>
+        </div>
+    </header>
+
+    <!-- Glavni sadržaj -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-10">
+
+        <!-- ===================================================================== -->
+        <!-- POGLED 1: DNEVNI HOROSKOP + NATALNI KRUG                              -->
+        <!-- ===================================================================== -->
+        <div id="view-daily" class="space-y-10">
+
+            <!-- Hero + Forma za unos natalnih podataka -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                <!-- Leva kolona: Forma -->
+                <div class="lg:col-span-7 glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium mb-4">
+                            <span>✨ Personalizovani astrološki proračun</span>
+                        </div>
+                        <h1 class="font-serif text-2xl sm:text-4xl font-bold text-white leading-tight">
+                            Otkrijte svoj <span class="gold-gradient-text">Dnevni Horoskop</span> i Natalnu Kartu
+                        </h1>
+                        <p class="text-slate-300 text-sm sm:text-base mt-2.5 max-w-2xl leading-relaxed">
+                            Unesite datum, tačno vreme i mesto rođenja kako bismo izračunali položaj Sunca, Podznaka (Ascendenta), vizuelni natalni krug i verovatnoću povoljnosti za danas.
+                        </p>
+                    </div>
+
+                    <form id="natal-form" class="mt-6 space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="user-name" class="block text-xs font-medium text-slate-300 mb-1.5">Vaše ime (opciono)</label>
+                                <input type="text" id="user-name" placeholder="npr. Nikola" class="w-full px-3.5 py-2.5 rounded-xl bg-cosmic-950/80 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
+                            </div>
+
+                            <div>
+                                <label for="birth-city" class="block text-xs font-medium text-slate-300 mb-1.5">Grad rođenja (za tačan podznak)</label>
+                                <select id="birth-city" class="w-full px-3.5 py-2.5 rounded-xl bg-cosmic-950/80 border border-white/10 text-white text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
+                                    <!-- Popunjava JS -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label for="birth-date" class="block text-xs font-medium text-slate-300 mb-1.5">Datum rođenja *</label>
+                                <input type="date" id="birth-date" required class="w-full px-3.5 py-2.5 rounded-xl bg-cosmic-950/80 border border-white/10 text-white text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
+                            </div>
+
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label for="birth-time" class="block text-xs font-medium text-slate-300">Vreme rođenja</label>
+                                    <label class="inline-flex items-center gap-1.5 text-[11px] text-slate-400 cursor-pointer select-none">
+                                        <input type="checkbox" id="unknown-time" class="rounded bg-cosmic-950 border-white/20 text-amber-500 focus:ring-0">
+                                        <span>Ne znam sat</span>
+                                    </label>
+                                </div>
+                                <input type="time" id="birth-time" value="12:00" class="w-full px-3.5 py-2.5 rounded-xl bg-cosmic-950/80 border border-white/10 text-white text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
+                            </div>
+
+                            <div>
+                                <label for="target-date" class="block text-xs font-medium text-slate-300 mb-1.5">Prognoza za datum</label>
+                                <input type="date" id="target-date" class="w-full px-3.5 py-2.5 rounded-xl bg-cosmic-950/80 border border-white/10 text-white text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
+                            </div>
+                        </div>
+
+                        <div class="pt-2 flex flex-wrap items-center justify-between gap-3">
+                            <button type="button" id="btn-save-profile" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 text-xs font-medium transition flex items-center gap-1.5">
+                                <span>💾</span>
+                                <span>Sačuvaj moje podatke</span>
+                            </button>
+
+                            <button type="submit" class="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-cosmic-950 font-bold text-sm shadow-lg shadow-amber-500/25 transition transform active:scale-[0.99] flex items-center justify-center gap-2">
+                                <span>🔮</span>
+                                <span>Izračunaj Horoskop</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Desna kolona: Sažetak natalnog identiteta & Kosmički indeks dana -->
+                <div class="lg:col-span-5 glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between border-amber-500/20 relative overflow-hidden">
+                    <div class="absolute -bottom-20 -left-20 w-56 h-56 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div>
+                        <div class="flex items-center justify-between gap-2">
+                            <span id="profile-greeting" class="text-xs uppercase tracking-widest text-amber-300/90 font-semibold">Vaš Astrološki Profil</span>
+                            <span id="zodiac-element-badge" class="px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-200 border border-indigo-400/20">Element: Vatra</span>
+                        </div>
+
+                        <div class="mt-5 flex items-center gap-4">
+                            <div id="sun-sign-symbol" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-amber-400/20 to-purple-600/20 border border-amber-400/30 flex items-center justify-center text-4xl sm:text-5xl shadow-inner">
+                                ♈
+                            </div>
+                            <div>
+                                <h2 id="sun-sign-title" class="font-serif text-2xl sm:text-3xl font-bold text-white">Ovan</h2>
+                                <p id="sun-sign-dates" class="text-xs text-slate-400 mt-0.5">21. mart – 19. april</p>
+                                <div class="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                                    <span class="px-2.5 py-0.5 rounded-md bg-white/5 border border-white/10 text-slate-200">
+                                        Podznak: <strong id="ascendant-value" class="text-amber-300">Lav ♌</strong>
+                                    </span>
+                                    <span class="px-2.5 py-0.5 rounded-md bg-white/5 border border-white/10 text-slate-200">
+                                        Mesec: <strong id="natal-moon-value" class="text-indigo-300">Strelac ♐</strong>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ukupna dnevna kosmička povoljnost -->
+                    <div class="mt-6 pt-5 border-t border-white/10">
+                        <div class="flex items-end justify-between mb-2">
+                            <div>
+                                <span class="text-xs text-slate-400 block">Ukupna kosmička povoljnost dana</span>
+                                <span id="overall-verdict" class="text-sm font-semibold text-emerald-400">Izuzetno povoljan dan za akciju</span>
+                            </div>
+                            <span id="overall-score" class="text-3xl font-bold gold-gradient-text">84%</span>
+                        </div>
+                        <div class="w-full h-2.5 rounded-full bg-cosmic-950 overflow-hidden border border-white/5">
+                            <div id="overall-bar" class="h-full rounded-full bg-gradient-to-r from-amber-500 via-yellow-400 to-emerald-400 progress-bar-fill" style="width: 84%"></div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-white/5 text-center">
+                            <div class="p-2 rounded-xl bg-white/[0.03]">
+                                <span class="text-[11px] text-slate-400 block">Srećni brojevi</span>
+                                <span id="lucky-numbers" class="text-xs sm:text-sm font-bold text-amber-300 mt-0.5 block">3, 14, 27</span>
+                            </div>
+                            <div class="p-2 rounded-xl bg-white/[0.03]">
+                                <span class="text-[11px] text-slate-400 block">Boja dana</span>
+                                <span id="lucky-color" class="text-xs sm:text-sm font-bold text-indigo-300 mt-0.5 block">Zlatna</span>
+                            </div>
+                            <div class="p-2 rounded-xl bg-white/[0.03]">
+                                <span class="text-[11px] text-slate-400 block">Idealni sati</span>
+                                <span id="lucky-hours" class="text-xs sm:text-sm font-bold text-emerald-300 mt-0.5 block">11:00 - 14:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4 glavne kategorije verovatnoće i povoljnosti -->
+            <section aria-label="Povoljnost po oblastima života">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                    <div>
+                        <h3 class="font-serif text-xl sm:text-2xl font-bold text-white">Indeks Povoljnosti & Verovatnoće</h3>
+                        <p class="text-xs sm:text-sm text-slate-400">Tranzitni uticaj planeta na vaše ključne životne oblasti</p>
+                    </div>
+                    <span id="transit-summary-pill" class="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-slate-300 self-start sm:self-auto">
+                        Ključni tranzit: Trigon Sunca i Jupitera
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Posao i Finansije -->
+                    <div class="glass-card glass-card-hover rounded-2xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-xl">💼</div>
+                                <span id="score-work" class="text-2xl font-bold text-amber-400">82%</span>
+                            </div>
+                            <h4 class="font-semibold text-white text-base">Posao i Finansije</h4>
+                            <div class="w-full h-2 rounded-full bg-cosmic-950 my-2.5 overflow-hidden">
+                                <div id="bar-work" class="h-full rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 progress-bar-fill" style="width: 82%"></div>
+                            </div>
+                            <p id="text-work" class="text-xs text-slate-300 leading-relaxed mt-2"></p>
+                        </div>
+                        <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[11px]">
+                            <span class="text-slate-400">Verovatnoća dobitka:</span>
+                            <span id="badge-work" class="font-semibold text-amber-300">Visoka</span>
+                        </div>
+                    </div>
+
+                    <!-- Ljubav i Odnosi -->
+                    <div class="glass-card glass-card-hover rounded-2xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-xl">❤️</div>
+                                <span id="score-love" class="text-2xl font-bold text-rose-400">78%</span>
+                            </div>
+                            <h4 class="font-semibold text-white text-base">Ljubav i Odnosi</h4>
+                            <div class="w-full h-2 rounded-full bg-cosmic-950 my-2.5 overflow-hidden">
+                                <div id="bar-love" class="h-full rounded-full bg-gradient-to-r from-rose-500 to-pink-400 progress-bar-fill" style="width: 78%"></div>
+                            </div>
+                            <p id="text-love" class="text-xs text-slate-300 leading-relaxed mt-2"></p>
+                        </div>
+                        <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[11px]">
+                            <span class="text-slate-400">Emotivni sklad:</span>
+                            <span id="badge-love" class="font-semibold text-rose-300">Povoljan</span>
+                        </div>
+                    </div>
+
+                    <!-- Zdravlje i Energija -->
+                    <div class="glass-card glass-card-hover rounded-2xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-xl">🌿</div>
+                                <span id="score-health" class="text-2xl font-bold text-emerald-400">88%</span>
+                            </div>
+                            <h4 class="font-semibold text-white text-base">Zdravlje i Energija</h4>
+                            <div class="w-full h-2 rounded-full bg-cosmic-950 my-2.5 overflow-hidden">
+                                <div id="bar-health" class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 progress-bar-fill" style="width: 88%"></div>
+                            </div>
+                            <p id="text-health" class="text-xs text-slate-300 leading-relaxed mt-2"></p>
+                        </div>
+                        <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[11px]">
+                            <span class="text-slate-400">Vitalnost tela:</span>
+                            <span id="badge-health" class="font-semibold text-emerald-300">Odlična</span>
+                        </div>
+                    </div>
+
+                    <!-- Sreća i Intuicija -->
+                    <div class="glass-card glass-card-hover rounded-2xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-xl">🍀</div>
+                                <span id="score-luck" class="text-2xl font-bold text-purple-400">74%</span>
+                            </div>
+                            <h4 class="font-semibold text-white text-base">Sreća i Intuicija</h4>
+                            <div class="w-full h-2 rounded-full bg-cosmic-950 my-2.5 overflow-hidden">
+                                <div id="bar-luck" class="h-full rounded-full bg-gradient-to-r from-purple-500 to-indigo-400 progress-bar-fill" style="width: 74%"></div>
+                            </div>
+                            <p id="text-luck" class="text-xs text-slate-300 leading-relaxed mt-2"></p>
+                        </div>
+                        <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[11px]">
+                            <span class="text-slate-400">Faktor iznenađenja:</span>
+                            <span id="badge-luck" class="font-semibold text-purple-300">Snažan</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIZUELNI PRIKAZ NATALNOG KRUGA + DETALJNO TUMAČENJE -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Levo: Vizuelni Natalni Krug (SVG) -->
+                <div class="lg:col-span-6 glass-card rounded-2xl p-6 sm:p-7 flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between mb-3">
+                        <div>
+                            <h3 class="font-serif text-lg sm:text-xl font-bold text-white">Vizuelni Natalni Krug</h3>
+                            <p class="text-xs text-slate-400">12 kuća, ose AC/DC i MC/IC, raspored planeta i aspekti</p>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-semibold">
+                            Placidus Sistem
+                        </span>
+                    </div>
+
+                    <div class="w-full max-w-[440px] aspect-square my-2 relative flex items-center justify-center">
+                        <svg id="natal-wheel-svg" viewBox="0 0 500 500" class="w-full h-full drop-shadow-[0_0_25px_rgba(245,158,11,0.12)]">
+                            <!-- Generiše JS -->
+                        </svg>
+                    </div>
+
+                    <!-- Legenda aspekata -->
+                    <div class="w-full grid grid-cols-3 gap-2 pt-3 border-t border-white/10 text-[11px] text-center">
+                        <div class="flex items-center justify-center gap-1.5 text-emerald-300">
+                            <span class="w-3 h-0.5 bg-emerald-400 inline-block"></span>
+                            <span>Trigon / Sekstil</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-1.5 text-rose-300">
+                            <span class="w-3 h-0.5 bg-rose-400 inline-block"></span>
+                            <span>Kvadrat / Opozicija</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-1.5 text-amber-300">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span>
+                            <span>Lične planete</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desno: Detaljni dnevni horoskop + Zaključana duboka natalna analiza -->
+                <div class="lg:col-span-6 space-y-6">
+                    <!-- Osnovni dnevni horoskop -->
+                    <div class="glass-card rounded-2xl p-6 sm:p-7 space-y-4">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                            <h3 class="font-serif text-xl font-bold text-white flex items-center gap-2">
+                                <span>📜</span>
+                                <span>Detaljni Dnevni Horoskop</span>
+                            </h3>
+                            <button type="button" id="btn-copy-horoscope" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-slate-300 transition">
+                                📋 Kopiraj
+                            </button>
+                        </div>
+                        <div id="detailed-daily-narrative" class="space-y-3 text-sm text-slate-200 leading-relaxed">
+                            <!-- Popunjava JS -->
+                        </div>
+                        <div id="active-aspects-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                            <!-- Popunjava JS -->
+                        </div>
+                    </div>
+
+                    <!-- Duboka natalna analiza (Otključava se prijavom i zapratom Instagrama) -->
+                    <div class="glass-card rounded-2xl p-6 sm:p-7 border-amber-500/25 relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">🔐</span>
+                                <h4 class="font-serif text-lg font-bold text-white">Duboka Natalna Analiza & Karmički Kod</h4>
+                            </div>
+                            <span id="premium-daily-badge" class="text-[11px] px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold">
+                                VIP Sadržaj
+                            </span>
+                        </div>
+
+                        <div id="premium-daily-content" class="space-y-3 text-xs sm:text-sm text-slate-200 leading-relaxed locked-blur transition duration-300">
+                            <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                                <strong class="text-amber-300 block mb-1">☊ Severni Mesečev Čvor (Životna misija):</strong>
+                                <span id="karmic-node-text">Vaš Severni čvor ukazuje na snažan poziv ka liderskoj ulozi i oslobađanju od starih obrazaca nesigurnosti.</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                                <strong class="text-rose-300 block mb-1">💍 7. Kuća braka i sudbinskih partnerstava:</strong>
+                                <span id="seventh-house-text">Vrh vaše 7. kuće donosi privlačnost prema osobama snažnog intelekta i stabilnih životnih vrednosti.</span>
+                            </div>
+                        </div>
+
+                        <!-- Overlay za otključavanje -->
+                        <div id="premium-daily-gate" class="mt-4 p-4 rounded-xl bg-cosmic-950/90 border border-amber-400/30 flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div class="text-center sm:text-left">
+                                <p class="text-xs font-semibold text-white">Otključajte karmičke aspekte i analizu 7. kuće</p>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Potrebna je Google prijava i zaprat stranice <span class="text-pink-300 font-medium">@astralis.astro</span></p>
+                            </div>
+                            <button type="button" onclick="openUnlockModal()" class="shrink-0 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-pink-500 hover:opacity-95 text-white font-bold text-xs shadow-lg transition">
+                                🔓 Otključaj Besplatno
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Brzi pregled svih 12 znakova Zodijaka -->
+            <section class="space-y-4">
+                <div>
+                    <h3 class="font-serif text-xl sm:text-2xl font-bold text-white">Brzi Pregled Svih 12 Znakova Zodijaka</h3>
+                    <p class="text-xs sm:text-sm text-slate-400">Kliknite na bilo koji znak za trenutni dnevni indeks povoljnosti</p>
+                </div>
+                <div id="zodiac-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                    <!-- Popunjava JS -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ===================================================================== -->
+        <!-- POGLED 2: UPOREDNI HOROSKOP / NATALNA KARTA ZA DVOJE (SINASTRIJA)     -->
+        <!-- ===================================================================== -->
+        <div id="view-synastry" class="hidden space-y-8">
+            <section class="glass-card rounded-2xl p-6 sm:p-8">
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-medium mb-3">
+                        💞 Astrološka Sinastrija & Uporedni Krug
+                    </span>
+                    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white">
+                        Uporedni Horoskop i <span class="gold-gradient-text">Natalna Karta za Dvoje</span>
+                    </h2>
+                    <p class="text-slate-300 text-xs sm:text-sm mt-2">
+                        Uporedite vaše planete sa planetama partnera. Prikazujemo zajednički dvostruki natalni krug (unutrašnji prsten: Osoba A, spoljašnji prsten: Osoba B) i procentualno slaganje.
+                    </p>
+                </div>
+
+                <!-- Unos podataka za Osobu A i Osobu B -->
+                <form id="synastry-form" class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Osoba 1 -->
+                    <div class="p-5 rounded-2xl bg-cosmic-950/70 border border-amber-500/20 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-300">☀️ Osoba A (Unutrašnji prsten)</span>
+                            <button type="button" id="btn-copy-my-data-to-synastry" class="text-[11px] text-slate-400 hover:text-amber-300 underline">
+                                Preuzmi moje podatke
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Ime Osobe A</label>
+                                <input type="text" id="syn-name-1" value="Nikola" class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Grad rođenja</label>
+                                <select id="syn-city-1" class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm"></select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Datum rođenja *</label>
+                                <input type="date" id="syn-date-1" value="1990-05-15" required class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Vreme rođenja</label>
+                                <input type="time" id="syn-time-1" value="10:30" class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Osoba 2 -->
+                    <div class="p-5 rounded-2xl bg-cosmic-950/70 border border-pink-500/20 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-pink-300">🌙 Osoba B (Spoljašnji prsten)</span>
+                            <span class="text-[11px] text-slate-400">Partner / Simpatija</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Ime Osobe B</label>
+                                <input type="text" id="syn-name-2" value="Jelena" class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Grad rođenja</label>
+                                <select id="syn-city-2" class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm"></select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Datum rođenja *</label>
+                                <input type="date" id="syn-date-2" value="1992-09-21" required class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Vreme rođenja</label>
+                                <input type="time" id="syn-time-2" value="18:45" class="w-full px-3 py-2 rounded-xl bg-cosmic-900 border border-white/10 text-white text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2 flex justify-end">
+                        <button type="submit" class="w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 hover:opacity-95 text-white font-bold text-sm shadow-lg shadow-pink-500/20 transition">
+                            💞 Izračunaj Uporednu Natalnu Kartu
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Rezultati Sinastrije -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Dvostruki Sinastrijski Krug -->
+                <div class="lg:col-span-6 glass-card rounded-2xl p-6 flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between mb-3">
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-white">Uporedni Natalni Krug</h3>
+                            <p class="text-xs text-slate-400">Zlatno: Osoba A • Ružičasto: Osoba B</p>
+                        </div>
+                        <span id="synastry-overall-badge" class="px-3 py-1 rounded-full bg-rose-500/20 border border-rose-400/30 text-rose-200 font-bold text-sm">
+                            86% Sklad
+                        </span>
+                    </div>
+
+                    <div class="w-full max-w-[440px] aspect-square my-2">
+                        <svg id="synastry-wheel-svg" viewBox="0 0 500 500" class="w-full h-full">
+                            <!-- Generiše JS -->
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Analiza kompatibilnosti -->
+                <div class="lg:col-span-6 space-y-5">
+                    <div class="glass-card rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                            <div>
+                                <h3 id="synastry-pair-title" class="font-serif text-xl font-bold text-white">Nikola (Bik) & Jelena (Devica)</h3>
+                                <p id="synastry-pair-subtitle" class="text-xs text-slate-400 mt-0.5">Spoj Zemlje i Zemlje — stabilnost i duboko razumevanje</p>
+                            </div>
+                            <span id="synastry-total-score" class="text-3xl font-bold gold-gradient-text">86%</span>
+                        </div>
+
+                        <!-- 4 dimenzije odnosa -->
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-slate-300 font-medium">❤️ Emotivna i duševna povezanost (Mesec / Venera)</span>
+                                    <span id="syn-score-emotion" class="font-bold text-rose-300">89%</span>
+                                </div>
+                                <div class="w-full h-2 rounded-full bg-cosmic-950 overflow-hidden">
+                                    <div id="syn-bar-emotion" class="h-full bg-gradient-to-r from-rose-500 to-pink-400 rounded-full" style="width: 89%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-slate-300 font-medium">🔥 Hemija, strast i privlačnost (Venera / Mars)</span>
+                                    <span id="syn-score-passion" class="font-bold text-amber-300">84%</span>
+                                </div>
+                                <div class="w-full h-2 rounded-full bg-cosmic-950 overflow-hidden">
+                                    <div id="syn-bar-passion" class="h-full bg-gradient-to-r from-amber-500 to-orange-400 rounded-full" style="width: 84%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-slate-300 font-medium">💬 Komunikacija i razumevanje (Merkur / Sunce)</span>
+                                    <span id="syn-score-comm" class="font-bold text-indigo-300">88%</span>
+                                </div>
+                                <div class="w-full h-2 rounded-full bg-cosmic-950 overflow-hidden">
+                                    <div id="syn-bar-comm" class="h-full bg-gradient-to-r from-indigo-500 to-cyan-400 rounded-full" style="width: 88%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-slate-300 font-medium">💍 Dugoročni brak i karmička stabilnost (Saturn / Jupiter)</span>
+                                    <span id="syn-score-karma" class="font-bold text-emerald-300">82%</span>
+                                </div>
+                                <div class="w-full h-2 rounded-full bg-cosmic-950 overflow-hidden">
+                                    <div id="syn-bar-karma" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" style="width: 82%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p id="synastry-basic-summary" class="text-xs sm:text-sm text-slate-200 leading-relaxed pt-2 border-t border-white/10">
+                            <!-- Popunjava JS -->
+                        </p>
+                    </div>
+
+                    <!-- Zaključana duboka sinastrija -->
+                    <div class="glass-card rounded-2xl p-6 border-pink-500/25">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-serif text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                                <span>🔐</span>
+                                <span>Detaljni Uporedni Aspekti & Savet za Par</span>
+                            </h4>
+                            <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-pink-500/20 text-pink-200 font-semibold">VIP Sinastrija</span>
+                        </div>
+
+                        <div id="premium-synastry-content" class="space-y-2.5 text-xs sm:text-sm text-slate-200 locked-blur transition duration-300">
+                            <p id="synastry-deep-text-1" class="p-3 rounded-xl bg-white/5 border border-white/10"></p>
+                            <p id="synastry-deep-text-2" class="p-3 rounded-xl bg-white/5 border border-white/10"></p>
+                        </div>
+
+                        <div id="premium-synastry-gate" class="mt-4 p-4 rounded-xl bg-cosmic-950/90 border border-pink-400/30 flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div>
+                                <p class="text-xs font-semibold text-white">Otključajte kompletnu sinastriju za dvoje</p>
+                                <p class="text-[11px] text-slate-400">Prijavite se Google nalogom i zapratite <span class="text-pink-300">@astralis.astro</span></p>
+                            </div>
+                            <button type="button" onclick="openUnlockModal()" class="shrink-0 px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-amber-500 text-white font-bold text-xs shadow transition">
+                                🔓 Otključaj Sve
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Podnožje -->
+    <footer class="border-t border-white/10 bg-cosmic-950/90 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="text-amber-400 font-bold">✦ ASTRALIS</span>
+                <span>• Personalizovani dnevni horoskop, natalni krug i sinastrija</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="https://www.instagram.com/astralis.astro/" target="_blank" rel="noopener noreferrer" class="text-pink-300 hover:text-pink-200 transition">
+                    Instagram: @astralis.astro
+                </a>
+                <span>© <span id="current-year"></span> Astralis</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL ZA GOOGLE OAUTH PRIJAVU I ZAPRAT INSTAGRAM STRANICE             -->
+    <!-- ===================================================================== -->
+    <div id="unlock-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+        <div class="glass-card max-w-md w-full rounded-2xl p-6 sm:p-7 border-amber-400/30 relative shadow-2xl">
+            <button type="button" id="btn-close-unlock-modal" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
+                ✕
+            </button>
+
+            <div class="text-center mb-5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-pink-500 mx-auto flex items-center justify-center text-2xl text-white shadow-lg mb-3">
+                    ✦
+                </div>
+                <h3 class="font-serif text-xl font-bold text-white">Otključajte VIP Astrološku Analizu</h3>
+                <p class="text-xs text-slate-300 mt-1">
+                    Pristup karmičkim čvorovima, 7. kući braka i detaljnoj sinastriji za dvoje je <strong>100% besplatan</strong> uz 2 brza koraka:
+                </p>
+            </div>
+
+            <div class="space-y-3.5">
+                <!-- Korak 1: Google OAuth Prijava -->
+                <div id="auth-step-1-box" class="p-4 rounded-xl bg-white/5 border border-white/10">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-300">Korak 1: Google OAuth Prijava</span>
+                        <span id="auth-step-1-badge" class="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">Čeka prijavu</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-3">Prijavite se jednim klikom svojim Google nalogom kako biste sačuvali profil i otključali detaljne tumače.</p>
+                    <!-- Zvanični kontejner za Google OAuth dugme -->
+                    <div id="google-oauth-btn-container" class="flex justify-center mb-2"></div>
+                    <button type="button" id="btn-google-signin" class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-semibold text-sm flex items-center justify-center gap-2.5 shadow transition">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+                            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24z"/>
+                            <path fill="#FBBC05" d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14z"/>
+                            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96z"/>
+                        </svg>
+                        <span id="btn-google-signin-label">Nastavi sa Google nalogom</span>
+                    </button>
+                </div>
+
+                <!-- Korak 2: Zaprati Instagram -->
+                <div id="auth-step-2-box" class="p-4 rounded-xl bg-white/5 border border-white/10">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-pink-300">Korak 2: Zaprati @astralis.astro</span>
+                        <span id="auth-step-2-badge" class="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">Nije potvrđeno</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-3">Otvorite naš zvanični Instagram profil, zapratite ga za dnevne astrološke zanimljivosti, a zatim potvrdite.</p>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <a href="https://www.instagram.com/astralis.astro/" target="_blank" rel="noopener noreferrer" id="btn-visit-ig" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-fuchsia-600 via-pink-600 to-amber-500 hover:opacity-95 text-white font-semibold text-xs text-center shadow transition">
+                            📸 Otvori @astralis.astro
+                        </a>
+                        <button type="button" id="btn-confirm-ig-follow" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-semibold text-xs transition">
+                            ✓ Zapratio sam stranicu
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" id="btn-finish-unlock" disabled class="w-full py-3 rounded-xl bg-slate-800 text-slate-500 font-bold text-sm cursor-not-allowed transition">
+                    Završite oba koraka za otključavanje
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast obaveštenje -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        // =========================================================================
+        // 0. GOOGLE OAUTH 2.0 KONFIGURACIJA
+        // =========================================================================
+        const GOOGLE_CLIENT_ID = 'VAS_GOOGLE_CLIENT_ID_OVDE.apps.googleusercontent.com';
+
+        // =========================================================================
+        // 1. ASTROLOŠKE BAZE PODATAKA I PODACI O GRADOVIMA
+        // =========================================================================
+        const CITIES_DATA = [
+            { name: "Beograd, Srbija", lat: 44.8176, lng: 20.4633 },
+            { name: "Novi Sad, Srbija", lat: 45.2671, lng: 19.8335 },
+            { name: "Niš, Srbija", lat: 43.3209, lng: 21.8958 },
+            { name: "Kragujevac, Srbija", lat: 44.0128, lng: 20.9114 },
+            { name: "Subotica, Srbija", lat: 46.1005, lng: 19.6651 },
+            { name: "Čačak, Srbija", lat: 43.8914, lng: 20.3497 },
+            { name: "Kraljevo, Srbija", lat: 43.7258, lng: 20.6896 },
+            { name: "Užice, Srbija", lat: 43.8586, lng: 19.8488 },
+            { name: "Valjevo, Srbija", lat: 44.2751, lng: 19.8982 },
+            { name: "Zrenjanin, Srbija", lat: 45.3814, lng: 20.3861 },
+            { name: "Pančevo, Srbija", lat: 44.8708, lng: 20.6403 },
+            { name: "Šabac, Srbija", lat: 44.7489, lng: 19.6908 },
+            { name: "Novi Pazar, Srbija", lat: 43.1367, lng: 20.5122 },
+            { name: "Leskovac, Srbija", lat: 42.9981, lng: 21.9461 },
+            { name: "Vranje, Srbija", lat: 42.5514, lng: 21.9003 },
+            { name: "Zagreb, Hrvatska", lat: 45.8150, lng: 15.9819 },
+            { name: "Split, Hrvatska", lat: 43.5081, lng: 16.4402 },
+            { name: "Rijeka, Hrvatska", lat: 45.3271, lng: 14.4422 },
+            { name: "Sarajevo, BiH", lat: 43.8563, lng: 18.4131 },
+            { name: "Banja Luka, BiH", lat: 44.7722, lng: 17.1910 },
+            { name: "Mostar, BiH", lat: 43.3438, lng: 17.8078 },
+            { name: "Podgorica, Crna Gora", lat: 42.4304, lng: 19.2594 },
+            { name: "Nikšić, Crna Gora", lat: 42.7731, lng: 18.9445 },
+            { name: "Budva, Crna Gora", lat: 42.2911, lng: 18.8403 },
+            { name: "Skoplje, S. Makedonija", lat: 41.9973, lng: 21.4280 },
+            { name: "Ljubljana, Slovenija", lat: 46.0569, lng: 14.5058 },
+            { name: "Beč, Austrija", lat: 48.2082, lng: 16.3738 },
+            { name: "Minhen, Nemačka", lat: 48.1351, lng: 11.5820 },
+            { name: "Cirih, Švajcarska", lat: 47.3769, lng: 8.5417 }
+        ];
+
+        const ZODIAC_SIGNS = [
+            { id: 0, name: "Ovan", symbol: "♈", dates: "21. mar – 19. apr", element: "Vatra", ruler: "Mars", color: "Crvena i zlatna", startMonth: 3, startDay: 21 },
+            { id: 1, name: "Bik", symbol: "♉", dates: "20. apr – 20. maj", element: "Zemlja", ruler: "Venera", color: "Smaragdno zelena", startMonth: 4, startDay: 20 },
+            { id: 2, name: "Blizanci", symbol: "♊", dates: "21. maj – 20. jun", element: "Vazduh", ruler: "Merkur", color: "Svetlo žuta i srebrna", startMonth: 5, startDay: 21 },
+            { id: 3, name: "Rak", symbol: "♋", dates: "21. jun – 22. jul", element: "Voda", ruler: "Mesec", color: "Biserno bela", startMonth: 6, startDay: 21 },
+            { id: 4, name: "Lav", symbol: "♌", dates: "23. jul – 22. avg", element: "Vatra", ruler: "Sunce", color: "Kraljevsko zlatna", startMonth: 7, startDay: 23 },
+            { id: 5, name: "Devica", symbol: "♍", dates: "23. avg – 22. sep", element: "Zemlja", ruler: "Merkur", color: "Maslinasta i teget", startMonth: 8, startDay: 23 },
+            { id: 6, name: "Vaga", symbol: "♎", dates: "23. sep – 22. okt", element: "Vazduh", ruler: "Venera", color: "Pastelno ružičasta", startMonth: 9, startDay: 23 },
+            { id: 7, name: "Škorpija", symbol: "♏", dates: "23. okt – 21. nov", element: "Voda", ruler: "Pluton / Mars", color: "Bordo i crna", startMonth: 10, startDay: 23 },
+            { id: 8, name: "Strelac", symbol: "♐", dates: "22. nov – 21. dec", element: "Vatra", ruler: "Jupiter", color: "Kraljevsko ljubičasta", startMonth: 11, startDay: 22 },
+            { id: 9, name: "Jarac", symbol: "♑", dates: "22. dec – 19. jan", element: "Zemlja", ruler: "Saturn", color: "Tamno siva i braon", startMonth: 12, startDay: 22 },
+            { id: 10, name: "Vodolija", symbol: "♒", dates: "20. jan – 18. feb", element: "Vazduh", ruler: "Uran / Saturn", color: "Električno plava", startMonth: 1, startDay: 20 },
+            { id: 11, name: "Ribe", symbol: "♓", dates: "19. feb – 20. mar", element: "Voda", ruler: "Neptun / Jupiter", color: "Morsko tirkizna", startMonth: 2, startDay: 19 }
+        ];
+
+        const ASPECTS_POOL = [
+            { title: "Trigon Sunca i Jupitera", type: "Harmoničan", desc: "Donosi širenje vidika, podršku autoriteta i iznenadne prilike za napredak." },
+            { title: "Sekstil Venere i Merkura", type: "Povoljan", desc: "Olakšava iskrene razgovore, dogovore i romantično razumevanje." },
+            { title: "Konjunkcija Meseca i Neptuna", type: "Intuitivan", desc: "Pojačava kreativnost, snove i unutrašnji osećaj za prave odluke." },
+            { title: "Trigon Marsa i Saturna", type: "Stabilan", desc: "Daje istrajnost, fokus i snagu da završite važne poslovne obaveze." },
+            { title: "Kvadrat Merkura i Urana", type: "Dinamičan", desc: "Donosi nagle promene planova — budite fleksibilni u komunikaciji." },
+            { title: "Sekstil Sunca i Meseca", type: "Balans", desc: "Usklađuje svesne ciljeve i emotivne potrebe tokom celog dana." }
+        ];
+
+        const NARRATIVE_TEMPLATES = {
+            high: {
+                work: "Danas imate snažnu podršku tranzitnog Jupitera i Sunca u polju karijere. Idealan je trenutak za pregovore, pokretanje novih projekata i donošenje hrabrih finansijskih odluka.",
+                love: "Venera pravi skladan aspekt sa vašim natalnim poljem odnosa. Očekuju vas topli razgovori, produbljivanje poverenja i prijatna iznenađenja u ljubavi.",
+                health: "Vitalnost je na visokom nivou. Fizička aktivnost na svežem vazduhu i dobar ritam sna doneće vam dodatni nalet energije.",
+                luck: "Intuicija vam je danas izuzetno izoštrena — obratite pažnju na male znakove i slučajne susrete koji otvaraju nova vrata."
+            },
+            medium: {
+                work: "Stabilan radni dan bez velikih potresa. Fokusirajte se na završavanje tekućih obaveza i detaljnu proveru dokumentacije pre potpisivanja.",
+                love: "U emotivnim odnosima je važno strpljenje i pažljivo slušanje partnera. Mali gest pažnje danas vredi više od velikih reči.",
+                health: "Održavajte balans između posla i odmora. Više hidratacije i kraća šetnja u popodnevnim satima prijaće vašem organizmu.",
+                luck: "Sreća vam je naklonjena u popodnevnim satima, naročito kroz kontakte sa prijateljima i kolegama."
+            },
+            low: {
+                work: "Moguća su manja odlaganja ili nesporazumi u komunikaciji. Ne žurite sa krupnim troškovima i sačekajte povoljniji trenutak za rizične poteze.",
+                love: "Osetljivost je danas pojačana — izbegavajte impulsivne reakcije i dajte sebi i partneru malo prostora za miran razgovor.",
+                health: "Potreban vam je kvalitetniji odmor i opuštanje. Izbegavajte kasne obroke i preopterećenje obavezama.",
+                luck: "Danas se oslonite na proverene metode i sopstveno iskustvo umesto na faktor sreće."
+            }
+        };
+
+        // =========================================================================
+        // 2. UPRAVLJANJE NALOGOM (GOOGLE OAUTH + INSTAGRAM ZAPRAT)
+        // =========================================================================
+        const AUTH_STORAGE_KEY = 'astralis_auth_state_v1';
+        let appAuthState = {
+            user: null,
+            igFollowed: false
+        };
+
+        function loadAuthState() {
+            try {
+                const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    appAuthState.user = parsed.user || null;
+                    appAuthState.igFollowed = Boolean(parsed.igFollowed);
+                }
+            } catch (e) {
+                console.warn('Greška pri učitavanju auth stanja:', e);
+            }
+        }
+
+        function saveAuthState() {
+            try {
+                localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(appAuthState));
+            } catch (e) {
+                console.warn('Greška pri čuvanju auth stanja:', e);
+            }
+        }
+
+        function isPremiumUnlocked() {
+            return Boolean(appAuthState.user && appAuthState.igFollowed);
+        }
+
+        function syncAuthAndUnlockUI() {
+            const headerSlot = document.getElementById('auth-header-slot');
+            const igDot = document.getElementById('ig-status-dot');
+            const unlocked = isPremiumUnlocked();
+
+            if (headerSlot) {
+                if (appAuthState.user) {
+                    const avatarHtml = appAuthState.user.picture
+                        ? `<img src="${appAuthState.user.picture}" alt="Avatar" class="w-5 h-5 rounded-full object-cover border border-amber-400/50">`
+                        : `<span class="w-5 h-5 rounded-full bg-amber-500 text-cosmic-950 font-bold flex items-center justify-center text-[10px]">${appAuthState.user.name.charAt(0).toUpperCase()}</span>`;
+
+                    headerSlot.innerHTML = `
+                        <div class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 border border-white/15">
+                            ${avatarHtml}
+                            <span class="text-slate-200 font-medium hidden md:inline">${appAuthState.user.name.split(' ')[0]}</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded-full ${unlocked ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">
+                                ${unlocked ? 'VIP ✓' : '1/2'}
+                            </span>
+                            <button type="button" onclick="logoutGoogleUser()" title="Odjavi se" class="text-slate-400 hover:text-rose-300 ml-1 text-xs">✕</button>
+                        </div>
+                    `;
+                } else {
+                    headerSlot.innerHTML = `
+                        <button type="button" id="btn-open-auth-modal" class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/15 text-slate-200 font-medium flex items-center gap-1.5 transition">
+                            <span class="text-amber-300 font-bold">G</span>
+                            <span>Prijava</span>
+                        </button>
+                    `;
+                    document.getElementById('btn-open-auth-modal')?.addEventListener('click', openUnlockModal);
+                }
+            }
+
+            if (igDot) {
+                igDot.classList.toggle('hidden', !appAuthState.igFollowed);
+            }
+
+            // Ažuriranje statusa u modalu
+            const step1Badge = document.getElementById('auth-step-1-badge');
+            const btnGoogle = document.getElementById('btn-google-signin');
+            const btnGoogleLabel = document.getElementById('btn-google-signin-label');
+            if (step1Badge) {
+                if (appAuthState.user) {
+                    step1Badge.textContent = `Prijavljen (${appAuthState.user.email})`;
+                    step1Badge.className = 'text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300';
+                    if (btnGoogleLabel) btnGoogleLabel.textContent = `Prijavljeni ste kao ${appAuthState.user.name}`;
+                    if (btnGoogle) btnGoogle.classList.add('opacity-75');
+                } else {
+                    step1Badge.textContent = 'Čeka prijavu';
+                    step1Badge.className = 'text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400';
+                    if (btnGoogleLabel) btnGoogleLabel.textContent = 'Nastavi sa Google nalogom';
+                    if (btnGoogle) btnGoogle.classList.remove('opacity-75');
+                }
+            }
+
+            const step2Badge = document.getElementById('auth-step-2-badge');
+            const btnConfirmIg = document.getElementById('btn-confirm-ig-follow');
+            if (step2Badge && btnConfirmIg) {
+                if (appAuthState.igFollowed) {
+                    step2Badge.textContent = 'Zapraćeno ✓';
+                    step2Badge.className = 'text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300';
+                    btnConfirmIg.textContent = '✓ Praćenje @astralis.astro potvrđeno';
+                } else {
+                    step2Badge.textContent = 'Nije potvrđeno';
+                    step2Badge.className = 'text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400';
+                    btnConfirmIg.textContent = '✓ Zapratio sam stranicu';
+                }
+            }
+
+            const btnFinish = document.getElementById('btn-finish-unlock');
+            if (btnFinish) {
+                if (unlocked) {
+                    btnFinish.disabled = false;
+                    btnFinish.className = 'w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-sm shadow-lg transition cursor-pointer';
+                    btnFinish.textContent = '✨ Pristupi Otključanim Podacima';
+                } else {
+                    btnFinish.disabled = true;
+                    btnFinish.className = 'w-full py-3 rounded-xl bg-slate-800 text-slate-500 font-bold text-sm cursor-not-allowed transition';
+                    btnFinish.textContent = 'Završite oba koraka za otključavanje';
+                }
+            }
+
+            // Otključavanje premijum sekcija na stranici
+            const dailyContent = document.getElementById('premium-daily-content');
+            const dailyGate = document.getElementById('premium-daily-gate');
+            const dailyBadge = document.getElementById('premium-daily-badge');
+            if (dailyContent && dailyGate) {
+                dailyContent.classList.toggle('locked-blur', !unlocked);
+                dailyGate.classList.toggle('hidden', unlocked);
+                if (dailyBadge) {
+                    dailyBadge.textContent = unlocked ? 'Otključano ✓' : 'VIP Sadržaj';
+                }
+            }
+
+            const synContent = document.getElementById('premium-synastry-content');
+            const synGate = document.getElementById('premium-synastry-gate');
+            if (synContent && synGate) {
+                synContent.classList.toggle('locked-blur', !unlocked);
+                synGate.classList.toggle('hidden', unlocked);
+            }
+        }
+
+        function decodeGoogleJwt(token) {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split('')
+                    .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join('')
+            );
+            return JSON.parse(jsonPayload);
+        }
+
+        function handleGoogleCredentialResponse(response) {
+            try {
+                const payload = decodeGoogleJwt(response.credential);
+                appAuthState.user = {
+                    name: payload.name || payload.given_name || 'Google Korisnik',
+                    email: payload.email,
+                    picture: payload.picture || null
+                };
+                saveAuthState();
+                syncAuthAndUnlockUI();
+                showToast(`Dobrodošli, ${appAuthState.user.name}! Google OAuth prijava je uspešna.`, 'success');
+            } catch (err) {
+                console.error('Greška pri obradi Google OAuth tokena:', err);
+                showToast('Došlo je do greške pri obradi Google prijave.', 'error');
+            }
+        }
+
+        function initGoogleOAuth() {
+            const isConfigured = GOOGLE_CLIENT_ID && !GOOGLE_CLIENT_ID.startsWith('VAS_GOOGLE_CLIENT_ID');
+            if (!isConfigured || typeof google === 'undefined' || !google.accounts || !google.accounts.id) {
+                return false;
+            }
+
+            google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: handleGoogleCredentialResponse,
+                auto_select: false,
+                cancel_on_tap_outside: true
+            });
+
+            const btnContainer = document.getElementById('google-oauth-btn-container');
+            const fallbackBtn = document.getElementById('btn-google-signin');
+            if (btnContainer) {
+                btnContainer.innerHTML = '';
+                google.accounts.id.renderButton(btnContainer, {
+                    theme: 'outline',
+                    size: 'large',
+                    shape: 'pill',
+                    text: 'continue_with',
+                    logo_alignment: 'left',
+                    width: 320
+                });
+                if (fallbackBtn) fallbackBtn.classList.add('hidden');
+            }
+            return true;
+        }
+
+        function openUnlockModal() {
+            syncAuthAndUnlockUI();
+            initGoogleOAuth();
+            document.getElementById('unlock-modal').classList.remove('hidden');
+            document.getElementById('unlock-modal').classList.add('flex');
+        }
+
+        function closeUnlockModal() {
+            document.getElementById('unlock-modal').classList.add('hidden');
+            document.getElementById('unlock-modal').classList.remove('flex');
+        }
+
+        function logoutGoogleUser() {
+            if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+                google.accounts.id.disableAutoSelect();
+            }
+            appAuthState.user = null;
+            saveAuthState();
+            syncAuthAndUnlockUI();
+            showToast('Odjavili ste se sa Google naloga.', 'info');
+        }
+
+        // =========================================================================
+        // 3. ASTROLOŠKI PRORAČUNI (ZNAK, PODZNAK, PLANETE, TRANZITI, SINASTRIJA)
+        // =========================================================================
+        function seededRandom(seed) {
+            let x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        }
+
+        function getSunSign(month, day) {
+            if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return ZODIAC_SIGNS[0];
+            if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return ZODIAC_SIGNS[1];
+            if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return ZODIAC_SIGNS[2];
+            if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return ZODIAC_SIGNS[3];
+            if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return ZODIAC_SIGNS[4];
+            if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return ZODIAC_SIGNS[5];
+            if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return ZODIAC_SIGNS[6];
+            if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return ZODIAC_SIGNS[7];
+            if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return ZODIAC_SIGNS[8];
+            if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return ZODIAC_SIGNS[9];
+            if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return ZODIAC_SIGNS[10];
+            return ZODIAC_SIGNS[11];
+        }
+
+        function calculateNatalChart(birthDateStr, birthTimeStr, cityObj, unknownTime = false) {
+            const [y, m, d] = birthDateStr.split('-').map(Number);
+            const sunSign = getSunSign(m, d);
+
+            let hours = 12, mins = 0;
+            if (!unknownTime && birthTimeStr) {
+                [hours, mins] = birthTimeStr.split(':').map(Number);
+            }
+            const decimalHour = hours + mins / 60;
+            const lngOffset = (cityObj ? cityObj.lng : 20.46) / 15;
+
+            // Približan proračun Ascendenta (podznaka)
+            const ascIndex = Math.floor((sunSign.id + Math.floor((decimalHour + lngOffset) / 2)) % 12);
+            const ascSign = ZODIAC_SIGNS[ascIndex];
+
+            // Natalni Mesec i ostale planete
+            const daySeed = y * 365 + m * 31 + d;
+            const moonIndex = Math.floor((daySeed * 13 + Math.floor(decimalHour)) % 12);
+            const moonSign = ZODIAC_SIGNS[moonIndex];
+
+            const baseDeg = sunSign.id * 30 + (d % 29);
+            const ascDeg = ascSign.id * 30 + ((hours * 15 + mins) % 30);
+
+            const planets = [
+                { key: 'SO', symbol: '☉', name: 'Sunce', deg: baseDeg % 360, color: '#fbbf24' },
+                { key: 'MO', symbol: '☽', name: 'Mesec', deg: (moonIndex * 30 + ((d * 7 + hours) % 30)) % 360, color: '#e2e8f0' },
+                { key: 'ME', symbol: '☿', name: 'Merkur', deg: (baseDeg + 14) % 360, color: '#38bdf8' },
+                { key: 'VE', symbol: '♀', name: 'Venera', deg: (baseDeg + 335) % 360, color: '#f472b6' },
+                { key: 'MA', symbol: '♂', name: 'Mars', deg: ((daySeed * 19) % 360), color: '#fb7185' },
+                { key: 'JU', symbol: '♃', name: 'Jupiter', deg: ((y * 30 + m * 5) % 360), color: '#a78bfa' },
+                { key: 'SA', symbol: '♄', name: 'Saturn', deg: ((y * 12 + d * 3) % 360), color: '#94a3b8' }
+            ];
+
+            return {
+                sunSign,
+                ascSign,
+                moonSign,
+                ascDeg,
+                planets,
+                unknownTime
+            };
+        }
+
+        function computeDailyForecast(natal, targetDateStr) {
+            const [ty, tm, td] = targetDateStr.split('-').map(Number);
+            const targetSeed = ty * 10000 + tm * 100 + td + natal.sunSign.id * 37 + natal.ascSign.id * 13;
+
+            const work = Math.round(58 + seededRandom(targetSeed + 1) * 39);
+            const love = Math.round(55 + seededRandom(targetSeed + 2) * 42);
+            const health = Math.round(62 + seededRandom(targetSeed + 3) * 35);
+            const luck = Math.round(52 + seededRandom(targetSeed + 4) * 45);
+            const overall = Math.round((work + love + health + luck) / 4);
+
+            const getLevel = (val) => val >= 78 ? 'high' : (val >= 65 ? 'medium' : 'low');
+
+            const n1 = Math.floor(seededRandom(targetSeed + 11) * 9) + 1;
+            const n2 = Math.floor(seededRandom(targetSeed + 12) * 18) + 10;
+            const n3 = Math.floor(seededRandom(targetSeed + 13) * 20) + 28;
+
+            const startHour = 9 + Math.floor(seededRandom(targetSeed + 14) * 9);
+            const aspect1 = ASPECTS_POOL[Math.floor(seededRandom(targetSeed + 15) * ASPECTS_POOL.length)];
+            const aspect2 = ASPECTS_POOL[(Math.floor(seededRandom(targetSeed + 15) * ASPECTS_POOL.length) + 2) % ASPECTS_POOL.length];
+
+            return {
+                work, love, health, luck, overall,
+                workText: NARRATIVE_TEMPLATES[getLevel(work)].work,
+                loveText: NARRATIVE_TEMPLATES[getLevel(love)].love,
+                healthText: NARRATIVE_TEMPLATES[getLevel(health)].health,
+                luckText: NARRATIVE_TEMPLATES[getLevel(luck)].luck,
+                luckyNumbers: `${n1}, ${n2}, ${n3}`,
+                luckyHours: `${String(startHour).padStart(2, '0')}:00 – ${String(startHour + 3).padStart(2, '0')}:00`,
+                aspects: [aspect1, aspect2]
+            };
+        }
+
+        // =========================================================================
+        // 4. CRTANJE VIZUELNOG NATALNOG KRUGA (SVG)
+        // =========================================================================
+        function renderNatalWheelSVG(svgId, natalA, natalB = null) {
+            const svg = document.getElementById(svgId);
+            if (!svg) return;
+
+            const cx = 250, cy = 250;
+            const rOuter = 230, rZodiacInner = 192, rHouseInner = 115, rCenter = 52;
+            const rotationOffset = 180 - natalA.ascDeg; // Ascendent uvek levo (na 9 sati)
+
+            let html = `
+                <defs>
+                    <radialGradient id="wheelBg_${svgId}" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.9"/>
+                        <stop offset="100%" stop-color="#070913" stop-opacity="0.98"/>
+                    </radialGradient>
+                </defs>
+                <circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="url(#wheelBg_${svgId})" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.6"/>
+                <circle cx="${cx}" cy="${cy}" r="${rZodiacInner}" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.18"/>
+                <circle cx="${cx}" cy="${cy}" r="${rHouseInner}" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.15"/>
+                <circle cx="${cx}" cy="${cy}" r="${rCenter}" fill="#0d1126" stroke="#fbbf24" stroke-width="1.2" stroke-opacity="0.4"/>
+            `;
+
+            // 12 znakova zodijaka na spoljašnjem prstenu
+            for (let i = 0; i < 12; i++) {
+                const startDeg = (i * 30 + rotationOffset) % 360;
+                const midDeg = (startDeg + 15) % 360;
+                const rad1 = (startDeg * Math.PI) / 180;
+                const radMid = (midDeg * Math.PI) / 180;
+
+                const x1 = cx + rZodiacInner * Math.cos(rad1);
+                const y1 = cy - rZodiacInner * Math.sin(rad1);
+                const x2 = cx + rOuter * Math.cos(rad1);
+                const y2 = cy - rOuter * Math.sin(rad1);
+
+                html += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#fbbf24" stroke-opacity="0.3" stroke-width="1"/>`;
+
+                const tx = cx + ((rOuter + rZodiacInner) / 2) * Math.cos(radMid);
+                const ty = cy - ((rOuter + rZodiacInner) / 2) * Math.sin(radMid);
+                html += `<text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" fill="#fde68a" font-size="16" text-anchor="middle" dominant-baseline="central">${ZODIAC_SIGNS[i].symbol}</text>`;
+            }
+
+            // 12 astroloških kuća
+            for (let h = 0; h < 12; h++) {
+                const houseDeg = 180 + h * 30;
+                const rad = (houseDeg * Math.PI) / 180;
+                const x1 = cx + rCenter * Math.cos(rad);
+                const y1 = cy - rCenter * Math.sin(rad);
+                const x2 = cx + rZodiacInner * Math.cos(rad);
+                const y2 = cy - rZodiacInner * Math.sin(rad);
+                const isMainAxis = (h === 0 || h === 3 || h === 6 || h === 9);
+
+                html += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${isMainAxis ? '#fbbf24' : '#94a3b8'}" stroke-opacity="${isMainAxis ? '0.65' : '0.2'}" stroke-width="${isMainAxis ? '1.6' : '0.9'}"/>`;
+
+                const midRad = ((houseDeg + 15) * Math.PI) / 180;
+                const hx = cx + ((rHouseInner + rCenter) / 2) * Math.cos(midRad);
+                const hy = cy - ((rHouseInner + rCenter) / 2) * Math.sin(midRad);
+                html += `<text x="${hx.toFixed(1)}" y="${hy.toFixed(1)}" fill="#64748b" font-size="10" text-anchor="middle" dominant-baseline="central">${h + 1}</text>`;
+            }
+
+            // Oznake AC / DC / MC / IC
+            html += `
+                <text x="${cx - rZodiacInner + 14}" y="${cy - 6}" fill="#fbbf24" font-size="10" font-weight="bold">AC</text>
+                <text x="${cx + rZodiacInner - 26}" y="${cy - 6}" fill="#fbbf24" font-size="10" font-weight="bold">DC</text>
+                <text x="${cx + 5}" y="${cy - rZodiacInner + 16}" fill="#fbbf24" font-size="10" font-weight="bold">MC</text>
+                <text x="${cx + 5}" y="${cy + rZodiacInner - 10}" fill="#fbbf24" font-size="10" font-weight="bold">IC</text>
+            `;
+
+            // Linije aspekata unutar kruga
+            const coordsA = natalA.planets.map(p => {
+                const a = ((p.deg + rotationOffset) * Math.PI) / 180;
+                const rP = natalB ? 132 : 154;
+                return {
+                    ...p,
+                    x: cx + rP * Math.cos(a),
+                    y: cy - rP * Math.sin(a)
+                };
+            });
+
+            for (let i = 0; i < coordsA.length; i++) {
+                for (let j = i + 1; j < coordsA.length; j++) {
+                    const diff = Math.abs(coordsA[i].deg - coordsA[j].deg) % 360;
+                    const angle = diff > 180 ? 360 - diff : diff;
+                    if (Math.abs(angle - 120) < 12 || Math.abs(angle - 60) < 10) {
+                        html += `<line x1="${coordsA[i].x.toFixed(1)}" y1="${coordsA[i].y.toFixed(1)}" x2="${coordsA[j].x.toFixed(1)}" y2="${coordsA[j].y.toFixed(1)}" stroke="#34d399" stroke-opacity="0.35" stroke-width="1.1"/>`;
+                    } else if (Math.abs(angle - 90) < 10 || Math.abs(angle - 180) < 12) {
+                        html += `<line x1="${coordsA[i].x.toFixed(1)}" y1="${coordsA[i].y.toFixed(1)}" x2="${coordsA[j].x.toFixed(1)}" y2="${coordsA[j].y.toFixed(1)}" stroke="#fb7185" stroke-opacity="0.35" stroke-width="1.1" stroke-dasharray="3 3"/>`;
+                    }
+                }
+            }
+
+            // Planete Osobe A
+            coordsA.forEach(p => {
+                html += `
+                    <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="12" fill="#0d1126" stroke="${p.color}" stroke-width="1.5"/>
+                    <text x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}" fill="${p.color}" font-size="13" text-anchor="middle" dominant-baseline="central">${p.symbol}</text>
+                `;
+            });
+
+            // Planete Osobe B (ako je sinastrija)
+            if (natalB) {
+                natalB.planets.forEach(p => {
+                    const a = ((p.deg + rotationOffset) * Math.PI) / 180;
+                    const rB = 172;
+                    const bx = cx + rB * Math.cos(a);
+                    const by = cy - rB * Math.sin(a);
+                    html += `
+                        <circle cx="${bx.toFixed(1)}" cy="${by.toFixed(1)}" r="11" fill="#2a0f24" stroke="#f472b6" stroke-width="1.4"/>
+                        <text x="${bx.toFixed(1)}" y="${by.toFixed(1)}" fill="#f9a8d4" font-size="12" text-anchor="middle" dominant-baseline="central">${p.symbol}</text>
+                    `;
+                });
+            }
+
+            // Centar kruga
+            html += `<text x="${cx}" y="${cy}" fill="#fbbf24" font-size="16" text-anchor="middle" dominant-baseline="central">✦</text>`;
+
+            svg.innerHTML = html;
+        }
+
+        // =========================================================================
+        // 5. RENDEROVANJE DNEVNOG HOROSKOPA I SINASTRIJE
+        // =========================================================================
+        function runCalculation(showNotification = false) {
+            const nameVal = document.getElementById('user-name').value.trim();
+            const birthDate = document.getElementById('birth-date').value || '1990-05-15';
+            const birthTime = document.getElementById('birth-time').value || '12:00';
+            const unknownTime = document.getElementById('unknown-time').checked;
+            const targetDate = document.getElementById('target-date').value || new Date().toISOString().split('T')[0];
+            const cityIdx = Number(document.getElementById('birth-city').value || 0);
+            const cityObj = CITIES_DATA[cityIdx] || CITIES_DATA[0];
+
+            const natal = calculateNatalChart(birthDate, birthTime, cityObj, unknownTime);
+            const forecast = computeDailyForecast(natal, targetDate);
+
+            // Ažuriranje profila
+            document.getElementById('profile-greeting').textContent = nameVal
+                ? `Astrološki Profil • ${nameVal}`
+                : 'Vaš Astrološki Profil';
+            document.getElementById('zodiac-element-badge').textContent = `Element: ${natal.sunSign.element}`;
+            document.getElementById('sun-sign-symbol').textContent = natal.sunSign.symbol;
+            document.getElementById('sun-sign-title').textContent = natal.sunSign.name;
+            document.getElementById('sun-sign-dates').textContent = natal.sunSign.dates;
+            document.getElementById('ascendant-value').textContent = unknownTime
+                ? 'Nepoznat sat'
+                : `${natal.ascSign.name} ${natal.ascSign.symbol}`;
+            document.getElementById('natal-moon-value').textContent = `${natal.moonSign.name} ${natal.moonSign.symbol}`;
+
+            // Ukupni indeks
+            document.getElementById('overall-score').textContent = `${forecast.overall}%`;
+            document.getElementById('overall-bar').style.width = `${forecast.overall}%`;
+            document.getElementById('overall-verdict').textContent = forecast.overall >= 80
+                ? 'Izuzetno povoljan kosmički dan'
+                : (forecast.overall >= 68 ? 'Stabilan dan sa lepim prilikama' : 'Dan za strpljenje i introspekciju');
+            document.getElementById('lucky-numbers').textContent = forecast.luckyNumbers;
+            document.getElementById('lucky-color').textContent = natal.sunSign.color.split(' ')[0];
+            document.getElementById('lucky-hours').textContent = forecast.luckyHours;
+
+            // 4 kategorije
+            document.getElementById('score-work').textContent = `${forecast.work}%`;
+            document.getElementById('bar-work').style.width = `${forecast.work}%`;
+            document.getElementById('text-work').textContent = forecast.workText;
+            document.getElementById('badge-work').textContent = forecast.work >= 75 ? 'Visoka' : 'Umerena';
+
+            document.getElementById('score-love').textContent = `${forecast.love}%`;
+            document.getElementById('bar-love').style.width = `${forecast.love}%`;
+            document.getElementById('text-love').textContent = forecast.loveText;
+            document.getElementById('badge-love').textContent = forecast.love >= 75 ? 'Snažan' : 'Stabilan';
+
+            document.getElementById('score-health').textContent = `${forecast.health}%`;
+            document.getElementById('bar-health').style.width = `${forecast.health}%`;
+            document.getElementById('text-health').textContent = forecast.healthText;
+            document.getElementById('badge-health').textContent = forecast.health >= 75 ? 'Odlična' : 'Dobra';
+
+            document.getElementById('score-luck').textContent = `${forecast.luck}%`;
+            document.getElementById('bar-luck').style.width = `${forecast.luck}%`;
+            document.getElementById('text-luck').textContent = forecast.luckText;
+            document.getElementById('badge-luck').textContent = forecast.luck >= 75 ? 'Izražen' : 'Umeren';
+
+            // Tranzit i narativ
+            document.getElementById('transit-summary-pill').textContent = `Ključni tranzit: ${forecast.aspects[0].title}`;
+            document.getElementById('detailed-daily-narrative').innerHTML = `
+                <p>Kao <strong class="text-amber-300">${natal.sunSign.name}</strong> sa podznakom u znaku <strong class="text-amber-300">${natal.ascSign.name}</strong>, danas osećate snažan uticaj vladara <strong>${natal.sunSign.ruler}</strong>. Energija dana podstiče vas da jasno postavite prioritete u komunikaciji i finansijama.</p>
+                <p>Položaj vašeg natalnog Meseca u znaku <strong class="text-indigo-300">${natal.moonSign.name}</strong> donosi pojačanu intuiciju u popodnevnim satima (${forecast.luckyHours}), kada možete očekivati važnu poruku ili poziv.</p>
+            `;
+
+            document.getElementById('active-aspects-list').innerHTML = forecast.aspects.map(a => `
+                <div class="p-3 rounded-xl bg-white/[0.04] border border-white/10">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-bold text-amber-300">${a.title}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">${a.type}</span>
+                    </div>
+                    <p class="text-[11px] text-slate-300">${a.desc}</p>
+                </div>
+            `).join('');
+
+            // VIP tekstovi
+            document.getElementById('karmic-node-text').textContent = `Za kombinaciju Sunce u znaku ${natal.sunSign.name} i Podznak ${natal.ascSign.name}, Severni Mesečev čvor ukazuje da najveći uspeh dolazi kada spojite praktičnu disciplinu sa hrabrošću da preuzmete inicijativu.`;
+            document.getElementById('seventh-house-text').textContent = `Vaša 7. kuća partnerstava traži osobu koja poštuje vašu slobodu, ali donosi emotivnu sigurnost i jasnu viziju zajedničke budućnosti.`;
+
+            // Natalni krug
+            renderNatalWheelSVG('natal-wheel-svg', natal);
+
+            if (showNotification) {
+                showToast(`Horoskop za znak ${natal.sunSign.name} je uspešno izračunat!`, 'success');
+            }
+        }
+
+        function computeAndRenderSynastry() {
+            const name1 = document.getElementById('syn-name-1').value.trim() || 'Osoba A';
+            const name2 = document.getElementById('syn-name-2').value.trim() || 'Osoba B';
+            const date1 = document.getElementById('syn-date-1').value || '1990-05-15';
+            const time1 = document.getElementById('syn-time-1').value || '10:30';
+            const date2 = document.getElementById('syn-date-2').value || '1992-09-21';
+            const time2 = document.getElementById('syn-time-2').value || '18:45';
+
+            const city1 = CITIES_DATA[Number(document.getElementById('syn-city-1').value || 0)] || CITIES_DATA[0];
+            const city2 = CITIES_DATA[Number(document.getElementById('syn-city-2').value || 1)] || CITIES_DATA[1];
+
+            const natal1 = calculateNatalChart(date1, time1, city1, false);
+            const natal2 = calculateNatalChart(date2, time2, city2, false);
+
+            const seed = (natal1.sunSign.id + 1) * 31 + (natal2.sunSign.id + 1) * 17 + (natal1.moonSign.id + natal2.moonSign.id) * 7;
+            const sameElement = natal1.sunSign.element === natal2.sunSign.element;
+            const bonus = sameElement ? 8 : 3;
+
+            const emotion = Math.min(97, Math.round(68 + seededRandom(seed + 1) * 24 + bonus));
+            const passion = Math.min(98, Math.round(66 + seededRandom(seed + 2) * 26 + bonus));
+            const comm = Math.min(96, Math.round(65 + seededRandom(seed + 3) * 25 + bonus));
+            const karma = Math.min(95, Math.round(67 + seededRandom(seed + 4) * 23 + bonus));
+            const total = Math.round((emotion + passion + comm + karma) / 4);
+
+            document.getElementById('synastry-pair-title').textContent = `${name1} (${natal1.sunSign.name} ${natal1.sunSign.symbol}) & ${name2} (${natal2.sunSign.name} ${natal2.sunSign.symbol})`;
+            document.getElementById('synastry-pair-subtitle').textContent = `Spoj elemenata ${natal1.sunSign.element} i ${natal2.sunSign.element} • Podznaci: ${natal1.ascSign.name} i ${natal2.ascSign.name}`;
+            document.getElementById('synastry-total-score').textContent = `${total}%`;
+            document.getElementById('synastry-overall-badge').textContent = `${total}% Sklad`;
+
+            document.getElementById('syn-score-emotion').textContent = `${emotion}%`;
+            document.getElementById('syn-bar-emotion').style.width = `${emotion}%`;
+            document.getElementById('syn-score-passion').textContent = `${passion}%`;
+            document.getElementById('syn-bar-passion').style.width = `${passion}%`;
+            document.getElementById('syn-score-comm').textContent = `${comm}%`;
+            document.getElementById('syn-bar-comm').style.width = `${comm}%`;
+            document.getElementById('syn-score-karma').textContent = `${karma}%`;
+            document.getElementById('syn-bar-karma').style.width = `${karma}%`;
+
+            document.getElementById('synastry-basic-summary').textContent =
+                `Uporedni horoskop između ${name1} (${natal1.sunSign.name}) i ${name2} (${natal2.sunSign.name}) pokazuje ukupnu kompatibilnost od ${total}%. Posebno se ističe razmena energije između Meseca u znaku ${natal1.moonSign.name} i Venere, što donosi prirodnu bliskost i uzajamno razumevanje.`;
+
+            document.getElementById('synastry-deep-text-1').innerHTML =
+                `<strong class="text-pink-300">💫 Karmička veza Meseca i Venere:</strong> Položaj Meseca (${natal1.moonSign.name}) kod ${name1} i Meseca (${natal2.moonSign.name}) kod ${name2} stvara osećaj dugogodišnjeg poznavanja i snažnu emotivnu podršku u kriznim situacijama.`;
+            document.getElementById('synastry-deep-text-2').innerHTML =
+                `<strong class="text-amber-300">🔑 Ključni savet za stabilnost veze:</strong> Negujte otvorenu komunikaciju i zajedničke ciljeve — vaš odnos najbolje napreduje kada spojite inicijativu znaka ${natal1.sunSign.name} sa mudrošću znaka ${natal2.sunSign.name}.`;
+
+            renderNatalWheelSVG('synastry-wheel-svg', natal1, natal2);
+        }
+
+        function initZodiacGrid() {
+            const grid = document.getElementById('zodiac-grid');
+            if (!grid) return;
+            const today = new Date();
+            const daySeed = today.getFullYear() * 1000 + (today.getMonth() + 1) * 40 + today.getDate();
+
+            grid.innerHTML = ZODIAC_SIGNS.map(sign => {
+                const score = Math.round(64 + seededRandom(daySeed + sign.id * 19) * 32);
+                return `
+                    <button type="button" onclick="selectQuickSign(${sign.id})" class="glass-card glass-card-hover rounded-xl p-3.5 text-left flex flex-col justify-between group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl group-hover:scale-110 transition">${sign.symbol}</span>
+                            <span class="text-xs font-bold text-amber-300">${score}%</span>
+                        </div>
+                        <div class="mt-2">
+                            <span class="font-semibold text-sm text-white block">${sign.name}</span>
+                            <span class="text-[10px] text-slate-400 block">${sign.dates}</span>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectQuickSign(signId) {
+            const sign = ZODIAC_SIGNS[signId];
+            if (!sign) return;
+            const m = String(sign.startMonth).padStart(2, '0');
+            const d = String(sign.startDay).padStart(2, '0');
+            document.getElementById('birth-date').value = `1992-${m}-${d}`;
+            runCalculation(true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const colors = {
+                success: 'border-emerald-500/40 bg-cosmic-900/95 text-emerald-200',
+                error: 'border-rose-500/40 bg-cosmic-900/95 text-rose-200',
+                info: 'border-amber-500/40 bg-cosmic-900/95 text-amber-200'
+            };
+            const toast = document.createElement('div');
+            toast.className = `pointer-events-auto px-4 py-3 rounded-xl border text-xs font-medium shadow-xl transition-all duration-300 ${colors[type] || colors.info}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3400);
+        }
+
+        // =========================================================================
+        // 6. INICIJALIZACIJA APLIKACIJE
+        // =========================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // Popunjavanje padajućih lista gradova
+            const cityOptions = CITIES_DATA.map((c, i) => `<option value="${i}">${c.name}</option>`).join('');
+            document.getElementById('birth-city').innerHTML = cityOptions;
+            document.getElementById('syn-city-1').innerHTML = cityOptions;
+            document.getElementById('syn-city-2').innerHTML = cityOptions;
+            document.getElementById('syn-city-2').value = '1';
+
+            // Podrazumevani datumi
+            const todayISO = new Date().toISOString().split('T')[0];
+            document.getElementById('target-date').value = todayISO;
+
+            // Učitavanje sačuvanog profila ako postoji
+            try {
+                const savedProfile = JSON.parse(localStorage.getItem('astralis_user_profile_v1') || 'null');
+                if (savedProfile) {
+                    if (savedProfile.name) document.getElementById('user-name').value = savedProfile.name;
+                    if (savedProfile.birthDate) document.getElementById('birth-date').value = savedProfile.birthDate;
+                    if (savedProfile.birthTime) document.getElementById('birth-time').value = savedProfile.birthTime;
+                    if (savedProfile.cityIdx !== undefined) document.getElementById('birth-city').value = savedProfile.cityIdx;
+                    document.getElementById('unknown-time').checked = Boolean(savedProfile.unknownTime);
+                } else {
+                    document.getElementById('birth-date').value = '1990-05-15';
+                }
+            } catch (e) {
+                document.getElementById('birth-date').value = '1990-05-15';
+            }
+
+            // Onemogući unos sata ako je štiklirano "Ne znam sat"
+            const unknownCheck = document.getElementById('unknown-time');
+            const birthTimeInput = document.getElementById('birth-time');
+            birthTimeInput.disabled = unknownCheck.checked;
+            unknownCheck.addEventListener('change', () => {
+                birthTimeInput.disabled = unknownCheck.checked;
+            });
+
+            // Forma za dnevni horoskop
+            document.getElementById('natal-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                runCalculation(true);
+            });
+
+            // Čuvanje profila
+            document.getElementById('btn-save-profile').addEventListener('click', () => {
+                const profileData = {
+                    name: document.getElementById('user-name').value.trim(),
+                    birthDate: document.getElementById('birth-date').value,
+                    birthTime: document.getElementById('birth-time').value,
+                    cityIdx: document.getElementById('birth-city').value,
+                    unknownTime: document.getElementById('unknown-time').checked
+                };
+                localStorage.setItem('astralis_user_profile_v1', JSON.stringify(profileData));
+                showToast('Vaši natalni podaci su sačuvani u pregledaču!', 'success');
+            });
+
+            // Kopiranje dnevnog horoskopa
+            document.getElementById('btn-copy-horoscope').addEventListener('click', () => {
+                const title = document.getElementById('sun-sign-title').textContent;
+                const score = document.getElementById('overall-score').textContent;
+                const text = document.getElementById('detailed-daily-narrative').innerText;
+                const fullText = `✨ ASTRALIS Dnevni Horoskop — ${title} (Povoljnost: ${score})\n\n${text}`;
+                const ta = document.createElement('textarea');
+                ta.value = fullText;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('Dnevni horoskop je kopiran!', 'success');
+            });
+
+            // Prebacivanje tabova (Dnevni vs Sinastrija)
+            document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetView = btn.getAttribute('data-view');
+                    document.getElementById('view-daily').classList.toggle('hidden', targetView !== 'daily');
+                    document.getElementById('view-synastry').classList.toggle('hidden', targetView !== 'synastry');
+
+                    document.querySelectorAll('.nav-tab-btn').forEach(b => {
+                        const isActive = b.getAttribute('data-view') === targetView;
+                        b.className = isActive
+                            ? 'nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-cosmic-950 shadow transition'
+                            : 'nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition';
+                    });
+                });
+            });
+
+            // Sinastrija forma i preuzimanje mojih podataka
+            document.getElementById('synastry-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                computeAndRenderSynastry();
+                showToast('Uporedna natalna karta je izračunata!', 'success');
+            });
+
+            document.getElementById('btn-copy-my-data-to-synastry').addEventListener('click', () => {
+                document.getElementById('syn-name-1').value = document.getElementById('user-name').value || 'Ja';
+                document.getElementById('syn-date-1').value = document.getElementById('birth-date').value;
+                document.getElementById('syn-time-1').value = document.getElementById('birth-time').value;
+                document.getElementById('syn-city-1').value = document.getElementById('birth-city').value;
+                computeAndRenderSynastry();
+                showToast('Vaši podaci su preneti u Osobu A.', 'info');
+            });
+
+            // Auth i modal događaji
+            loadAuthState();
+            syncAuthAndUnlockUI();
+            setTimeout(initGoogleOAuth, 600);
+
+            document.getElementById('btn-open-auth-modal')?.addEventListener('click', openUnlockModal);
+            document.getElementById('btn-close-unlock-modal')?.addEventListener('click', closeUnlockModal);
+
+            document.getElementById('btn-google-signin')?.addEventListener('click', () => {
+                if (initGoogleOAuth() && typeof google !== 'undefined') {
+                    google.accounts.id.prompt();
+                    return;
+                }
+                const enteredName = document.getElementById('user-name').value.trim() || 'Nikola Petrović';
+                const slug = enteredName.toLowerCase().replace(/\s+/g, '.');
+                appAuthState.user = {
+                    name: enteredName,
+                    email: `${slug}@gmail.com`,
+                    picture: null
+                };
+                saveAuthState();
+                syncAuthAndUnlockUI();
+                showToast(`Probna Google prijava (${appAuthState.user.email}) — unesite GOOGLE_CLIENT_ID za pravi OAuth.`, 'info');
+            });
+
+            document.getElementById('btn-confirm-ig-follow')?.addEventListener('click', () => {
+                appAuthState.igFollowed = true;
+                saveAuthState();
+                syncAuthAndUnlockUI();
+                showToast('Praćenje stranice @astralis.astro je potvrđeno!', 'success');
+            });
+
+            document.getElementById('btn-finish-unlock')?.addEventListener('click', () => {
+                if (isPremiumUnlocked()) {
+                    closeUnlockModal();
+                    showToast('VIP astrološka analiza je otključana!', 'success');
+                }
+            });
+
+            // Početni proračuni
+            initZodiacGrid();
+            runCalculation(false);
+            computeAndRenderSynastry();
+        });
+    </script>
+</body>
+</html>
