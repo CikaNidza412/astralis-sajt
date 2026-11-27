@@ -116,6 +116,11 @@
                 <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-cosmic-950 font-bold text-base sm:text-lg shadow-lg shadow-amber-500/20 group-hover:scale-105 transition">
                     ✦
                 </div>
+                <div class="leading-tight">
+                    <span class="font-serif font-bold text-sm sm:text-base tracking-wider text-white block">ASTRALIS</span>
+                    <span id="header-subtitle" class="text-[10px] text-amber-300/80 hidden sm:block">Astrology & Natal Portal</span>
+                </div>
+            </a>
             <!-- Main Navigation Tabs (6 Dedicated Pages) -->
             <nav class="hidden xl:flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
                 <button type="button" data-view="daily" id="tab-daily-desktop" class="nav-tab-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-cosmic-950 shadow transition">
@@ -2221,7 +2226,307 @@
 
         // =========================================================================
         // 3. GOOGLE OAUTH & BILINGUAL ASTROLOGICAL DATABASES
-// ... existing code ... -->
+        // =========================================================================
+        function t() {
+            return UI_STRINGS[currentLang] || UI_STRINGS.en;
+        }
+
+        function getActiveGoogleClientId() {
+            try {
+                const stored = localStorage.getItem('astralis_google_client_id');
+                if (stored && stored.includes('.apps.googleusercontent.com')) return stored;
+            } catch (e) {}
+            return 'VAS_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+        }
+
+        const CITIES_DATA = [
+            { name: { en: 'Belgrade, Serbia', sr: 'Beograd, Srbija' }, lat: 44.79, lng: 20.45 },
+            { name: { en: 'Kruševac, Serbia', sr: 'Kruševac, Srbija' }, lat: 43.58, lng: 21.33 },
+            { name: { en: 'Novi Sad, Serbia', sr: 'Novi Sad, Srbija' }, lat: 45.27, lng: 19.83 },
+            { name: { en: 'Niš, Serbia', sr: 'Niš, Srbija' }, lat: 43.32, lng: 21.90 },
+            { name: { en: 'Kragujevac, Serbia', sr: 'Kragujevac, Srbija' }, lat: 44.01, lng: 20.91 },
+            { name: { en: 'Subotica, Serbia', sr: 'Subotica, Srbija' }, lat: 46.10, lng: 19.67 },
+            { name: { en: 'Zagreb, Croatia', sr: 'Zagreb, Hrvatska' }, lat: 45.81, lng: 15.98 },
+            { name: { en: 'Split, Croatia', sr: 'Split, Hrvatska' }, lat: 43.51, lng: 16.44 },
+            { name: { en: 'Sarajevo, Bosnia & Herzegovina', sr: 'Sarajevo, Bosna i Hercegovina' }, lat: 43.86, lng: 18.41 },
+            { name: { en: 'Banja Luka, Bosnia & Herzegovina', sr: 'Banja Luka, Bosna i Hercegovina' }, lat: 44.77, lng: 17.19 },
+            { name: { en: 'Podgorica, Montenegro', sr: 'Podgorica, Crna Gora' }, lat: 42.43, lng: 19.26 },
+            { name: { en: 'Ljubljana, Slovenia', sr: 'Ljubljana, Slovenija' }, lat: 46.06, lng: 14.51 },
+            { name: { en: 'Skopje, North Macedonia', sr: 'Skoplje, Severna Makedonija' }, lat: 41.99, lng: 21.43 },
+            { name: { en: 'Vienna, Austria', sr: 'Beč, Austrija' }, lat: 48.21, lng: 16.37 },
+            { name: { en: 'Zurich, Switzerland', sr: 'Cirih, Švajcarska' }, lat: 47.38, lng: 8.54 },
+            { name: { en: 'Berlin, Germany', sr: 'Berlin, Nemačka' }, lat: 52.52, lng: 13.40 },
+            { name: { en: 'Munich, Germany', sr: 'Minhen, Nemačka' }, lat: 48.14, lng: 11.58 },
+            { name: { en: 'Paris, France', sr: 'Pariz, Francuska' }, lat: 48.86, lng: 2.35 },
+            { name: { en: 'London, United Kingdom', sr: 'London, Velika Britanija' }, lat: 51.51, lng: -0.13 },
+            { name: { en: 'Madrid, Spain', sr: 'Madrid, Španija' }, lat: 40.42, lng: -3.70 },
+            { name: { en: 'Rome, Italy', sr: 'Rim, Italija' }, lat: 41.90, lng: 12.50 },
+            { name: { en: 'Milan, Italy', sr: 'Milano, Italija' }, lat: 45.46, lng: 9.19 },
+            { name: { en: 'Amsterdam, Netherlands', sr: 'Amsterdam, Holandija' }, lat: 52.37, lng: 4.90 },
+            { name: { en: 'Stockholm, Sweden', sr: 'Stokholm, Švedska' }, lat: 59.33, lng: 18.07 },
+            { name: { en: 'Athens, Greece', sr: 'Atina, Grčka' }, lat: 37.98, lng: 23.73 },
+            { name: { en: 'Istanbul, Turkey', sr: 'Istanbul, Turska' }, lat: 41.01, lng: 28.98 },
+            { name: { en: 'Moscow, Russia', sr: 'Moskva, Rusija' }, lat: 55.76, lng: 37.62 },
+            { name: { en: 'Dubai, UAE', sr: 'Dubai, UAE' }, lat: 25.20, lng: 55.27 },
+            { name: { en: 'Tokyo, Japan', sr: 'Tokio, Japan' }, lat: 35.68, lng: 139.65 },
+            { name: { en: 'Seoul, South Korea', sr: 'Seul, Južna Koreja' }, lat: 37.57, lng: 126.98 },
+            { name: { en: 'Singapore, Singapore', sr: 'Singapur, Singapur' }, lat: 1.35, lng: 103.82 },
+            { name: { en: 'Sydney, Australia', sr: 'Sidnej, Australija' }, lat: -33.87, lng: 151.21 },
+            { name: { en: 'Melbourne, Australia', sr: 'Melburn, Australija' }, lat: -37.81, lng: 144.96 },
+            { name: { en: 'New York, USA', sr: 'Njujork, SAD' }, lat: 40.71, lng: -74.01 },
+            { name: { en: 'Los Angeles, USA', sr: 'Los Anđeles, SAD' }, lat: 34.05, lng: -118.24 },
+            { name: { en: 'Chicago, USA', sr: 'Čikago, SAD' }, lat: 41.88, lng: -87.63 },
+            { name: { en: 'Miami, USA', sr: 'Majami, SAD' }, lat: 25.76, lng: -80.19 },
+            { name: { en: 'San Francisco, USA', sr: 'San Francisko, SAD' }, lat: 37.77, lng: -122.42 },
+            { name: { en: 'Toronto, Canada', sr: 'Toronto, Kanada' }, lat: 43.65, lng: -79.38 },
+            { name: { en: 'Vancouver, Canada', sr: 'Vankuver, Kanada' }, lat: 49.28, lng: -123.12 },
+            { name: { en: 'São Paulo, Brazil', sr: 'Sao Paulo, Brazil' }, lat: -23.55, lng: -46.63 },
+            { name: { en: 'Buenos Aires, Argentina', sr: 'Buenos Ajres, Argentina' }, lat: -34.60, lng: -58.38 },
+            { name: { en: 'Prague, Czechia', sr: 'Prag, Češka' }, lat: 50.08, lng: 14.44 }
+        ];
+
+        const selectedLocations = {
+            main: { label: 'Belgrade, Serbia', lat: 44.79, lng: 20.45 },
+            syn1: { label: 'Belgrade, Serbia', lat: 44.79, lng: 20.45 },
+            syn2: { label: 'Prague, Czechia', lat: 50.08, lng: 14.44 }
+        };
+
+        function updateCityHintUI() {
+            const hint = document.getElementById('birth-city-coords-hint');
+            if (!hint) return;
+            const { lat, lng } = selectedLocations.main;
+            const latDir = lat >= 0 ? 'N' : 'S';
+            const lngDir = lng >= 0 ? 'E' : 'W';
+            hint.textContent = `${Math.abs(lat).toFixed(2)}°${latDir}, ${Math.abs(lng).toFixed(2)}°${lngDir}`;
+        }
+
+        async function resolveCityCoordinates(queryText, targetKey = 'main') {
+            const cleaned = (queryText || '').trim();
+            if (!cleaned) return selectedLocations[targetKey];
+
+            const lower = cleaned.toLowerCase();
+            const localMatch = CITIES_DATA.find(c =>
+                c.name.en.toLowerCase() === lower ||
+                c.name.sr.toLowerCase() === lower ||
+                c.name.en.toLowerCase().startsWith(lower) ||
+                c.name.sr.toLowerCase().startsWith(lower)
+            );
+
+            if (localMatch) {
+                selectedLocations[targetKey] = {
+                    label: localMatch.name[currentLang],
+                    lat: localMatch.lat,
+                    lng: localMatch.lng
+                };
+                if (targetKey === 'main') updateCityHintUI();
+                return selectedLocations[targetKey];
+            }
+
+            try {
+                const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleaned)}&count=1&language=en&format=json`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.results && data.results.length > 0) {
+                        const hit = data.results[0];
+                        selectedLocations[targetKey] = {
+                            label: `${hit.name}${hit.country ? ', ' + hit.country : ''}`,
+                            lat: Number(hit.latitude),
+                            lng: Number(hit.longitude)
+                        };
+                        if (targetKey === 'main') updateCityHintUI();
+                        return selectedLocations[targetKey];
+                    }
+                }
+            } catch (e) {}
+
+            // Deterministic coordinate fallback if offline
+            let hash = 0;
+            for (let i = 0; i < cleaned.length; i++) {
+                hash = ((hash << 5) - hash) + cleaned.charCodeAt(i);
+                hash |= 0;
+            }
+            const fallbackLat = Number((((Math.abs(hash) % 90) - 35) + 0.25).toFixed(2));
+            const fallbackLng = Number((((Math.abs(hash * 7) % 300) - 150) + 0.40).toFixed(2));
+            selectedLocations[targetKey] = { label: cleaned, lat: fallbackLat, lng: fallbackLng };
+            if (targetKey === 'main') updateCityHintUI();
+            return selectedLocations[targetKey];
+        }
+
+        const ZODIAC_SIGNS = [
+            { id: 0, symbol: '♈', startMonth: 3, startDay: 21, name: { en: 'Aries', sr: 'Ovan' }, dates: { en: 'March 21 – April 19', sr: '21. mart – 19. april' }, element: { en: 'Fire', sr: 'Vatra' }, ruler: { en: 'Mars', sr: 'Mars' }, color: { en: 'Crimson Red', sr: 'Grimizno crvena' } },
+            { id: 1, symbol: '♉', startMonth: 4, startDay: 20, name: { en: 'Taurus', sr: 'Bik' }, dates: { en: 'April 20 – May 20', sr: '20. april – 20. maj' }, element: { en: 'Earth', sr: 'Zemlja' }, ruler: { en: 'Venus', sr: 'Venera' }, color: { en: 'Emerald Green', sr: 'Smaragdno zelena' } },
+            { id: 2, symbol: '♊', startMonth: 5, startDay: 21, name: { en: 'Gemini', sr: 'Blizanci' }, dates: { en: 'May 21 – June 20', sr: '21. maj – 20. jun' }, element: { en: 'Air', sr: 'Vazduh' }, ruler: { en: 'Mercury', sr: 'Merkur' }, color: { en: 'Saffron Yellow', sr: 'Šafran žuta' } },
+            { id: 3, symbol: '♋', startMonth: 6, startDay: 21, name: { en: 'Cancer', sr: 'Rak' }, dates: { en: 'June 21 – July 22', sr: '21. jun – 22. jul' }, element: { en: 'Water', sr: 'Voda' }, ruler: { en: 'Moon', sr: 'Mesec' }, color: { en: 'Pearl Silver', sr: 'Biserno srebrna' } },
+            { id: 4, symbol: '♌', startMonth: 7, startDay: 23, name: { en: 'Leo', sr: 'Lav' }, dates: { en: 'July 23 – August 22', sr: '23. jul – 22. avgust' }, element: { en: 'Fire', sr: 'Vatra' }, ruler: { en: 'Sun', sr: 'Sunce' }, color: { en: 'Royal Gold', sr: 'Kraljevsko zlatna' } },
+            { id: 5, symbol: '♍', startMonth: 8, startDay: 23, name: { en: 'Virgo', sr: 'Devica' }, dates: { en: 'August 23 – September 22', sr: '23. avgust – 22. septembar' }, element: { en: 'Earth', sr: 'Zemlja' }, ruler: { en: 'Mercury', sr: 'Merkur' }, color: { en: 'Forest Moss', sr: 'Šumsko zelena' } },
+            { id: 6, symbol: '♎', startMonth: 9, startDay: 23, name: { en: 'Libra', sr: 'Vaga' }, dates: { en: 'September 23 – October 22', sr: '23. septembar – 22. oktobar' }, element: { en: 'Air', sr: 'Vazduh' }, ruler: { en: 'Venus', sr: 'Venera' }, color: { en: 'Rose Quartz', sr: 'Roze kvarc' } },
+            { id: 7, symbol: '♏', startMonth: 10, startDay: 23, name: { en: 'Scorpio', sr: 'Škorpija' }, dates: { en: 'October 23 – November 21', sr: '23. oktobar – 21. novembar' }, element: { en: 'Water', sr: 'Voda' }, ruler: { en: 'Pluto & Mars', sr: 'Pluton i Mars' }, color: { en: 'Obsidian Wine', sr: 'Tamno bordo' } },
+            { id: 8, symbol: '♐', startMonth: 11, startDay: 22, name: { en: 'Sagittarius', sr: 'Strelac' }, dates: { en: 'November 22 – December 21', sr: '22. novembar – 21. decembar' }, element: { en: 'Fire', sr: 'Vatra' }, ruler: { en: 'Jupiter', sr: 'Jupiter' }, color: { en: 'Royal Purple', sr: 'Kraljevsko ljubičasta' } },
+            { id: 9, symbol: '♑', startMonth: 12, startDay: 22, name: { en: 'Capricorn', sr: 'Jarac' }, dates: { en: 'December 22 – January 19', sr: '22. decembar – 19. januar' }, element: { en: 'Earth', sr: 'Zemlja' }, ruler: { en: 'Saturn', sr: 'Saturn' }, color: { en: 'Slate Charcoal', sr: 'Grafitno siva' } },
+            { id: 10, symbol: '♒', startMonth: 1, startDay: 20, name: { en: 'Aquarius', sr: 'Vodolija' }, dates: { en: 'January 20 – February 18', sr: '20. januar – 18. februar' }, element: { en: 'Air', sr: 'Vazduh' }, ruler: { en: 'Uranus & Saturn', sr: 'Uran i Saturn' }, color: { en: 'Electric Cobalt', sr: 'Električno plava' } },
+            { id: 11, symbol: '♓', startMonth: 2, startDay: 19, name: { en: 'Pisces', sr: 'Ribe' }, dates: { en: 'February 19 – March 20', sr: '19. februar – 20. mart' }, element: { en: 'Water', sr: 'Voda' }, ruler: { en: 'Neptune & Jupiter', sr: 'Neptun i Jupiter' }, color: { en: 'Seafoam Teal', sr: 'Morsko tirkizna' } }
+        ];
+
+        const ASPECTS_POOL = {
+            en: [
+                { title: 'Sun Trine Jupiter', type: 'Trine 120°', desc: 'Expands confidence, career opportunities, and generous support from allies.' },
+                { title: 'Venus Sextile Moon', type: 'Sextile 60°', desc: 'Brings emotional warmth, heartfelt conversations, and romantic harmony.' },
+                { title: 'Mercury Trine Saturn', type: 'Trine 120°', desc: 'Sharpens strategic focus, clear planning, and practical decision-making.' },
+                { title: 'Mars Sextile Sun', type: 'Sextile 60°', desc: 'Boosts physical drive, courage, and momentum on important personal goals.' },
+                { title: 'Moon Conjunction Venus', type: 'Conjunction 0°', desc: 'Heightens charm, artistic inspiration, and affectionate social connections.' },
+                { title: 'Jupiter Sextile Mercury', type: 'Sextile 60°', desc: 'Favors good news, learning breakthroughs, and productive negotiations.' }
+            ],
+            sr: [
+                { title: 'Sunce Trigon Jupiter', type: 'Trigon 120°', desc: 'Donosi samopouzdanje, poslovne prilike i podršku uticajnih ljudi.' },
+                { title: 'Venera Sekstil Mesec', type: 'Sekstil 60°', desc: 'Pojačava emotivnu toplinu, iskrene razgovore i sklad u ljubavi.' },
+                { title: 'Merkur Trigon Saturn', type: 'Trigon 120°', desc: 'Izoštrava fokus, strpljenje i donošenje mudrih, dugoročnih odluka.' },
+                { title: 'Mars Sekstil Sunce', type: 'Sekstil 60°', desc: 'Podiže vitalnost, hrabrost i odlučnost u ostvarivanju važnih planova.' },
+                { title: 'Mesec Konjunkcija Venera', type: 'Konjunkcija 0°', desc: 'Pojačava lični šarm, kreativnu inspiraciju i prijatne susrete.' },
+                { title: 'Jupiter Sekstil Merkur', type: 'Sekstil 60°', desc: 'Povoljno vreme za dobre vesti, učenje i uspešne pregovore.' }
+            ]
+        };
+
+        const NARRATIVE_TEMPLATES = {
+            en: {
+                high: {
+                    work: ['An exceptionally favorable day for negotiations, signing agreements, and launching new projects. Your initiative brings visible results.'],
+                    love: ['Magnetism and warmth are at their peak. Singles can expect an exciting encounter, while couples deepen mutual trust.'],
+                    health: ['Vitality and stamina are running high. Great timing for physical activity, fresh air, and recharging your body.'],
+                    luck: ['Cosmic alignments work in your favor — trust your first instinct as the odds of a lucky break are well above average.']
+                },
+                medium: {
+                    work: ['Steady progress comes through methodical focus. Prioritize organizing key tasks rather than rushing into brand-new commitments.'],
+                    love: ['Calm and sincere dialogue strengthens your bond today. Listen closely to unspoken feelings and enjoy unhurried quality time.'],
+                    health: ['Balanced energy levels reward mindful pacing, proper hydration, and a restorative evening routine.'],
+                    luck: ['Subtle synchronicities appear when you stay observant and patient with timing.']
+                },
+                low: {
+                    work: ['Double-check fine print and keep communications clear. Delaying major financial decisions by a day or two works to your advantage.'],
+                    love: ['Give yourself and your partner extra breathing room today; gentle patience prevents minor misunderstandings.'],
+                    health: ['Honor your need for rest, lighter meals, and quiet mental decompression.'],
+                    luck: ['Stick to proven routines today and let external circumstances settle before taking bold risks.']
+                }
+            },
+            sr: {
+                high: {
+                    work: ['Izuzetno povoljan dan za pregovore, potpisivanje dogovora i pokretanje novih projekata. Vaša inicijativa donosi vidljive rezultate.'],
+                    love: ['Lični magnetizam i toplina su na vrhuncu. Slobodni mogu očekivati uzbudljiv susret, dok zauzeti produbljuju poverenje.'],
+                    health: ['Vitalnost i izdržljivost su na visokom nivou. Odličan trenutak za fizičku aktivnost, boravak na svežem vazduhu i obnovu energije.'],
+                    luck: ['Kosmički aspekti rade u vašu korist — verujte prvom instinktu jer su šanse za srećan preokret iznad proseka.']
+                },
+                medium: {
+                    work: ['Stabilan napredak dolazi kroz strpljiv rad. Fokusirajte se na završavanje započetih obaveza umesto na ishitrene poteze.'],
+                    love: ['Smiren i iskren razgovor danas učvršćuje odnos. Obratite pažnju na sitne znake pažnje i uživajte u opuštenoj atmosferi.'],
+                    health: ['Umerena energija zahteva dobar ritam dana, dovoljno hidratacije i kvalitetan večernji odmor.'],
+                    luck: ['Male slučajnosti i korisne informacije stižu ako ostanete strpljivi i pažljivo posmatrate okolnosti.']
+                },
+                low: {
+                    work: ['Pažljivo proverite detalje i izbegavajte brzoplete finansijske odluke. Strpljenje vam danas čuva energiju i novac.'],
+                    love: ['Pružite sebi i partneru malo više razumevanja; smiren ton sprečava prolazne nesporazume.'],
+                    health: ['Poslušajte signale tela — više odmora, laganija ishrana i mirno veče doneće vam brz oporavak.'],
+                    luck: ['Držite se proverenih planova i sačekajte povoljniji trenutak za rizične poteze.']
+                }
+            }
+        };
+
+        const DAILY_NARRATIVE_OPENERS = {
+            en: {
+                high: ['today’s vibrant energy empowers you to take bold initiative and turn promising ideas into real progress.'],
+                medium: ['today’s steady celestial rhythm invites thoughtful planning, constructive conversations, and grounded momentum.'],
+                low: ['today’s reflective planetary tone encourages patience, careful observation, and recharging your inner focus.']
+            },
+            sr: {
+                high: ['današnja snažna energija daje vam vetar u leđa da preuzmete inicijativu i pretvorite dobre ideje u konkretan uspeh.'],
+                medium: ['današnji stabilan ritam planeta podstiče promišljeno planiranje, konstruktivne razgovore i siguran korak napred.'],
+                low: ['današnji mirniji raspored planeta savetuje strpljenje, pažljivo posmatranje i čuvanje lične energije.']
+            }
+        };
+
+        const DAILY_NARRATIVE_CLOSERS = {
+            en: {
+                high: ['encourages confident self-expression and brings timely support when you step forward with clarity.'],
+                medium: ['helps you balance emotional intuition with practical, grounded solutions to everyday tasks.'],
+                low: ['reminds you to protect your peace, avoid unnecessary tension, and trust gradual progress.']
+            },
+            sr: {
+                high: ['podstiče samopouzdanje i donosi pravovremenu podršku okoline kada jasno iznesete svoje ciljeve.'],
+                medium: ['pomaže vam da spojite emotivnu intuiciju sa praktičnim i stabilnim rešenjima u svakodnevnim obavezama.'],
+                low: ['podseća vas da sačuvate unutrašnji mir, izbegnete nepotrebnu žurbu i verujete postepenom napretku.']
+            }
+        };
+
+        const KARMIC_NODE_VARIANTS = {
+            en: [
+                'your highest fulfillment arrives when you pair practical discipline with the courage to take the lead in your authentic life path.',
+                'growth accelerates whenever you step out of familiar comfort zones and share your creative voice openly with the world.',
+                'lasting purpose comes from balancing personal independence with deep emotional trust and meaningful collaboration.'
+            ],
+            sr: [
+                'vaše najveće ispunjenje dolazi kada spojite praktičnu disciplinu sa hrabrošću da preuzmete vođstvo na svom autentičnom životnom putu.',
+                'lični napredak se ubrzava svaki put kada izađete iz zone komfora i otvoreno pokažete svoje talente i ideje.',
+                'trajnu svrhu pronalazite u ravnoteži između lične samostalnosti i dubokog emotivnog poverenja u bliskim odnosima.'
+            ]
+        };
+
+        const SEVENTH_HOUSE_VARIANTS = {
+            en: [
+                'Your 7th house of partnerships draws you toward someone who honors your independence while offering emotional security and a shared vision for lasting commitment.',
+                'In marriage and soul partnerships, you thrive with a loyal, intellectually stimulating partner who brings warmth, humor, and mutual respect.',
+                'Your 7th house indicates a bond built on sincerity, steady devotion, and complementary strengths that deepen over time.'
+            ],
+            sr: [
+                'Vaša 7. kuća partnerstava privlači osobu koja poštuje vašu samostalnost, a istovremeno pruža emotivnu sigurnost i zajedničku viziju budućnosti.',
+                'U braku i sudbinskim vezama najbolje funkcionišete uz lojalnog i inspirativnog partnera koji donosi toplinu i uzajamno poštovanje.',
+                'Vaša 7. kuća ukazuje na odnos zasnovan na iskrenosti, postojanoj posvećenosti i međusobnom dopunjavanju koje s godinama postaje sve snažnije.'
+            ]
+        };
+
+        const ENCYCLOPEDIA_SIGNS_DATA = {
+            en: [
+                { title: '♈ Aries (March 21 – April 19) • Fire', desc: 'Ruled by Mars, Aries is the pioneer of the zodiac—courageous, direct, and energized by fresh challenges. Aries thrives when leading new initiatives and expressing authentic passion.' },
+                { title: '♉ Taurus (April 20 – May 20) • Earth', desc: 'Ruled by Venus, Taurus values stability, sensory beauty, loyalty, and steady material growth. Patient and grounded, Taurus builds lasting foundations in both career and love.' },
+                { title: '♊ Gemini (May 21 – June 20) • Air', desc: 'Ruled by Mercury, Gemini is curious, articulate, and adaptable. Drawn to ideas, storytelling, and social exchange, Gemini connects people and perspectives effortlessly.' },
+                { title: '♋ Cancer (June 21 – July 22) • Water', desc: 'Ruled by the Moon, Cancer is deeply intuitive, protective, and emotionally perceptive. Home, family heritage, and heartfelt loyalty sit at the center of Cancer\'s world.' },
+                { title: '♌ Leo (July 23 – August 22) • Fire', desc: 'Ruled by the Sun, Leo radiates warmth, generosity, creative self-expression, and natural leadership. Leo inspires confidence and loyalty in everyone around them.' },
+                { title: '♍ Virgo (August 23 – September 22) • Earth', desc: 'Ruled by Mercury, Virgo blends analytical precision with practical service and mindfulness. Detail-oriented and reliable, Virgo excels at bringing clarity to complex systems.' },
+                { title: '♎ Libra (September 23 – October 22) • Air', desc: 'Ruled by Venus, Libra seeks balance, fairness, aesthetic harmony, and meaningful partnership. Diplomatic and charming, Libra brings grace to interpersonal dynamics.' },
+                { title: '♏ Scorpio (October 23 – November 21) • Water', desc: 'Ruled by Pluto and Mars, Scorpio embodies emotional depth, resilience, psychological insight, and transformation. Scorpio values complete honesty and profound trust.' },
+                { title: '♐ Sagittarius (November 22 – December 21) • Fire', desc: 'Ruled by Jupiter, Sagittarius is philosophical, adventurous, and optimistic. Driven by a quest for truth, travel, and higher wisdom, Sagittarius expands horizons.' },
+                { title: '♑ Capricorn (December 22 – January 19) • Earth', desc: 'Ruled by Saturn, Capricorn is disciplined, strategic, ambitious, and dependable. Masters of long-term vision, Capricorns turn patient effort into enduring achievement.' },
+                { title: '♒ Aquarius (January 20 – February 18) • Air', desc: 'Ruled by Uranus and Saturn, Aquarius is innovative, independent, humanitarian, and forward-thinking. Aquarius champions originality and progressive community ideas.' },
+                { title: '♓ Pisces (February 19 – March 20) • Water', desc: 'Ruled by Neptune and Jupiter, Pisces is compassionate, imaginative, artistic, and spiritually attuned. Pisces bridges intuition and empathy with effortless creativity.' }
+            ],
+            sr: [
+                { title: '♈ Ovan (21. mart – 19. april) • Vatra', desc: 'Pod vladavinom Marsa, Ovan je pionir zodijaka — hrabar, direktan i pun energije za nove izazove. Najbolje se oseća kada predvodi nove poduhvate.' },
+                { title: '♉ Bik (20. april – 20. maj) • Zemlja', desc: 'Pod vladavinom Venere, Bik ceni stabilnost, estetiku, odanost i postepen materijalni napredak. Strpljiv i prizemljen, gradi trajne temelje u poslu i ljubavi.' },
+                { title: '♊ Blizanci (21. maj – 20. jun) • Vazduh', desc: 'Pod vladavinom Merkura, Blizanci su radoznali, elokventni i prilagodljivi. Privlače ih ideje, komunikacija i povezivanje ljudi.' },
+                { title: '♋ Rak (21. jun – 22. jul) • Voda', desc: 'Pod vladavinom Meseca, Rak je duboko intuitivan, zaštitnički nastrojen i emotivno pronicljiv. Dom, porodica i iskrena odanost su u centru njegovog sveta.' },
+                { title: '♌ Lav (23. jul – 22. avgust) • Vatra', desc: 'Pod vladavinom Sunca, Lav zrači toplinom, velikodušnošću, kreativnošću i prirodnim autoritetom. Inspiriše samopouzdanje kod ljudi oko sebe.' },
+                { title: '♍ Devica (23. avgust – 22. septembar) • Zemlja', desc: 'Pod vladavinom Merkura, Devica spaja analitičku preciznost sa praktičnošću i posvećenošću. Pouzdana i sistematična, unosi red u svaki projekat.' },
+                { title: '♎ Vaga (23. septembar – 22. oktobar) • Vazduh', desc: 'Pod vladavinom Venere, Vaga teži ravnoteži, pravednosti, harmoniji i skladnim partnerstvima. Diplomatična i šarmantna, donosi mir u odnose.' },
+                { title: '♏ Škorpija (23. oktobar – 21. novembar) • Voda', desc: 'Pod vladavinom Plutona i Marsa, Škorpija simbolizuje emotivnu dubinu, snagu volje, intuiciju i transformaciju. Ceni potpunu iskrenost i poverenje.' },
+                { title: '♐ Strelac (22. novembar – 21. decembar) • Vatra', desc: 'Pod vladavinom Jupitera, Strelac je filozofski nastrojen, avanturističkog duha i optimističan. Vođen potragom za znanjem i putovanjima, širi vidike.' },
+                { title: '♑ Jarac (22. decembar – 19. januar) • Zemlja', desc: 'Pod vladavinom Saturna, Jarac je disciplinovan, strateški orijentisan, ambiciozan i pouzdan. Strpljivim radom ostvaruje velike dugoročne ciljeve.' },
+                { title: '♒ Vodolija (20. januar – 18. februar) • Vazduh', desc: 'Pod vladavinom Urana i Saturna, Vodolija je inovativna, nezavisna i okrenuta budućnosti. Donosi originalne ideje i human pristup zajednici.' },
+                { title: '♓ Ribe (19. februar – 20. mart) • Voda', desc: 'Pod vladavinom Neptuna i Jupitera, Ribe su saosećajne, maštovite, umetnički nadarene i intuitivne. Spajaju empatiju sa bogatom kreativnošću.' }
+            ]
+        };
+
+        const FAQ_DATA = {
+            en: [
+                { q: 'Why do I need my exact birth time and city?', a: 'Your birth time and geographic coordinates determine your Rising sign (Ascendant) and the exact alignment of all 12 astrological houses, which shift every two hours.' },
+                { q: 'What if I do not know my exact hour of birth?', a: 'You can check the "Unknown time" option. Astralis will still calculate your accurate Sun sign, planetary degrees, and daily transit favorability index.' },
+                { q: 'How is the Daily Favorability Index calculated?', a: 'Our engine evaluates daily planetary transits relative to your Sun, Moon, and Ascendant placements across four core life domains: Career, Love, Vitality, and Intuition.' },
+                { q: 'Is Astralis free to use?', a: 'Yes, all daily horoscopes, natal wheel visualizations, synastry compatibility charts, and zodiac guides on Astralis are completely free for readers worldwide.' }
+            ],
+            sr: [
+                { q: 'Zašto su potrebni tačan sat i grad rođenja?', a: 'Tačno vreme i geografske koordinate mesta rođenja određuju vaš Podznak (Ascendent) i raspored svih 12 astroloških kuća koje se pomeraju na svaka dva sata.' },
+                { q: 'Šta ako ne znam tačan sat rođenja?', a: 'Možete označiti opciju „Ne znam sat“. Astralis će i dalje precizno izračunati vaš Sunčev znak, stepene planeta i dnevni indeks povoljnosti.' },
+                { q: 'Kako se računa dnevni indeks povoljnosti?', a: 'Naš algoritam analizira dnevne planetarne tranzite u odnosu na vaše Sunce, Mesec i Podznak kroz četiri ključne oblasti: Posao, Ljubav, Zdravlje i Intuiciju.' },
+                { q: 'Da li je korišćenje portala Astralis besplatno?', a: 'Da, svi dnevni horoskopi, vizuelni natalni krugovi, uporedne karte za dvoje i edukativni vodiči na portalu Astralis su potpuno besplatni.' }
+            ]
+        };
+
         function switchMainView(targetView) {
             const validViews = ['daily', 'synastry', 'history', 'curiosities', 'books', 'merch'];
             currentActiveView = validViews.includes(targetView) ? targetView : 'daily';
