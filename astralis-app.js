@@ -9,7 +9,11 @@
 
         const UI_STRINGS = {
             en: {
-                profileStorageNote: "Your birth details are saved on this device only if you choose Save in this browser.",
+                merchSloganCopied: 'Copied slogan',
+                bookAuthor: 'Author',
+                exampleBadge: 'Examples',
+                languageSelectorLabel: 'Language selector',
+                profileStorageNote: "Saving keeps your birth details in this browser and opens today’s profile.",
                 synPrivacyNote: "Both sets of details stay in this open page and are never saved by the comparison tool.",
                 btnClearProfile: "Clear saved data",
                 profileDayTitle: "Your daily profile",
@@ -52,8 +56,8 @@
                 lblBirthTime: 'Birth Time',
                 lblUnknownTime: 'Unknown time',
                 lblTargetDate: "Reading Date",
-                btnSaveProfile: "Save in this browser",
-                btnCalcHoroscope: "Show reading",
+                btnSaveProfile: "Save and show today’s profile",
+                btnCalcHoroscope: "Show reading without saving",
                 profileGreetingDefault: "Illustrative Astrology Profile",
                 profileGreetingNamed: (name) => `Illustrative Profile • ${name}`,
                 elementPrefix: 'Element',
@@ -175,7 +179,11 @@
                 toastDataTransferred: 'Your details were copied to Person A.',
             },
             sr: {
-                profileStorageNote: "Podaci o rođenju ostaju na ovom uređaju samo ako izaberete Sačuvaj u ovom pregledaču.",
+                merchSloganCopied: 'Slogan je kopiran',
+                bookAuthor: 'Autor',
+                exampleBadge: 'Primeri',
+                languageSelectorLabel: 'Izbor jezika',
+                profileStorageNote: "Čuvanjem podaci o rođenju ostaju u ovom pregledaču i otvara se današnji profil.",
                 synPrivacyNote: "Podaci obe osobe ostaju na otvorenoj stranici i alat za poređenje ih ne čuva.",
                 btnClearProfile: "Obriši podatke",
                 profileDayTitle: "Tvoj dnevni profil",
@@ -201,13 +209,13 @@
                 tabHistoryDesktop: '🏛️ Istorija i Koreni',
                 tabCuriositiesDesktop: '🔭 Zanimljivosti',
                 tabBooksDesktop: '📚 Naučite i Knjige',
-                tabMerchDesktop: '👕 Merch',
-                tabDailyMobile: '🔮 Natalni',
-                tabSynastryMobile: '💞 Za Dvoje',
+                tabMerchDesktop: '👕 Kolekcija',
+                tabDailyMobile: '🔮 Dnevni',
+                tabSynastryMobile: '💞 Za dvoje',
                 tabHistoryMobile: '🏛️ Istorija',
-                tabCuriositiesMobile: '🔭 Činjenice',
+                tabCuriositiesMobile: '🔭 Zanimljivo',
                 tabBooksMobile: '📚 Knjige',
-                tabMerchMobile: '👕 Merch',
+                tabMerchMobile: '👕 Kolekcija',
                 heroTitle: "<span class=\"gold-gradient-text\">Dnevni horoskop</span> i simulator natalne karte",
                 heroDesc: "Isprobajte simbolično tumačenje uz datum, vreme i grad rođenja sa liste. Krug i bodovi koriste pojednostavljene formule. Ne prikazuju stvarne položaje planeta i ne predviđaju događaje.",
                 lblUserName: 'Vaše ime (opciono)',
@@ -218,8 +226,8 @@
                 lblBirthTime: 'Vreme rođenja',
                 lblUnknownTime: 'Ne znam sat',
                 lblTargetDate: "Datum tumačenja",
-                btnSaveProfile: "Sačuvaj u ovom pregledaču",
-                btnCalcHoroscope: "Prikaži tumačenje",
+                btnSaveProfile: "Sačuvaj i prikaži današnji profil",
+                btnCalcHoroscope: "Prikaži tumačenje bez čuvanja",
                 profileGreetingDefault: "Ilustrativni astrološki profil",
                 profileGreetingNamed: (name) => `Ilustrativni profil • ${name}`,
                 elementPrefix: 'Element',
@@ -753,17 +761,30 @@
             }
         ];
 
-        const VIRAL_MERCH_SLOGANS = [
-            '“Help, my Jupiter is in Venus!”',
-            '“Help, it is Full Moon and I am a Virgo!”',
-            '“Sorry I’m late, Mercury is in Retrograde.”',
-            '“My Sun says chill, my Rising says chaos.”',
-            '“Warning: Unfiltered Scorpio / Aries Energy”',
-            '“Ask me about my Birth Chart (I dare you).”',
-            '“Powered by Coffee & Chaotic Planetary Transits”',
-            '“7th House Seeking Soulmate — Apply Within”',
-            '“Not stubborn, just a Taurus.”'
-        ];
+        const VIRAL_MERCH_SLOGANS = {
+            en: [
+                '“Help, my Jupiter is in Venus!”',
+                '“Help, it is Full Moon and I am a Virgo!”',
+                '“Sorry I’m late, Mercury is in Retrograde.”',
+                '“My Sun says chill, my Rising says chaos.”',
+                '“Warning: Unfiltered Scorpio / Aries Energy”',
+                '“Ask me about my Birth Chart (I dare you).”',
+                '“Powered by Coffee & Chaotic Planetary Transits”',
+                '“7th House Seeking Soulmate — Apply Within”',
+                '“Not stubborn, just a Taurus.”'
+            ],
+            sr: [
+                '„Upomoć, Jupiter mi je u Veneri!“',
+                '„Pun Mesec, a ja sam Devica!“',
+                '„Kasnim. Merkur je retrogradan.“',
+                '„Sunce kaže: opusti se. Podznak kaže: napravi haos.“',
+                '„Upozorenje: Škorpija / Ovan bez filtera“',
+                '„Pitaj me za natalnu kartu. Ako smeš.“',
+                '„Pokreću me kafa i haotični planetarni tranziti“',
+                '„Sedma kuća traži srodnu dušu. Prijave su otvorene.“',
+                '„Nisam tvrdoglav. Samo sam Bik.“'
+            ]
+        };
 
         // =========================================================================
         // 3. LOCAL CITIES & BILINGUAL ASTROLOGY CONTENT
@@ -1402,8 +1423,8 @@
                                 <span class="px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] font-bold">#${book.level[currentLang]}</span>
                                 <span class="text-lg">📖</span>
                             </div>
-                            <h3 class="font-serif text-base sm:text-lg font-bold text-white leading-snug">${book.title}</h3>
-                            <p class="text-xs font-semibold text-indigo-300">by ${book.author}</p>
+                            <h3 lang="en" class="font-serif text-base sm:text-lg font-bold text-white leading-snug">${book.title}</h3>
+                            <p class="text-xs font-semibold text-indigo-300">${s.bookAuthor} · ${book.author}</p>
                             <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">${book.desc[currentLang]}</p>
                         </div>
                         <div class="pt-2 border-t border-white/10 flex flex-wrap items-center gap-3 text-xs font-semibold">
@@ -1431,11 +1452,16 @@
             document.getElementById('merch-slogans-title').textContent = s.merchSlogansTitle;
             document.getElementById('merch-slogans-sub').textContent = s.merchSlogansSub;
 
-            const selectedSign = document.getElementById('merch-zodiac-select')?.value || 'Virgo';
+            const signSelect = document.getElementById('merch-zodiac-select');
+            const selectedSign = ZODIAC_SIGNS.find(sign => sign.name.en === signSelect.value) || ZODIAC_SIGNS[5];
+            for (const option of signSelect.options) {
+                const sign = ZODIAC_SIGNS.find(item => item.name.en === option.value);
+                if (sign) option.textContent = `${sign.symbol} ${sign.name[currentLang]}`;
+            }
             const merchGrid = document.getElementById('merch-grid');
             if (merchGrid) {
                 merchGrid.innerHTML = MERCH_PRODUCTS_DATA.map(item => {
-                    const resolvedTitle = item.title[currentLang].replace('{SIGN}', selectedSign);
+                    const resolvedTitle = item.title[currentLang].replace('{SIGN}', selectedSign.name[currentLang]);
                     return `
                         <article class="glass-card glass-card-hover rounded-2xl p-5 sm:p-6 flex flex-col justify-between space-y-4">
                             <div class="space-y-2.5">
@@ -1460,7 +1486,7 @@
 
             const slogansGrid = document.getElementById('merch-slogans-grid');
             if (slogansGrid) {
-                slogansGrid.innerHTML = VIRAL_MERCH_SLOGANS.map(slogan => `
+                slogansGrid.innerHTML = VIRAL_MERCH_SLOGANS[currentLang].map(slogan => `
                     <button type="button" onclick="copyMerchSlogan(${JSON.stringify(slogan).replace(/"/g, '&quot;')})" class="p-3.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-amber-400/40 text-left flex items-center justify-between gap-2 transition group">
                         <span class="text-xs sm:text-sm font-medium text-amber-200">${slogan}</span>
                         <span class="text-xs text-slate-400 group-hover:text-amber-300 shrink-0">📋</span>
@@ -1480,7 +1506,7 @@
             ta.select();
             document.execCommand('copy');
             document.body.removeChild(ta);
-            showToast(`Copied slogan: ${slogan}`, 'info');
+            showToast(`${t().merchSloganCopied} · ${slogan}`, 'info');
         }
 
         function renderEditorialSections() {
@@ -1547,113 +1573,121 @@
             }
 
             const s = t();
-            document.getElementById('header-subtitle').textContent = s.headerSubtitle;
-            document.getElementById('profile-wheel-link').textContent = s.profileWheelLink;
-            document.getElementById('tab-daily-desktop').textContent = s.tabDailyDesktop;
-            document.getElementById('tab-synastry-desktop').textContent = s.tabSynastryDesktop;
-            document.getElementById('tab-history-desktop').textContent = s.tabHistoryDesktop;
-            document.getElementById('tab-curiosities-desktop').textContent = s.tabCuriositiesDesktop;
-            document.getElementById('tab-books-desktop').textContent = s.tabBooksDesktop;
-            document.getElementById('tab-merch-desktop').textContent = s.tabMerchDesktop;
+            const translate = (id, text, property = 'textContent') => {
+                const element = document.getElementById(id);
+                if (element && typeof text === 'string') element[property] = text;
+            };
+            document.getElementById('language-selector')?.setAttribute('aria-label', s.languageSelectorLabel);
+            document.getElementById('lang-btn-en')?.setAttribute('aria-pressed', String(currentLang === 'en'));
+            document.getElementById('lang-btn-sr')?.setAttribute('aria-pressed', String(currentLang === 'sr'));
+            translate('premium-daily-badge', s.exampleBadge);
+            translate('header-subtitle', s.headerSubtitle);
+            translate('profile-wheel-link', s.profileWheelLink);
+            translate('tab-daily-desktop', s.tabDailyDesktop);
+            translate('tab-synastry-desktop', s.tabSynastryDesktop);
+            translate('tab-history-desktop', s.tabHistoryDesktop);
+            translate('tab-curiosities-desktop', s.tabCuriositiesDesktop);
+            translate('tab-books-desktop', s.tabBooksDesktop);
+            translate('tab-merch-desktop', s.tabMerchDesktop);
 
-            document.getElementById('tab-daily-mobile').textContent = s.tabDailyMobile;
-            document.getElementById('tab-synastry-mobile').textContent = s.tabSynastryMobile;
-            document.getElementById('tab-history-mobile').textContent = s.tabHistoryMobile;
-            document.getElementById('tab-curiosities-mobile').textContent = s.tabCuriositiesMobile;
-            document.getElementById('tab-books-mobile').textContent = s.tabBooksMobile;
-            document.getElementById('tab-merch-mobile').textContent = s.tabMerchMobile;
+            translate('tab-daily-mobile', s.tabDailyMobile);
+            translate('tab-synastry-mobile', s.tabSynastryMobile);
+            translate('tab-history-mobile', s.tabHistoryMobile);
+            translate('tab-curiosities-mobile', s.tabCuriositiesMobile);
+            translate('tab-books-mobile', s.tabBooksMobile);
+            translate('tab-merch-mobile', s.tabMerchMobile);
 
-            document.getElementById('birth-editor-title').textContent = s.birthEditorTitle;
-            document.getElementById('hero-desc').textContent = s.heroDesc;
-            document.getElementById('lbl-user-name').textContent = s.lblUserName;
-            document.getElementById('user-name').placeholder = s.placeholderUserName;
-            document.getElementById('lbl-birth-city').textContent = s.lblBirthCity;
-            document.getElementById('lbl-birth-date').textContent = s.lblBirthDate;
-            document.getElementById('lbl-birth-time').textContent = s.lblBirthTime;
-            document.getElementById('lbl-unknown-time').textContent = s.lblUnknownTime;
-            document.getElementById('lbl-target-date').textContent = s.lblTargetDate;
-            document.getElementById('btn-save-profile-text').textContent = s.btnSaveProfile;
-            document.getElementById('btn-calc-horoscope-text').textContent = s.btnCalcHoroscope;
+            translate('birth-editor-title', s.birthEditorTitle);
+            translate('hero-desc', s.heroDesc);
+            translate('lbl-user-name', s.lblUserName);
+            translate('user-name', s.placeholderUserName, 'placeholder');
+            translate('lbl-birth-city', s.lblBirthCity);
+            translate('lbl-birth-date', s.lblBirthDate);
+            translate('lbl-birth-time', s.lblBirthTime);
+            translate('lbl-unknown-time', s.lblUnknownTime);
+            translate('lbl-target-date', s.lblTargetDate);
+            translate('btn-save-profile-text', s.btnSaveProfile);
+            translate('btn-calc-horoscope-text', s.btnCalcHoroscope);
 
-            document.getElementById('lbl-rising').textContent = s.lblRising;
-            document.getElementById('lbl-moon').textContent = s.lblMoon;
-            document.getElementById('lbl-overall-cosmic').textContent = s.lblOverallCosmic;
-            document.getElementById('lbl-lucky-numbers').textContent = s.lblLuckyNumbers;
-            document.getElementById('lbl-lucky-color').textContent = s.lblLuckyColor;
-            document.getElementById('lbl-lucky-hours').textContent = s.lblLuckyHours;
+            translate('lbl-rising', s.lblRising);
+            translate('lbl-moon', s.lblMoon);
+            translate('lbl-overall-cosmic', s.lblOverallCosmic);
+            translate('lbl-lucky-numbers', s.lblLuckyNumbers);
+            translate('lbl-lucky-color', s.lblLuckyColor);
+            translate('lbl-lucky-hours', s.lblLuckyHours);
 
-            document.getElementById('sec-favorability-title').textContent = s.secFavorabilityTitle;
-            document.getElementById('sec-favorability-sub').textContent = s.secFavorabilitySub;
-            document.getElementById('card-work-title').textContent = s.cardWorkTitle;
-            document.getElementById('card-work-footer').textContent = s.cardWorkFooter;
-            document.getElementById('card-love-title').textContent = s.cardLoveTitle;
-            document.getElementById('card-love-footer').textContent = s.cardLoveFooter;
-            document.getElementById('card-health-title').textContent = s.cardHealthTitle;
-            document.getElementById('card-health-footer').textContent = s.cardHealthFooter;
-            document.getElementById('card-luck-title').textContent = s.cardLuckTitle;
-            document.getElementById('card-luck-footer').textContent = s.cardLuckFooter;
+            translate('sec-favorability-title', s.secFavorabilityTitle);
+            translate('sec-favorability-sub', s.secFavorabilitySub);
+            translate('card-work-title', s.cardWorkTitle);
+            translate('card-work-footer', s.cardWorkFooter);
+            translate('card-love-title', s.cardLoveTitle);
+            translate('card-love-footer', s.cardLoveFooter);
+            translate('card-health-title', s.cardHealthTitle);
+            translate('card-health-footer', s.cardHealthFooter);
+            translate('card-luck-title', s.cardLuckTitle);
+            translate('card-luck-footer', s.cardLuckFooter);
 
-            document.getElementById('wheel-title').textContent = s.wheelTitle;
-            document.getElementById('wheel-sub').textContent = s.wheelSub;
-            document.getElementById('wheel-system-badge').textContent = s.wheelSystemBadge;
-            document.getElementById('legend-trine').textContent = s.legendTrine;
-            document.getElementById('legend-square').textContent = s.legendSquare;
-            document.getElementById('legend-planets').textContent = s.legendPlanets;
+            translate('wheel-title', s.wheelTitle);
+            translate('wheel-sub', s.wheelSub);
+            translate('wheel-system-badge', s.wheelSystemBadge);
+            translate('legend-trine', s.legendTrine);
+            translate('legend-square', s.legendSquare);
+            translate('legend-planets', s.legendPlanets);
 
-            document.getElementById('detailed-daily-title').textContent = s.detailedDailyTitle;
-            document.getElementById('btn-copy-text').textContent = s.btnCopy;
-            document.getElementById('vip-daily-title').textContent = s.vipDailyTitle;
-            document.getElementById('karmic-node-heading').textContent = s.karmicNodeHeading;
-            document.getElementById('seventh-house-heading').textContent = s.seventhHouseHeading;
+            translate('detailed-daily-title', s.detailedDailyTitle);
+            translate('btn-copy-text', s.btnCopy);
+            translate('vip-daily-title', s.vipDailyTitle);
+            translate('karmic-node-heading', s.karmicNodeHeading);
+            translate('seventh-house-heading', s.seventhHouseHeading);
 
-            document.getElementById('sec-all-signs-title').textContent = s.secAllSignsTitle;
-            document.getElementById('sec-all-signs-sub').textContent = s.secAllSignsSub;
+            translate('sec-all-signs-title', s.secAllSignsTitle);
+            translate('sec-all-signs-sub', s.secAllSignsSub);
 
-            document.getElementById('syn-hero-pill').textContent = s.synHeroPill;
-            document.getElementById('syn-hero-title').innerHTML = s.synHeroTitle;
-            document.getElementById('syn-hero-desc').textContent = s.synHeroDesc;
-            document.getElementById('syn-person-a-label').textContent = s.synPersonALabel;
-            document.getElementById('btn-copy-my-data-to-synastry').textContent = s.btnUseMyData;
-            document.getElementById('lbl-syn-name-1').textContent = s.lblSynName1;
-            document.getElementById('lbl-syn-city-1').textContent = s.lblSynCity;
-            document.getElementById('lbl-syn-date-1').textContent = s.lblSynDate;
-            document.getElementById('lbl-syn-time-1').textContent = s.lblSynTime;
-            document.getElementById('syn-person-b-label').textContent = s.synPersonBLabel;
-            document.getElementById('syn-partner-hint').textContent = s.synPartnerHint;
-            document.getElementById('lbl-syn-name-2').textContent = s.lblSynName2;
-            document.getElementById('lbl-syn-city-2').textContent = s.lblSynCity;
-            document.getElementById('lbl-syn-date-2').textContent = s.lblSynDate;
-            document.getElementById('lbl-syn-time-2').textContent = s.lblSynTime;
-            document.getElementById('btn-calc-synastry-text').textContent = s.btnCalcSynastry;
+            translate('syn-hero-pill', s.synHeroPill);
+            translate('syn-hero-title', s.synHeroTitle, 'innerHTML');
+            translate('syn-hero-desc', s.synHeroDesc);
+            translate('syn-person-a-label', s.synPersonALabel);
+            translate('btn-copy-my-data-to-synastry', s.btnUseMyData);
+            translate('lbl-syn-name-1', s.lblSynName1);
+            translate('lbl-syn-city-1', s.lblSynCity);
+            translate('lbl-syn-date-1', s.lblSynDate);
+            translate('lbl-syn-time-1', s.lblSynTime);
+            translate('syn-person-b-label', s.synPersonBLabel);
+            translate('syn-partner-hint', s.synPartnerHint);
+            translate('lbl-syn-name-2', s.lblSynName2);
+            translate('lbl-syn-city-2', s.lblSynCity);
+            translate('lbl-syn-date-2', s.lblSynDate);
+            translate('lbl-syn-time-2', s.lblSynTime);
+            translate('btn-calc-synastry-text', s.btnCalcSynastry);
 
-            document.getElementById('syn-wheel-title').textContent = s.synWheelTitle;
-            document.getElementById('syn-wheel-sub').textContent = s.synWheelSub;
-            document.getElementById('syn-aspect-count-label').textContent = s.synAspectCountLabel;
-            document.getElementById('syn-method-title').textContent = s.synMethodTitle;
-            document.getElementById('syn-method-description').textContent = s.synMethodDescription;
-            document.getElementById('syn-method-limit').textContent = s.synMethodLimit;
-            document.getElementById('syn-detail-title').textContent = s.synDetailTitle;
-            document.getElementById('syn-no-time').textContent = s.synNoTime;
+            translate('syn-wheel-title', s.synWheelTitle);
+            translate('syn-wheel-sub', s.synWheelSub);
+            translate('syn-aspect-count-label', s.synAspectCountLabel);
+            translate('syn-method-title', s.synMethodTitle);
+            translate('syn-method-description', s.synMethodDescription);
+            translate('syn-method-limit', s.synMethodLimit);
+            translate('syn-detail-title', s.synDetailTitle);
+            translate('syn-no-time', s.synNoTime);
 
-            document.getElementById('footer-tagline').textContent = s.footerTagline;
-            document.getElementById('footer-link-history').textContent = s.tabHistoryDesktop.replace(/^[^\w\s]+\s*/, '');
-            document.getElementById('footer-link-curiosities').textContent = s.tabCuriositiesDesktop.replace(/^[^\w\s]+\s*/, '');
-            document.getElementById('footer-link-books').textContent = s.tabBooksDesktop.replace(/^[^\w\s]+\s*/, '');
-            document.getElementById('footer-link-merch').textContent = s.tabMerchDesktop.replace(/^[^\w\s]+\s*/, '');
-            document.getElementById('footer-disclaimer').textContent = s.footerDisclaimer;
+            translate('footer-tagline', s.footerTagline);
+            translate('footer-link-history', s.tabHistoryDesktop.replace(/^[^\w\s]+\s*/, ''));
+            translate('footer-link-curiosities', s.tabCuriositiesDesktop.replace(/^[^\w\s]+\s*/, ''));
+            translate('footer-link-books', s.tabBooksDesktop.replace(/^[^\w\s]+\s*/, ''));
+            translate('footer-link-merch', s.tabMerchDesktop.replace(/^[^\w\s]+\s*/, ''));
+            translate('footer-disclaimer', s.footerDisclaimer);
 
             renderHistoryAndCuriosities();
             renderBooksAndMerch();
             renderEditorialSections();
             populateCitySelects();
-            document.getElementById('birth-city-input').placeholder = s.placeholderBirthCity;
-            document.getElementById('syn-city-input-1').placeholder = s.placeholderBirthCity;
-            document.getElementById('syn-city-input-2').placeholder = s.placeholderBirthCity;
-            document.getElementById('btn-clear-profile').textContent = s.btnClearProfile;
-            document.getElementById('profile-storage-note').textContent = s.profileStorageNote;
-            document.getElementById('syn-privacy-note').textContent = s.synPrivacyNote;
-            document.getElementById('syn-result-kind').textContent = synastryExample ? s.synResultExample : s.synResultLive;
-            document.getElementById('daily-result-kind').textContent = dailyExample ? s.dailyResultExample : s.dailyResultLive;
+            translate('birth-city-input', s.placeholderBirthCity, 'placeholder');
+            translate('syn-city-input-1', s.placeholderBirthCity, 'placeholder');
+            translate('syn-city-input-2', s.placeholderBirthCity, 'placeholder');
+            translate('btn-clear-profile', s.btnClearProfile);
+            translate('profile-storage-note', s.profileStorageNote);
+            translate('syn-privacy-note', s.synPrivacyNote);
+            translate('syn-result-kind', synastryExample ? s.synResultExample : s.synResultLive);
+            translate('daily-result-kind', dailyExample ? s.dailyResultExample : s.dailyResultLive);
             initZodiacGrid();
             updateBirthEditor();
             calculateDailyReading();
@@ -1680,6 +1714,11 @@
                 const defaultSecond = CITIES_DATA.find(city => city.name.en === 'Prague, Czechia');
                 syn2Input.value = defaultSecond.name[currentLang];
                 selectedLocations.syn2 = { label: syn2Input.value, lat: defaultSecond.lat, lng: defaultSecond.lng };
+            }
+            for (const [target, id] of Object.entries(cityFieldIds)) {
+                if (selectCity(target)) {
+                    document.getElementById(id).value = selectedLocations[target].label;
+                }
             }
         }
 
@@ -1772,7 +1811,7 @@
             updateBirthEditor();
             calculateDailyReading();
             if (moveFocus) {
-                document.getElementById('daily-page-header').scrollIntoView();
+                window.scrollTo({ top: 0, behavior: 'instant' });
                 document.getElementById('btn-profile-details').focus({ preventScroll: true });
             }
         }
@@ -2373,6 +2412,9 @@
         // =========================================================================
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('current-year').textContent = new Date().getFullYear();
+            for (const lang of ['en', 'sr']) {
+                document.getElementById(`lang-btn-${lang}`)?.addEventListener('click', () => setLanguage(lang));
+            }
 
             try {
                 const savedLang = localStorage.getItem(LANG_STORAGE_KEY);

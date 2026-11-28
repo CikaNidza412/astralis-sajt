@@ -10,8 +10,8 @@
 
     <meta name="google-adsense-account" content="ca-pub-6193457626901365">
 
-    <link rel="stylesheet" href="astralis-home.css">
-    <link rel="stylesheet" href="astralis-editorial.css">
+    <link rel="stylesheet" href="astralis-home.css?v=20261128.2">
+    <link rel="stylesheet" href="astralis-editorial.css?v=20261128.2">
 
     <style>
         body {
@@ -99,11 +99,11 @@
             <!-- Right Side: Language Switcher and Instagram -->
             <div class="flex items-center gap-1.5 sm:gap-2 text-xs">
                 <a class="home-guide-link" href="guides.html" data-href-sr="vodici.html" data-text-sr="Vodiči">Guides</a>
-                <div class="inline-flex items-center rounded-full bg-white/5 border border-white/15 p-0.5" role="group" aria-label="Language selector">
-                    <button type="button" id="lang-btn-en" onclick="setLanguage('en')" class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-amber-500 text-cosmic-950 transition">
+                <div class="inline-flex items-center rounded-full bg-white/5 border border-white/15 p-0.5" role="group" id="language-selector" aria-label="Language selector">
+                    <button type="button" id="lang-btn-en" lang="en" aria-label="English" aria-pressed="true" class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-amber-500 text-cosmic-950 transition">
                         EN
                     </button>
-                    <button type="button" id="lang-btn-sr" onclick="setLanguage('sr')" class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-bold text-slate-300 hover:text-white transition">
+                    <button type="button" id="lang-btn-sr" lang="sr" aria-label="Srpski" aria-pressed="false" class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-bold text-slate-300 hover:text-white transition">
                         SR
                     </button>
                 </div>
@@ -208,17 +208,15 @@
                             </div>
                         </div>
 
-                        <div class="pt-1 flex flex-wrap items-center justify-end gap-2.5">
-                            <button type="button" id="btn-save-profile" class="px-3.5 py-2 sm:py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 text-xs font-medium transition flex items-center gap-1.5">
-                                <span>💾</span>
-                                <span id="btn-save-profile-text">Save in this browser</span>
+                        <div class="birth-form-actions pt-1 flex flex-wrap items-center justify-end gap-2.5">
+                            <button type="button" id="btn-save-profile" class="px-5 sm:px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-cosmic-950 font-bold text-sm shadow-lg shadow-amber-500/25 transition flex items-center justify-center">
+                                <span id="btn-save-profile-text">Save and show today’s profile</span>
                             </button>
-                            <button type="submit" class="flex-1 sm:flex-initial px-5 sm:px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-cosmic-950 font-bold text-sm shadow-lg shadow-amber-500/25 transition transform active:scale-[0.99] flex items-center justify-center gap-2">
-                                <span>🔮</span>
-                                <span id="btn-calc-horoscope-text">Show reading</span>
+                            <button type="submit" class="px-3.5 py-2 sm:py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 text-sm font-medium transition flex items-center justify-center">
+                                <span id="btn-calc-horoscope-text">Show reading without saving</span>
                             </button>
                         </div>
-                        <p id="profile-storage-note" class="text-xs text-slate-400">Your birth details are saved on this device only if you choose Save in this browser.</p>
+                        <p id="profile-storage-note" class="text-xs text-slate-400">Saving keeps your birth details in this browser and opens today’s profile.</p>
                     </form>
                 </div>
 
@@ -264,20 +262,6 @@
                             <div id="overall-bar" class="h-full rounded-full bg-gradient-to-r from-amber-500 via-yellow-400 to-emerald-400 progress-bar-fill" style="width: 84%"></div>
                         </div>
 
-                        <div class="grid grid-cols-3 gap-2 mt-3.5 sm:mt-4 pt-3 border-t border-white/5 text-center">
-                            <div class="p-2 rounded-xl bg-white/[0.03]">
-                                <span id="lbl-lucky-numbers" class="text-[10px] sm:text-[11px] text-slate-400 block">Sample Numbers</span>
-                                <span id="lucky-numbers" class="text-xs sm:text-sm font-bold text-amber-300 mt-0.5 block">3, 14, 27</span>
-                            </div>
-                            <div class="p-2 rounded-xl bg-white/[0.03]">
-                                <span id="lbl-lucky-color" class="text-[10px] sm:text-[11px] text-slate-400 block">Color Prompt</span>
-                                <span id="lucky-color" class="text-xs sm:text-sm font-bold text-indigo-300 mt-0.5 block">Emerald</span>
-                            </div>
-                            <div class="p-2 rounded-xl bg-white/[0.03]">
-                                <span id="lbl-lucky-hours" class="text-[10px] sm:text-[11px] text-slate-400 block">Sample Time Window</span>
-                                <span id="lucky-hours" class="text-xs sm:text-sm font-bold text-emerald-300 mt-0.5 block">11:00 - 14:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -363,6 +347,20 @@
                             <span id="card-luck-footer" class="text-slate-400">Example score</span>
                             <span id="badge-luck" class="font-semibold text-purple-300">High</span>
                         </div>
+                    </div>
+                </div>
+                <div class="daily-reading-extras grid grid-cols-3 gap-2 mt-3.5 sm:mt-4 text-center">
+                    <div class="p-2 rounded-xl bg-white/[0.03]">
+                        <span id="lbl-lucky-numbers" class="text-[10px] sm:text-[11px] text-slate-400 block">Sample Numbers</span>
+                        <span id="lucky-numbers" class="text-xs sm:text-sm font-bold text-amber-300 mt-0.5 block">3, 14, 27</span>
+                    </div>
+                    <div class="p-2 rounded-xl bg-white/[0.03]">
+                        <span id="lbl-lucky-color" class="text-[10px] sm:text-[11px] text-slate-400 block">Color Prompt</span>
+                        <span id="lucky-color" class="text-xs sm:text-sm font-bold text-indigo-300 mt-0.5 block">Emerald</span>
+                    </div>
+                    <div class="p-2 rounded-xl bg-white/[0.03]">
+                        <span id="lbl-lucky-hours" class="text-[10px] sm:text-[11px] text-slate-400 block">Sample Time Window</span>
+                        <span id="lucky-hours" class="text-xs sm:text-sm font-bold text-emerald-300 mt-0.5 block">11:00 - 14:00</span>
                     </div>
                 </div>
             </section>
@@ -571,7 +569,7 @@
         <!-- ===================================================================== -->
         <!-- PAGE 3: HISTORY & ANCIENT ROOTS OF ASTROLOGY (DEDICATED PAGE)         -->
         <!-- ===================================================================== -->
-        <section id="view-history" aria-label="History and Origins of Astrology" class="space-y-8">
+        <section id="view-history" aria-labelledby="hist-main-title" class="space-y-8">
             <div class="glass-card rounded-2xl p-6 sm:p-9 border-amber-500/20 space-y-4">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <span id="hist-pill" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-medium">
@@ -668,7 +666,7 @@
         <!-- ===================================================================== -->
         <!-- PAGE 4: ASTROLOGY FACTS, ASTRONOMY & CURIOSITIES (DEDICATED PAGE)     -->
         <!-- ===================================================================== -->
-        <section id="view-curiosities" aria-label="Astrological Facts and Astronomical Curiosities" class="space-y-8">
+        <section id="view-curiosities" aria-labelledby="cur-main-title" class="space-y-8">
             <div class="glass-card rounded-2xl p-6 sm:p-9 border-indigo-500/20 space-y-4">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <span id="cur-pill" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-400/30 text-indigo-300 text-xs font-medium">
@@ -747,7 +745,7 @@
         <!-- ===================================================================== -->
         <!-- PAGE 5: LEARN ASTROLOGY & RECOMMENDED BOOKS (10 CURATED BOOKS)        -->
         <!-- ===================================================================== -->
-        <section id="view-books" aria-label="Learn More About Astrology and Recommended Books" class="hidden space-y-8">
+        <section id="view-books" aria-labelledby="books-main-title" class="hidden space-y-8">
             <div class="glass-card rounded-2xl p-6 sm:p-9 border-amber-500/20 space-y-4">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <span id="books-pill" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-medium">
@@ -769,7 +767,7 @@
         <!-- ===================================================================== -->
         <!-- PAGE 6: ASTRALIS MERCH (T-SHIRTS, CAPS, MUGS & CAR STICKERS)          -->
         <!-- ===================================================================== -->
-        <section id="view-merch" aria-label="Astralis Cosmic Merch Storefront" class="hidden space-y-8">
+        <section id="view-merch" aria-labelledby="merch-main-title" class="hidden space-y-8">
             <div class="glass-card rounded-2xl p-6 sm:p-9 border-pink-500/25 space-y-4 relative overflow-hidden">
                 <div class="absolute -top-20 -right-20 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="flex flex-wrap items-center justify-between gap-2">
@@ -838,7 +836,7 @@
 <article class="guide-card"><h3><a href="nepoznato-vreme-rodjenja.html">Šta natalna karta može da pokaže kada vreme rođenja nije sigurno</a></h3><p>Proverite koji delovi karte zavise od lokalnog vremena rođenja i ispitajte približan vremenski raspon bez lažne preciznosti.</p></article>
 </div><a href="vodici.html" class="guide-all">Svi vodiči kroz astrologiju</a></div>
 </section>
-        <section id="astrology-encyclopedia" aria-label="Astrology Educational Guides & Zodiac Encyclopedia" class="space-y-8 pt-6 border-t border-white/10">
+        <section id="astrology-encyclopedia" aria-labelledby="ed-main-title" class="space-y-8 pt-6 border-t border-white/10">
             <div class="max-w-3xl">
                 <span id="ed-pill" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-400/30 text-indigo-300 text-xs font-medium mb-2.5">
                     📚 Astralis Astrological Knowledge Base
@@ -1013,7 +1011,7 @@
     <!-- Toast Notification -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    <script src="astralis-app.js" defer></script>
-    <script src="astralis-nav.js" defer></script>
+    <script src="astralis-app.js?v=20261128.2" defer></script>
+    <script src="astralis-nav.js?v=20261128.2" defer></script>
 </body>
 </html>
