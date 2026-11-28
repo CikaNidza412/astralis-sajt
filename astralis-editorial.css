@@ -54,6 +54,64 @@
 .home-noscript { padding: 0.9rem; border: 1px solid var(--line); border-radius: 0.65rem; }
 [id^="view-"] { scroll-margin-top: 8rem; }
 
+#view-daily > :not([hidden]) ~ :not([hidden]) { margin-top: clamp(1rem, 2.8vw, 2rem); }
+.daily-page-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 0.75rem 1.25rem; scroll-margin-top: 8.7rem; }
+.daily-page-header h1 { font-size: clamp(1.72rem, 4vw, 3.15rem); line-height: 1.13; }
+.daily-reading-date { margin-top: 0.35rem; color: #cbd5e1; font-size: clamp(0.95rem, 2vw, 1.08rem); }
+.daily-reading-date time { color: #fcd775; font-weight: 650; }
+.daily-profile-actions { display: flex; flex-wrap: wrap; gap: 0.48rem; }
+#daily-profile-actions[hidden], #birth-form-card[hidden], #btn-profile-details[hidden], #saved-profile-notice[hidden] { display: none; }
+.daily-profile-actions button { min-height: 2.75rem; padding: 0.48rem 0.85rem; border: 1px solid #39415f; border-radius: 0.7rem; color: #f1f5f9; background: #11172d; font-size: 0.9rem; font-weight: 650; }
+.daily-profile-actions .profile-details-button { color: #ffe4a1; border-color: #75613a; background: #2b241c; }
+.daily-profile-actions button:hover { border-color: #fbc663; }
+.daily-profile-actions button:focus-visible { outline: 2px solid #fbbf24; outline-offset: 3px; }
+#birth-form-card { scroll-margin-top: 8.7rem; }
+#birth-form-card label, #birth-form-card input, #birth-form-card #hero-desc { font-size: 1rem; }
+#birth-form-card button { min-height: 2.75rem; font-size: 0.9rem; }
+#birth-form-card #profile-storage-note { font-size: 0.88rem; }
+#profile-summary-card { gap: 0.9rem; }
+#hero-profile-grid.profile-focused { grid-template-columns: minmax(0, 1fr); }
+#hero-profile-grid.profile-focused #profile-summary-card { grid-column: 1 / -1; }
+#profile-greeting { overflow-wrap: anywhere; font-size: 0.8rem; }
+#sun-sign-symbol { width: clamp(4.2rem, 12vw, 7.1rem); height: clamp(4.2rem, 12vw, 7.1rem); font-size: clamp(2.35rem, 7vw, 4.25rem); line-height: 1; }
+#sun-sign-title { font-size: clamp(1.85rem, 4.6vw, 3.35rem); line-height: 1.12; }
+#sun-sign-dates, #daily-result-kind, #lbl-rising, #lbl-moon, #ascendant-value, #natal-moon-value { font-size: 0.91rem; }
+#overall-score { font-size: clamp(1.85rem, 4.8vw, 3.1rem); line-height: 1.03; }
+#lbl-overall-cosmic, #overall-verdict { font-size: 0.96rem; }
+#profile-summary-card .daily-score-panel { min-width: 0; }
+.profile-wheel-link { display: inline-block; margin-top: 0.55rem; color: #fcd775; font-size: 0.92rem; text-decoration: underline; text-underline-offset: 0.18em; }
+.profile-wheel-link:focus-visible { outline: 2px solid #fbbf24; outline-offset: 3px; }
+#wheel-title { scroll-margin-top: 8.7rem; }
+.daily-theme-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.9rem; }
+.daily-theme-grid > div { padding: clamp(1rem, 3vw, 1.5rem); }
+.daily-theme-grid h4 { font-size: clamp(1.15rem, 3vw, 1.42rem); line-height: 1.25; }
+.daily-theme-grid p, #detailed-daily-narrative, #premium-daily-content { font-size: 1rem; line-height: 1.65; }
+#sec-favorability-title, #detailed-daily-title, #wheel-title { font-size: clamp(1.3rem, 3.3vw, 1.8rem); line-height: 1.25; }
+#sec-favorability-sub, #wheel-sub { font-size: 0.92rem; line-height: 1.52; }
+#transit-summary-pill { font-size: 0.85rem; }
+#active-aspects-list { grid-template-columns: minmax(0, 1fr); }
+#active-aspects-list p { font-size: 0.96rem; line-height: 1.58; }
+#active-aspects-list .daily-aspect-title { font-size: 1.03rem; }
+.daily-reading-layout .daily-natal-wheel { max-width: 31rem; }
+
+#syn-hero-desc, #syn-aspect-groups article, #syn-method-description, #syn-method-limit, #syn-no-time { font-size: 1rem; line-height: 1.6; }
+#syn-aspect-groups h4 { font-size: clamp(1.17rem, 2.5vw, 1.4rem); }
+#syn-aspect-groups h5, #syn-aspect-groups li p { font-size: 0.95rem; }
+#syn-aspect-groups li p:first-child { font-size: 1.03rem; }
+
+@media (min-width: 42rem) {
+  .daily-theme-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #hero-profile-grid.profile-focused #profile-summary-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.87fr); column-gap: clamp(1.5rem, 4vw, 4.5rem); align-items: center; }
+  #hero-profile-grid.profile-focused .daily-score-panel { border-top: 0; border-left: 1px solid #ffffff1a; margin-top: 0; padding-top: 0; padding-left: clamp(1rem, 2.6vw, 2.5rem); }
+}
+
+@media (max-width: 26rem) {
+  #hero-profile-grid.profile-focused #profile-summary-card { padding: 0.95rem; }
+  #hero-profile-grid.profile-focused .daily-score-panel { margin-top: 0.2rem; padding-top: 0.85rem; }
+  .daily-profile-actions { display: grid; width: 100%; grid-template-columns: 1.15fr 1fr; }
+  .daily-profile-actions button { padding-inline: 0.45rem; }
+}
+
 @media (max-width: 40rem) {
   .guide-grid { grid-template-columns: 1fr; }
   .editorial-footer { margin-top: 2.5rem; }

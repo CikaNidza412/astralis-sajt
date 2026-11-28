@@ -147,25 +147,27 @@
         <!-- PAGE 1: DAILY HOROSCOPE + NATAL WHEEL                                 -->
         <!-- ===================================================================== -->
         <div id="view-daily" class="space-y-8 sm:space-y-10">
+            <header id="daily-page-header" class="daily-page-header">
+                <div>
+                    <h1 id="hero-title" class="font-serif font-bold text-white leading-tight"><span class="gold-gradient-text">Daily Horoscope</span> & Natal Chart Simulator</h1>
+                    <p class="daily-reading-date"><span id="reading-date-prefix"></span> <time id="profile-reading-date"></time></p>
+                </div>
+                <div id="daily-profile-actions" class="daily-profile-actions" hidden>
+                    <button type="button" id="btn-profile-details" class="profile-details-button" aria-controls="birth-form-card" aria-expanded="false">Birth details</button>
+                    <button type="button" id="btn-clear-profile" class="profile-clear-button">Clear saved data</button>
+                </div>
+            </header>
 
-            <!-- Hero + Birth Data Form & Astrological Profile -->
             <section id="hero-profile-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
-                <!-- Left Column: Form -->
                 <div id="birth-form-card" class="lg:col-span-7 glass-card rounded-2xl p-5 sm:p-8 flex flex-col justify-between relative overflow-hidden">
                     <div class="absolute -top-24 -right-24 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
                     <div>
-                        <div class="flex items-center justify-between gap-2 mb-3 sm:mb-4">
-                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium">
-                                <span id="hero-pill">✨ Astrology simulator</span>
-                            </div>
-                        </div>
-                        <h1 id="hero-title" class="font-serif text-xl sm:text-4xl font-bold text-white leading-tight">
-                            <span class="gold-gradient-text">Daily Horoscope</span> & Natal Chart Simulator
-                        </h1>
+                        <h2 id="birth-editor-title" tabindex="-1" class="font-serif text-2xl sm:text-3xl font-bold text-white">Birth details</h2>
                         <p id="hero-desc" class="text-slate-300 text-xs sm:text-base mt-2.5 max-w-2xl leading-relaxed">
                             Try a symbolic reading using a birth date, time and listed city. The wheel and scores use simplified formulas for illustration. They do not show real planetary positions or predict events.
                         </p>
+                        <p id="saved-profile-notice" class="text-amber-200 text-sm mt-3" role="status" hidden></p>
                     </div>
 
                     <form id="natal-form" autocomplete="off" class="mt-4 sm:mt-6 space-y-3.5 sm:space-y-4">
@@ -211,10 +213,6 @@
                                 <span>💾</span>
                                 <span id="btn-save-profile-text">Save in this browser</span>
                             </button>
-                            <button type="button" id="btn-clear-profile" class="px-3 py-2 rounded-xl border border-white/15 text-slate-300 hover:text-white text-xs font-medium">
-                                Clear saved data
-                            </button>
-
                             <button type="submit" class="flex-1 sm:flex-initial px-5 sm:px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-cosmic-950 font-bold text-sm shadow-lg shadow-amber-500/25 transition transform active:scale-[0.99] flex items-center justify-center gap-2">
                                 <span>🔮</span>
                                 <span id="btn-calc-horoscope-text">Show reading</span>
@@ -224,7 +222,6 @@
                     </form>
                 </div>
 
-                <!-- Right Column: Natal Identity Summary & Cosmic Index -->
                 <div id="profile-summary-card" class="lg:col-span-5 glass-card rounded-2xl p-5 sm:p-8 flex flex-col justify-between border-amber-500/20 relative overflow-hidden">
                     <div class="absolute -bottom-20 -left-20 w-56 h-56 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -250,12 +247,12 @@
                                         <span id="lbl-moon">Sample Moon</span>: <strong id="natal-moon-value" class="text-indigo-300">Capricorn ♑</strong>
                                     </span>
                                 </div>
+                                <a id="profile-wheel-link" href="#wheel-title" class="profile-wheel-link">See natal wheel</a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Overall Daily Cosmic Favorability -->
-                    <div class="mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-white/10">
+                    <div class="daily-score-panel mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-white/10">
                         <div class="flex items-end justify-between mb-2">
                             <div>
                                 <span id="lbl-overall-cosmic" class="text-xs text-slate-400 block">Symbolic daily score</span>
@@ -286,16 +283,16 @@
             </section>
 
             <!-- Symbolic scores by theme -->
-            <section aria-labelledby="sec-favorability-title">
+            <section id="daily-themes" aria-labelledby="sec-favorability-title">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3.5 sm:mb-4">
                     <div>
-                        <h3 id="sec-favorability-title" class="font-serif text-lg sm:text-2xl font-bold text-white">Symbolic Scores by Theme</h3>
-                        <p id="sec-favorability-sub" class="text-xs sm:text-sm text-slate-400">The scores and aspect examples are generated from templates for reflection. A higher score does not imply a more likely outcome.</p>
+                        <h3 id="sec-favorability-title" class="font-serif text-lg sm:text-2xl font-bold text-white">Reading by theme</h3>
+                        <p id="sec-favorability-sub" class="text-xs sm:text-sm text-slate-400">Explore four prompts for this date. The scores and example aspects are illustrative.</p>
                     </div>
                     <span id="transit-summary-pill" class="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-slate-300 self-start sm:self-auto">Example aspect: Sun trine Jupiter</span>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+                <div class="daily-theme-grid">
                     <div class="glass-card glass-card-hover rounded-2xl p-4 sm:p-5 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-2.5 sm:mb-3">
@@ -338,7 +335,7 @@
                                 <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-lg sm:text-xl">🌿</div>
                                 <span id="score-health" class="text-xl sm:text-2xl font-bold text-emerald-400">88/100</span>
                             </div>
-                            <h4 id="card-health-title" class="font-semibold text-white text-sm sm:text-base">Rest & Routines</h4>
+                            <h4 id="card-health-title" class="font-semibold text-white text-sm sm:text-base">Wellbeing & Rest</h4>
                             <div class="w-full h-2 rounded-full bg-cosmic-950 my-2 sm:my-2.5 overflow-hidden">
                                 <div id="bar-health" class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 progress-bar-fill" style="width: 88%"></div>
                             </div>
@@ -371,7 +368,7 @@
             </section>
 
             <!-- DETAILED DAILY READING + VISUAL NATAL WHEEL -->
-            <section class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
+            <section class="daily-reading-layout grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
                 <div class="lg:col-span-6 lg:order-2 space-y-5 sm:space-y-6">
                     <!-- Basic Daily Horoscope -->
                     <div class="glass-card rounded-2xl p-5 sm:p-7 space-y-4">
@@ -424,7 +421,7 @@
                         <span id="wheel-system-badge" class="px-2.5 py-1 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] sm:text-xs font-semibold shrink-0">Simulator</span>
                     </div>
 
-                    <div class="w-full max-w-[340px] sm:max-w-[440px] aspect-square my-2 relative flex items-center justify-center">
+                    <div class="daily-natal-wheel w-full aspect-square my-2 relative flex items-center justify-center">
                         <svg id="natal-wheel-svg" viewBox="0 0 500 500" class="w-full h-full drop-shadow-[0_0_25px_rgba(245,158,11,0.12)]"></svg>
                     </div>
 
@@ -463,7 +460,7 @@
                 <div class="max-w-3xl">
                     <span id="syn-hero-pill" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-medium mb-3">💞 Synastry simulator</span>
                     <h2 id="syn-hero-title" class="font-serif text-xl sm:text-3xl font-bold text-white"><span class="gold-gradient-text">Synastry</span> Chart for Two</h2>
-                    <p id="syn-hero-desc" class="text-slate-300 text-xs sm:text-sm mt-2">Explore how a two-person wheel is arranged. The placements and scores are illustrative examples. Use the prompts to start a conversation about relationships.</p>
+                    <p id="syn-hero-desc" class="text-slate-300 text-xs sm:text-sm mt-2">Compare the modeled positions in two charts. The simulator checks the shortest angles between selected pairs and uses traditional meanings as conversation prompts.</p>
                 </div>
 
                 <form id="synastry-form" autocomplete="off" class="mt-5 sm:mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
@@ -537,66 +534,16 @@
                                 <p id="synastry-pair-subtitle" class="text-xs text-slate-400 mt-0.5">Illustrative comparison</p>
                                 <p id="syn-result-kind" class="text-xs text-pink-300 mt-1">Example using sample birth details</p>
                             </div>
-                            <span id="synastry-total-score" class="text-2xl sm:text-3xl font-bold gold-gradient-text">86/100</span>
-                        </div>
-
-                        <div class="space-y-3 text-xs">
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span id="lbl-syn-emotion" class="text-slate-300 font-medium">❤️ Emotional needs</span>
-                                    <span id="syn-score-emotion" class="font-bold text-rose-300">89/100</span>
-                                </div>
-                                <div class="w-full h-2 rounded-full bg-cosmic-950 overflow-hidden">
-                                    <div id="syn-bar-emotion" class="h-full bg-gradient-to-r from-rose-500 to-pink-400 rounded-full" style="width: 89%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span id="lbl-syn-passion" class="text-slate-300 font-medium">🔥 Attraction & shared interests</span>
-                                    <span id="syn-score-passion" class="font-bold text-amber-300">84/100</span>
-                                </div>
-                                <div class="w-full h-2 rounded-full bg-cosmic-950 overflow-hidden">
-                                    <div id="syn-bar-passion" class="h-full bg-gradient-to-r from-amber-500 to-orange-400 rounded-full" style="width: 84%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span id="lbl-syn-comm" class="text-slate-300 font-medium">💬 Communication</span>
-                                    <span id="syn-score-comm" class="font-bold text-indigo-300">88/100</span>
-                                </div>
-                                <div class="w-full h-2 rounded-full bg-cosmic-950 overflow-hidden">
-                                    <div id="syn-bar-comm" class="h-full bg-gradient-to-r from-indigo-500 to-cyan-400 rounded-full" style="width: 88%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span id="lbl-syn-karma" class="text-slate-300 font-medium">💍 Shared plans</span>
-                                    <span id="syn-score-karma" class="font-bold text-emerald-300">82/100</span>
-                                </div>
-                                <div class="w-full h-2 rounded-full bg-cosmic-950 overflow-hidden">
-                                    <div id="syn-bar-karma" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" style="width: 82%"></div>
-                                </div>
+                            <div class="text-right shrink-0 pl-3">
+                                <span id="syn-aspect-count" class="block text-2xl sm:text-3xl font-bold gold-gradient-text" aria-live="polite">—</span>
+                                <span id="syn-aspect-count-label" class="block text-xs text-slate-400">Matched pairs</span>
                             </div>
                         </div>
-
-                        <p id="synastry-basic-summary" class="text-xs sm:text-sm text-slate-200 leading-relaxed pt-2 border-t border-white/10">Example comparison. The displayed number is a symbolic score out of 100.</p>
-                    </div>
-
-                    <div class="glass-card rounded-2xl p-5 sm:p-6 border-pink-500/25">
-                        <div class="flex items-center justify-between mb-3">
-                            <h4 class="font-serif text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                                <span>💫</span>
-                                <span id="vip-syn-title">Conversation Prompts</span>
-                            </h4>
-                            <span id="vip-syn-badge" class="text-[11px] px-2.5 py-0.5 rounded-full bg-pink-500/20 text-pink-200 font-semibold">Examples</span>
-                        </div>
-
-                        <div id="premium-synastry-content" class="space-y-2.5 text-xs sm:text-sm text-slate-200 transition duration-300">
-                            <p id="synastry-deep-text-1" class="p-3 rounded-xl bg-white/5 border border-white/10">What helps each person feel heard?</p>
-                            <p id="synastry-deep-text-2" class="p-3 rounded-xl bg-white/5 border border-white/10">Which responsibilities would you like to share?</p>
+                        <div class="space-y-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            <h4 id="syn-method-title" class="font-semibold text-white">How to read the angles</h4>
+                            <p id="syn-method-description">We compare 21 selected cross-chart pairs using the shortest angular separation. Each aspect has a maximum allowed deviation: conjunction 0° ±7°, sextile 60° ±5°, square 90° ±6°, trine 120° ±7°, and opposition 180° ±7°.</p>
+                            <p id="syn-method-limit">Angles come from the simulator’s modeled positions. The traditional interpretations are prompts, and the aspect count does not measure compatibility.</p>
+                            <p id="syn-no-time" class="text-amber-300" hidden>For a missing birth time, the simulator uses noon as a reference. This can change the sample placements and which aspects are listed.</p>
                         </div>
                     </div>
                 </div>
@@ -606,14 +553,17 @@
                     <div class="w-full flex items-center justify-between mb-3">
                         <div>
                             <h3 id="syn-wheel-title" class="font-serif text-base sm:text-lg font-bold text-white">Illustrative Synastry Wheel</h3>
-                            <p id="syn-wheel-sub" class="text-xs text-slate-400">Gold: Person A • Rose: Person B</p>
+                            <p id="syn-wheel-sub" class="text-xs text-slate-400">Inner ring: Person A · Outer ring: Person B. Aspect lines inside this wheel show examples for Person A.</p>
                         </div>
-                        <span id="synastry-overall-badge" class="px-3 py-1 rounded-full bg-rose-500/20 border border-rose-400/30 text-rose-200 font-bold text-xs sm:text-sm">Symbolic score</span>
                     </div>
 
                     <div class="w-full max-w-[340px] sm:max-w-[440px] aspect-square my-2">
                         <svg id="synastry-wheel-svg" viewBox="0 0 500 500" class="w-full h-full"></svg>
                     </div>
+                </div>
+                <div class="lg:col-span-12 lg:order-3 space-y-3">
+                    <h3 id="syn-detail-title" class="font-serif text-lg sm:text-xl font-bold text-white">What the aspects can prompt you to discuss</h3>
+                    <div id="syn-aspect-groups" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
             </section>
         </div>

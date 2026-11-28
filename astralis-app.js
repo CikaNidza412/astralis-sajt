@@ -12,6 +12,14 @@
                 profileStorageNote: "Your birth details are saved on this device only if you choose Save in this browser.",
                 synPrivacyNote: "Both sets of details stay in this open page and are never saved by the comparison tool.",
                 btnClearProfile: "Clear saved data",
+                profileDayTitle: "Your daily profile",
+                birthEditorTitle: "Birth details",
+                showBirthDetails: "Birth details",
+                hideBirthDetails: "Close birth details",
+                readingToday: "Today ·",
+                readingFor: "Reading for",
+                profileWheelLink: "See natal wheel",
+                savedProfileNotice: "Check the saved birth date and choose a city from the list. Save the updated details to restore your daily profile.",
                 dailyResultExample: "Example using sample birth details",
                 dailyResultLive: "Illustrative reading using your inputs",
                 synResultExample: "Example using sample birth details",
@@ -34,7 +42,6 @@
                 tabCuriositiesMobile: '🔭 Facts',
                 tabBooksMobile: '📚 Books',
                 tabMerchMobile: '👕 Merch',
-                heroPill: "✨ Astrology simulator",
                 heroTitle: "<span class=\"gold-gradient-text\">Daily Horoscope</span> & Natal Chart Simulator",
                 heroDesc: "Try a symbolic reading using a birth date, time and listed city. The wheel and scores use simplified formulas for illustration. They do not show real planetary positions or predict events.",
                 lblUserName: 'Your Name (optional)',
@@ -60,14 +67,14 @@
                 lblLuckyNumbers: "Sample Numbers",
                 lblLuckyColor: "Color Prompt",
                 lblLuckyHours: "Sample Time Window",
-                secFavorabilityTitle: "Symbolic Scores by Theme",
-                secFavorabilitySub: "The scores and aspect examples are generated from templates for reflection. A higher score does not imply a more likely outcome.",
+                secFavorabilityTitle: "Reading by theme",
+                secFavorabilitySub: "Explore four prompts for this date. The scores and example aspects are illustrative.",
                 keyTransitPrefix: "Example aspect",
                 cardWorkTitle: "Work & Projects",
                 cardWorkFooter: "Example score",
                 cardLoveTitle: "Relationships",
                 cardLoveFooter: "Example score",
-                cardHealthTitle: "Rest & Routines",
+                cardHealthTitle: "Wellbeing & Rest",
                 cardHealthFooter: "Example score",
                 cardLuckTitle: "Curiosity & Intuition",
                 cardLuckFooter: "Example score",
@@ -93,7 +100,23 @@
                 secAllSignsSub: "Choose a sign to load an example birth date in the simulator.",
                 synHeroPill: "💞 Synastry simulator",
                 synHeroTitle: "<span class=\"gold-gradient-text\">Synastry</span> Chart for Two",
-                synHeroDesc: "Explore how a two-person wheel is arranged. The placements and scores are illustrative examples. Use the prompts to start a conversation about relationships.",
+                synHeroDesc: "Compare the modeled positions in two charts. The simulator checks the shortest angles between selected pairs and uses traditional meanings as conversation prompts.",
+                synWheelSub: "Inner ring: Person A · Outer ring: Person B. Aspect lines inside this wheel show examples for Person A.",
+                synAspectCountLabel: "Matched pairs",
+                synMethodTitle: "How to read the angles",
+                synMethodDescription: "We compare 21 selected cross-chart pairs using the shortest angular separation. Each aspect has a maximum allowed deviation: conjunction 0° ±7°, sextile 60° ±5°, square 90° ±6°, trine 120° ±7°, and opposition 180° ±7°.",
+                synMethodLimit: "Angles come from the simulator’s modeled positions. The traditional interpretations are prompts, and the aspect count does not measure compatibility.",
+                synNoTime: "For a missing birth time, the simulator uses noon as a reference. This can change the sample placements and which aspects are listed.",
+                synDetailTitle: "What the aspects can prompt you to discuss",
+                synAngle: "Separation",
+                synDeviation: "Deviation",
+                synOrb: "Allowed",
+                synNearest: "Nearest tested pair",
+                synNoMatch: "No tested pair in this theme met the listed tolerances.",
+                synTopic: "In astrological symbolism",
+                synBodies: {"SO": ["Sun", "identity and personal direction"], "MO": ["Moon", "comfort and emotional habits"], "ME": ["Mercury", "words and ways of thinking"], "VE": ["Venus", "affection and preferences"], "MA": ["Mars", "initiative and assertiveness"], "JU": ["Jupiter", "openness and expansion"], "SA": ["Saturn", "limits and commitments"]},
+                synAspects: {"conjunction": "Conjunction", "sextile": "Sextile", "square": "Square", "trine": "Trine", "opposition": "Opposition"},
+                synThemes: {"emotion": {"title": "Emotional needs", "fallback": "When you are upset, do you usually want someone to listen, give you space, or help solve the problem?", "conjunction": "If both of you reach for the same kind of reassurance, compare the timing. Would a quiet check-in help both people immediately, or would one prefer it later?", "sextile": "One person might show care by offering a practical gesture, while the other mostly needs to be asked how they feel. Try asking which form of support is wanted first.", "square": "Imagine that one person wants to talk through a difficult evening and the other recovers best with solitude. Agree on a time to reconnect so a pause can be understood as care.", "trine": "Think of a moment when one of you noticed the other needed support without being told. Say what made the gesture work so it can be offered again.", "opposition": "Words of reassurance can feel warm to one person while the other trusts concrete help. Name one example of each and ask which would feel more supportive this week."}, "passion": {"title": "Attraction and shared interests", "fallback": "Name something you enjoy together and something you prefer to do separately. Put room for both in your next plan.", "conjunction": "A shared enthusiasm can get a plan started. Take turns choosing a detail such as the activity, place, or pace, so excitement makes room for both voices.", "sextile": "Try an activity where one person gets the ball rolling and the other adds a personal touch. Pick something small, such as making a playlist or preparing dinner together.", "square": "One person might enjoy spontaneous invitations while the other prefers notice. Agree when a surprise is welcome and when to ask first.", "trine": "Compare how you each picture an enjoyable evening. Use one preference you share as the starting point, then each add a different detail.", "opposition": "If one person wants a lively outing and the other wants a quiet evening, suggest two short plans or alternate who sets the pace."}, "comm": {"title": "Communication", "fallback": "After an important conversation, each person can summarize what they heard in one sentence and give the other a chance to correct it.", "conjunction": "You may recognize an idea quickly when it is phrased in a familiar way. Before agreeing, each give a concrete example to check whether you mean the same thing.", "sextile": "Let one person speak first and the other ask a neutral follow-up question. For a practical plan, use questions such as when, where, and what each person needs.", "square": "If a direct suggestion sounds like criticism, first ask whether the other person wants feedback. Then repeat the problem as you understand it before suggesting a fix.", "trine": "When a conversation feels easy, check which things were left implicit. If you decide on a time or place, say it out loud and confirm that it suits both of you.", "opposition": "If one person starts with the big picture and the other with the details, give each approach a turn. Then write down the one decision you both understood."}, "karma": {"title": "Shared plans", "fallback": "Choose one modest plan you can test this week and agree when you will revisit it together.", "conjunction": "If you both bring similar expectations about commitments, check that each person has the same definition of ‘done’. Give a task an owner and a date.", "sextile": "Try pairing one person’s idea with the other’s practical next step. Agree on the smallest version you could do before a bigger commitment.", "square": "If one person wants to start soon and the other wants more planning, agree on a low-effort trial and a date to review what happened.", "trine": "If responsibilities fall into place easily, check that the division still feels fair. Ask who will step in if the usual plan stops working.", "opposition": "When one person focuses on what might be possible and the other on time or effort, write down a shared minimum and decide together what would justify expanding it."}},
                 synPersonALabel: '☀️ Person A (Inner Ring)',
                 btnUseMyData: 'Use my details',
                 lblSynName1: 'Person A Name',
@@ -105,14 +128,6 @@
                 lblSynName2: 'Person B Name',
                 btnCalcSynastry: "Show comparison",
                 synWheelTitle: "Illustrative Synastry Wheel",
-                synWheelSub: 'Gold: Person A • Rose: Person B',
-                matchWord: "Symbolic score",
-                lblSynEmotion: "❤️ Emotional needs",
-                lblSynPassion: "🔥 Attraction & shared interests",
-                lblSynComm: "💬 Communication",
-                lblSynKarma: "💍 Shared plans",
-                vipSynTitle: "Conversation Prompts",
-                vipSynBadge: "Examples",
                 histPill: '🏛️ Historical Origins & Cultural Heritage',
                 histBackBtn: '← Back to Natal Calculator',
                 histMainTitle: 'The <span class="gold-gradient-text">History & Ancient Roots</span> of Astrology',
@@ -151,12 +166,9 @@
                 faqSectionTitle: 'Frequently Asked Questions (FAQ)',
                 footerTagline: '• Astrology Portal, Natal Wheel & Historical Encyclopedia',
                 footerDisclaimer: "Astralis explores astrology as cultural history, symbolism and entertainment. Simulator scores, positions and texts are illustrative, and cannot predict outcomes or guide medical, financial, legal or personal decisions.",
-                narrativeP1: (sun, asc, ruler, opener) => `The simulator uses <strong class="text-amber-300">${sun}</strong>, <strong class="text-amber-300">${asc}</strong> and the traditional symbol of <strong>${ruler}</strong> for this example. ${opener}`,
-                narrativeP2: (moon, hours, closer) => `The sample Moon placement is <strong class="text-indigo-300">${moon}</strong>. ${closer} The time window (${hours}) is part of the example.`,
+                narrativeP1: (sun, ruler) => `This reading uses <strong class="text-amber-300">${sun}</strong> and its traditional planetary ruler, <strong>${ruler}</strong>, as a starting point for the symbols in the chart.`,
+                narrativeP2: (moon) => `The modeled Moon appears in <strong class="text-indigo-300">${moon}</strong>. The aspect examples below illustrate how astrologers read angles between two points and offer a way to reflect on each example.`,
                 synSubtitle: (el1, el2, asc1, asc2) => `Sample elements: ${el1} & ${el2} • sample rising signs: ${asc1} & ${asc2}`,
-                synBasicSummary: (n1, n2, total) => `The simulator assigns ${n1} and ${n2} a symbolic score of ${total}/100. It does not measure relationship compatibility.`,
-                synDeep1: (m1, n1, m2, n2) => `In this example the Moon is in ${m1} for ${n1} and ${m2} for ${n2}. In astrological writing the Moon is often associated with emotional needs. What helps each person feel heard?`,
-                synDeep2: () => "Which plan would you both like to make together, and how would you decide who does what?",
                 toastCalcSuccess: (sign) => `Illustrative reading for ${sign} ready.`,
                 toastSavedBrowser: "Birth details saved in this browser.",
                 toastCopied: 'Daily horoscope copied to clipboard!',
@@ -165,7 +177,15 @@
             sr: {
                 profileStorageNote: "Podaci o rođenju ostaju na ovom uređaju samo ako izaberete Sačuvaj u ovom pregledaču.",
                 synPrivacyNote: "Podaci obe osobe ostaju na otvorenoj stranici i alat za poređenje ih ne čuva.",
-                btnClearProfile: "Obriši sačuvane podatke",
+                btnClearProfile: "Obriši podatke",
+                profileDayTitle: "Tvoj dnevni profil",
+                birthEditorTitle: "Podaci o rođenju",
+                showBirthDetails: "Podaci o rođenju",
+                hideBirthDetails: "Zatvori podatke",
+                readingToday: "Danas ·",
+                readingFor: "Tumačenje za",
+                profileWheelLink: "Pogledaj natalni krug",
+                savedProfileNotice: "Proveri sačuvani datum rođenja i izaberi grad sa liste. Sačuvaj ažurirane podatke da bi se dnevni profil ponovo prikazivao.",
                 dailyResultExample: "Primer sa probnim podacima o rođenju",
                 dailyResultLive: "Ilustrativno tumačenje na osnovu unosa",
                 synResultExample: "Primer sa probnim podacima o rođenju",
@@ -188,7 +208,6 @@
                 tabCuriositiesMobile: '🔭 Činjenice',
                 tabBooksMobile: '📚 Knjige',
                 tabMerchMobile: '👕 Merch',
-                heroPill: "✨ Simulator astrologije",
                 heroTitle: "<span class=\"gold-gradient-text\">Dnevni horoskop</span> i simulator natalne karte",
                 heroDesc: "Isprobajte simbolično tumačenje uz datum, vreme i grad rođenja sa liste. Krug i bodovi koriste pojednostavljene formule. Ne prikazuju stvarne položaje planeta i ne predviđaju događaje.",
                 lblUserName: 'Vaše ime (opciono)',
@@ -214,14 +233,14 @@
                 lblLuckyNumbers: "Brojevi iz primera",
                 lblLuckyColor: "Boja kao inspiracija",
                 lblLuckyHours: "Vremenski okvir iz primera",
-                secFavorabilityTitle: "Simbolični bodovi po temama",
-                secFavorabilitySub: "Bodovi i primeri aspekata nastaju iz šablona za razmišljanje. Viši rezultat ne znači veću verovatnoću ishoda.",
+                secFavorabilityTitle: "Tumačenje po temama",
+                secFavorabilitySub: "Četiri teme za izabrani datum. Bodovi i primeri aspekata su ilustrativni.",
                 keyTransitPrefix: "Primer aspekta",
                 cardWorkTitle: "Posao i projekti",
                 cardWorkFooter: "Rezultat primera",
                 cardLoveTitle: "Odnosi",
                 cardLoveFooter: "Rezultat primera",
-                cardHealthTitle: "Odmor i navike",
+                cardHealthTitle: "Zdravlje i odmor",
                 cardHealthFooter: "Rezultat primera",
                 cardLuckTitle: "Radoznalost i intuicija",
                 cardLuckFooter: "Rezultat primera",
@@ -247,7 +266,23 @@
                 secAllSignsSub: "Izaberite znak da učitate primer datuma rođenja u simulatoru.",
                 synHeroPill: "💞 Simulator sinastrije",
                 synHeroTitle: "<span class=\"gold-gradient-text\">Sinastrija</span> za dvoje",
-                synHeroDesc: "Pogledajte kako izgleda uporedni krug za dve osobe. Položaji i bodovi su ilustrativni primeri. Pitanja mogu da posluže kao povod za razgovor o odnosima.",
+                synHeroDesc: "Uporedite modelovane položaje u dve karte. Simulator proverava najkraće uglove između izabranih parova, a tradicionalna tumačenja služe kao povod za razgovor.",
+                synWheelSub: "Unutrašnji prsten: osoba A · Spoljašnji prsten: osoba B. Linije aspekata u krugu prikazuju primere za osobu A.",
+                synAspectCountLabel: "Parovi sa aspektom",
+                synMethodTitle: "Kako se čitaju uglovi",
+                synMethodDescription: "Poredimo 21 izabrani par iz dve karte prema najkraćem uglu. Svaki aspekt ima dozvoljeno odstupanje: konjunkcija 0° ±7°, sekstil 60° ±5°, kvadrat 90° ±6°, trigon 120° ±7° i opozicija 180° ±7°.",
+                synMethodLimit: "Uglovi se računaju iz modelovanih položaja. Tradicionalna tumačenja služe za razgovor, a broj aspekata ne meri slaganje.",
+                synNoTime: "Ako vreme rođenja nije uneto, simulator koristi podne. Zbog toga položaji u primeru i prikazani aspekti mogu da se promene.",
+                synDetailTitle: "Kako da iskoristite aspekte za razgovor",
+                synAngle: "Ugao",
+                synDeviation: "Odstupanje",
+                synOrb: "Dozvoljeno",
+                synNearest: "Najbliži provereni par",
+                synNoMatch: "Nijedan provereni par u ovoj temi ne ulazi u zadate granice.",
+                synTopic: "U astrološkoj simbolici",
+                synBodies: {"SO": ["Sunce", "identitet i lični pravac"], "MO": ["Mesec", "uteha i emotivne navike"], "ME": ["Merkur", "reči i način razmišljanja"], "VE": ["Venera", "nežnost i sklonosti"], "MA": ["Mars", "inicijativa i odlučnost"], "JU": ["Jupiter", "otvorenost i širenje mogućnosti"], "SA": ["Saturn", "granice i obaveze"]},
+                synAspects: {"conjunction": "Konjunkcija", "sextile": "Sekstil", "square": "Kvadrat", "trine": "Trigon", "opposition": "Opozicija"},
+                synThemes: {"emotion": {"title": "Emotivne potrebe", "fallback": "Kada ste uznemireni, da li vam više prija da vas neko sasluša, ostavi vam prostora ili pomogne da rešite problem?", "conjunction": "Ako vam oboma prija isti oblik utehe, uporedite kada vam je potreban. Da li vam razgovor prija odmah ili je jednoj osobi lakše kad prođe malo vremena?", "sextile": "Jedna osoba možda pokazuje brigu konkretnom pomoći, dok drugoj više znači da je pitate kako se oseća. Pitajte šta bi joj u tom trenutku prijalo.", "square": "Zamislite da jedna osoba želi da razgovara o teškom danu, a drugoj je potreban mir. Dogovorite se kada ćete se ponovo čuti kako pauza ne bi delovala kao odbijanje.", "trine": "Setite se kada je jedno od vas primetilo da je drugom potrebna podrška bez posebne molbe. Recite šta je tada pomoglo, da biste to mogli da ponovite.", "opposition": "Nekome prijaju reči utehe, a nekome konkretna pomoć. Navedite po jedan primer i pitajte šta bi vam više značilo ove nedelje."}, "passion": {"title": "Privlačnost i zajednička interesovanja", "fallback": "Navedite nešto u čemu uživate zajedno i nešto što radije radite odvojeno. Ostavite prostora za oboje u sledećem dogovoru.", "conjunction": "Zajedničko interesovanje može pokrenuti dogovor. Neka naizmenično svako od vas izabere detalj, recimo aktivnost, mesto ili tempo.", "sextile": "Probajte nešto gde jedna osoba započinje, a druga dodaje svoj detalj. Krenite od sitnice, poput zajedničke liste pesama ili pripreme večere.", "square": "Jedna osoba može uživati u spontanim pozivima, dok drugoj više prija najava. Dogovorite kada je iznenađenje dobrodošlo i kada prvo treba pitati.", "trine": "Uporedite kako zamišljate prijatno veče. Krenite od onoga što oboma prija, pa neka svako predloži po jedan svoj detalj.", "opposition": "Ako jedna osoba želi živahan izlazak, a druga mirno veče, predložite dva kraća plana ili se smenjujte u izboru tempa."}, "comm": {"title": "Komunikacija", "fallback": "Posle važnog razgovora svako može da sažme u jednoj rečenici šta je čuo, a drugoj osobi da priliku da ga ispravi.", "conjunction": "Poznata formulacija može da stvori utisak da ste se odmah razumeli. Pre nego što se saglasite, navedite po jedan konkretan primer da proverite da mislite na isto.", "sextile": "Neka jedna osoba prva kaže šta misli, a druga postavi neutralno potpitanje. Kod praktičnog dogovora pitajte kada, gde i šta kome treba.", "square": "Ako direktan predlog zazvuči kao kritika, prvo pitajte da li druga osoba želi povratnu informaciju. Ponovite kako ste razumeli problem, pa tek onda predložite rešenje.", "trine": "Kada razgovor ide lako, proverite šta je ostalo neizrečeno. Ako ste izabrali vreme ili mesto, ponovite dogovor i proverite da li odgovara oboma.", "opposition": "Ako jedna osoba prvo govori o široj slici, a druga kreće od detalja, saslušajte oba pristupa. Zatim zapišite jednu odluku koju ste oboje isto razumeli."}, "karma": {"title": "Zajednički planovi", "fallback": "Izaberite jedan mali plan koji možete da isprobate ove nedelje i dogovorite kada ćete razgovarati o tome kako je prošao.", "conjunction": "Ako slično pristupate obavezama, proverite da li oboje isto razumete kad je nešto završeno. Odredite ko radi zadatak i do kada.", "sextile": "Povežite ideju jedne osobe sa praktičnim korakom druge. Dogovorite šta je najmanje što možete da isprobate pre veće obaveze.", "square": "Ako jedna osoba želi da krene odmah, a druga traži više vremena za pripremu, dogovorite probu koja traži mali napor i datum kada ćete je zajedno oceniti.", "trine": "Ako se obaveze podele bez mnogo dogovaranja, proverite da li raspodela i dalje deluje pravedno. Pitajte ko može da uskoči kad uobičajeni plan ne uspe.", "opposition": "Kada se jedna osoba usredsredi na mogućnosti, a druga na vreme i trud, zapišite šta je minimum koji je prihvatljiv oboma. Dogovorite kada ima smisla proširiti plan."}},
                 synPersonALabel: '☀️ Osoba A (Unutrašnji prsten)',
                 btnUseMyData: 'Preuzmi moje podatke',
                 lblSynName1: 'Ime Osobe A',
@@ -259,14 +294,6 @@
                 lblSynName2: 'Ime Osobe B',
                 btnCalcSynastry: "Prikaži poređenje",
                 synWheelTitle: "Ilustrativni uporedni krug",
-                synWheelSub: 'Zlatno: Osoba A • Ružičasto: Osoba B',
-                matchWord: "Simbolični rezultat",
-                lblSynEmotion: "❤️ Emotivne potrebe",
-                lblSynPassion: "🔥 Privlačnost i zajednička interesovanja",
-                lblSynComm: "💬 Komunikacija",
-                lblSynKarma: "💍 Zajednički planovi",
-                vipSynTitle: "Pitanja za razgovor",
-                vipSynBadge: "Primeri",
                 histPill: '🏛️ Istorijski Koreni i Kulturno Nasleđe',
                 histBackBtn: '← Nazad na Natalni Kalkulator',
                 histMainTitle: 'Istorija i <span class="gold-gradient-text">Drevni Koreni</span> Astrologije',
@@ -305,12 +332,9 @@
                 faqSectionTitle: 'Često Postavljana Pitanja (FAQ)',
                 footerTagline: '• Astrološki Portal, Natalni Krug i Istorijska Enciklopedija',
                 footerDisclaimer: "Astralis obrađuje astrologiju kao kulturnu istoriju, simboliku i zabavu. Bodovi, položaji i tekstovi u simulatorima su ilustrativni i ne mogu predvideti ishode ili usmeravati medicinske, finansijske, pravne ili lične odluke.",
-                narrativeP1: (sun, asc, ruler, opener) => `Simulator u ovom primeru koristi <strong class="text-amber-300">${sun}</strong>, <strong class="text-amber-300">${asc}</strong> i tradicionalnu simboliku planete <strong>${ruler}</strong>. ${opener}`,
-                narrativeP2: (moon, hours, closer) => `Modelovani položaj Meseca je u znaku <strong class="text-indigo-300">${moon}</strong>. ${closer} Vremenski okvir (${hours}) je deo primera.`,
+                narrativeP1: (sun, ruler) => `Ovo tumačenje polazi od znaka <strong class="text-amber-300">${sun}</strong> i njegovog tradicionalnog planetarnog vladara, <strong>${ruler}</strong>, da bi objasnilo simbole na karti.`,
+                narrativeP2: (moon) => `U simulaciji je Mesec u znaku <strong class="text-indigo-300">${moon}</strong>. Primeri ispod pokazuju kako astrolozi tumače ugao između dve tačke i daju povod za razmišljanje o svakom primeru.`,
                 synSubtitle: (el1, el2, asc1, asc2) => `Primer elemenata: ${el1} i ${el2} • modelovani podznaci: ${asc1} i ${asc2}`,
-                synBasicSummary: (n1, n2, total) => `Simulator daje simbolični rezultat ${total}/100 za par ${n1} i ${n2}. Rezultat ne meri kompatibilnost u vezi.`,
-                synDeep1: (m1, n1, m2, n2) => `U ovom primeru Mesec je prikazan u znaku ${m1} kod ${n1} i ${m2} kod ${n2}. Astrološki tekstovi ga često povezuju sa emotivnim potrebama. Šta svakoj osobi pomaže da se oseća saslušano?`,
-                synDeep2: () => "Koji biste plan želeli da napravite zajedno i kako biste podelili obaveze?",
                 toastCalcSuccess: (sign) => `Ilustrativno tumačenje za znak ${sign} je spremno.`,
                 toastSavedBrowser: "Podaci o rođenju su sačuvani u ovom pregledaču.",
                 toastCopied: 'Dnevni horoskop je kopiran!',
@@ -852,163 +876,343 @@
         ];
 
         const ASPECTS_POOL = {
-            en: [
-                { title: 'Sun Trine Jupiter', type: 'Trine 120°', desc: "In traditional symbolism this trine is associated with confidence and generosity." },
-                { title: 'Venus Sextile Moon', type: 'Sextile 60°', desc: "This sextile often serves as an example of emotional expression in astrology." },
-                { title: 'Mercury Trine Saturn', type: 'Trine 120°', desc: "Astrological texts often use this trine to illustrate planning and structure." },
-                { title: 'Mars Sextile Sun', type: 'Sextile 60°', desc: "This sextile is traditionally interpreted as a symbol of initiative." },
-                { title: 'Moon Conjunction Venus', type: 'Conjunction 0°', desc: "A conjunction places two points near the same longitude. This pairing is often used as a symbol of affection." },
-                { title: 'Jupiter Sextile Mercury', type: 'Sextile 60°', desc: "This sextile is often associated in astrology with learning and conversation." }
+            "en": [
+                {
+                    "title": "Sun trine Jupiter",
+                    "type": "Trine 120°",
+                    "desc": "The Sun and Jupiter make a good example of how astrologers describe confidence and generosity. In practice, those two ideas can pull in different directions. Think of a situation where offering one specific resource would be more useful than promising broad support."
+                },
+                {
+                    "title": "Venus sextile Moon",
+                    "type": "Sextile 60°",
+                    "desc": "Astrologers often associate Venus with how someone shows affection and the Moon with what they find familiar or comforting. The two can look different in everyday life. Ask someone close to you what gesture makes them feel welcome after a difficult day."
+                },
+                {
+                    "title": "Mercury trine Saturn",
+                    "type": "Trine 120°",
+                    "desc": "Mercury and Saturn make a common symbolic pairing for putting an idea into a workable structure. Try the distinction with one stalled task. Tell a colleague what you are trying to do in one sentence, then check if both of you can name the next step."
+                },
+                {
+                    "title": "Mars sextile Sun",
+                    "type": "Sextile 60°",
+                    "desc": "This pairing is often used to illustrate the difference between having a direction and acting on it. Think of a plan you have been discussing for a while. What is the smallest part you can finish before you ask anyone else to commit?"
+                },
+                {
+                    "title": "Moon conjunct Venus",
+                    "type": "Conjunction 0°",
+                    "desc": "A conjunction brings two points close together on the chart. Here the symbolic focus is affection expressed through an ordinary habit. Notice who makes a recurring task easier for you, and thank them for the specific part they take care of."
+                },
+                {
+                    "title": "Jupiter sextile Mercury",
+                    "type": "Sextile 60°",
+                    "desc": "Jupiter and Mercury often appear together in symbolic examples about learning. Before you look something up, write down what you expect the answer to be. The most interesting part of the search is often the one detail that upsets your first explanation."
+                },
+                {
+                    "title": "Mercury square Mars",
+                    "type": "Square 90°",
+                    "desc": "In this example, a square is a way to talk about the friction between getting a point across and getting an answer quickly. Before sending a sharp reply, turn the first sentence into a question that the other person can actually answer."
+                },
+                {
+                    "title": "Sun opposite Moon",
+                    "type": "Opposition 180°",
+                    "desc": "An opposition puts two points across from each other. In this example, an obligation and a quieter personal need can both deserve attention. Try naming a time for each instead of leaving the quieter one to fit into whatever remains."
+                },
+                {
+                    "title": "Venus trine Saturn",
+                    "type": "Trine 120°",
+                    "desc": "Venus and Saturn can symbolize the connection between affection and reliability. An ordinary example is remembering a commitment without waiting to be asked. Choose one small agreement you can make easier to keep and decide with the other person who does what."
+                },
+                {
+                    "title": "Moon square Jupiter",
+                    "type": "Square 90°",
+                    "desc": "This square offers a way to think about the tension between wanting more activity and saving room for rest. Look at the next invitation or task you feel ready to accept. Check whether a smaller commitment would let you enjoy it and still have time to yourself."
+                },
+                {
+                    "title": "Mercury conjunct Venus",
+                    "type": "Conjunction 0°",
+                    "desc": "Mercury and Venus offer a symbolic prompt about the difference between politeness and warmth. If you want to praise someone, mention the exact decision or detail you appreciated. A sentence about what they did often means more than a general compliment."
+                },
+                {
+                    "title": "Mars opposite Saturn",
+                    "type": "Opposition 180°",
+                    "desc": "In astrology this pair is often used to illustrate momentum encountering a limit. Think about something you are pushing to finish. Which constraint is fixed, and which one could change if you asked sooner or offered a smaller version of the plan?"
+                },
+                {
+                    "title": "Jupiter trine Moon",
+                    "type": "Trine 120°",
+                    "desc": "In this example, expansion is pictured as making room for another person to join an existing routine. Invite someone into a habit you already value, such as a walk or a regular meal. Give them a clear choice about when and how to take part."
+                }
             ],
-            sr: [
-                { title: 'Sunce Trigon Jupiter', type: 'Trigon 120°', desc: "U tradicionalnoj simbolici ovaj trigon se povezuje sa samopouzdanjem i velikodušnošću." },
-                { title: 'Venera Sekstil Mesec', type: 'Sekstil 60°', desc: "Sekstil se u ovom primeru koristi kao simbol izražavanja emocija." },
-                { title: 'Merkur Trigon Saturn', type: 'Trigon 120°', desc: "Astrološki tekstovi često koriste ovaj trigon kao primer planiranja i strukture." },
-                { title: 'Mars Sekstil Sunce', type: 'Sekstil 60°', desc: "Ovaj sekstil se tradicionalno tumači kao simbol inicijative." },
-                { title: 'Mesec Konjunkcija Venera', type: 'Konjunkcija 0°', desc: "Konjunkcija označava približnu blizinu dva položaja po ekliptičkoj dužini. Ovaj par se često koristi kao simbol naklonosti." },
-                { title: 'Jupiter Sekstil Merkur', type: 'Sekstil 60°', desc: "Ovaj sekstil se u astrologiji često povezuje sa učenjem i razgovorom." }
+            "sr": [
+                {
+                    "title": "Sunce u trigonu s Jupiterom",
+                    "type": "Trigon 120°",
+                    "desc": "Sunce i Jupiter se u astrološkoj simbolici povezuju sa samopouzdanjem i velikodušnošću. Te dve osobine u praksi ne idu uvek zajedno. Seti se situacije u kojoj bi ponuda konkretne pomoći vredela više od obećanja da ćeš biti tu za sve."
+                },
+                {
+                    "title": "Venera u sekstilu s Mesecom",
+                    "type": "Sekstil 60°",
+                    "desc": "U astrologiji se Venera često vezuje za način pokazivanja naklonosti, a Mesec za ono što nam pruža utehu. To se u svakodnevici može razlikovati od osobe do osobe. Pitaj nekoga bliskog šta mu najviše prija kad iza sebe ima naporan dan."
+                },
+                {
+                    "title": "Merkur u trigonu sa Saturnom",
+                    "type": "Trigon 120°",
+                    "desc": "Merkur i Saturn u astrološkim primerima često služe da pokažu kako ideja dobija upotrebljiv oblik. Isprobaj to na zadatku koji je stao. Reci kolegi u jednoj rečenici šta pokušavaš da uradiš, pa proverite da li isto razumete sledeći korak."
+                },
+                {
+                    "title": "Mars u sekstilu sa Suncem",
+                    "type": "Sekstil 60°",
+                    "desc": "Ovaj spoj se često koristi kao primer razlike između namere i postupka. Seti se plana o kojem već dugo razgovaraš. Koji njegov najmanji deo možeš da završiš pre nego što zatražiš da se još neko uključi?"
+                },
+                {
+                    "title": "Mesec u konjunkciji s Venerom",
+                    "type": "Konjunkcija 0°",
+                    "desc": "Konjunkcija približava dve tačke na karti. Ovde je tema naklonost koja se pokazuje kroz obične navike. Obrati pažnju na to ko ti olakšava neki posao koji stalno iskrsava i zahvali mu za konkretan deo koji obavlja."
+                },
+                {
+                    "title": "Jupiter u sekstilu s Merkurom",
+                    "type": "Sekstil 60°",
+                    "desc": "Jupiter i Merkur se često pojavljuju u astrološkim primerima o učenju. Pre nego što potražiš odgovor, zapiši šta očekuješ da ćeš naći. Najzanimljiviji deo pretrage često je detalj koji poremeti tvoje prvo objašnjenje."
+                },
+                {
+                    "title": "Merkur u kvadratu s Marsom",
+                    "type": "Kvadrat 90°",
+                    "desc": "U ovom primeru kvadrat opisuje napetost između želje da se kaže važno i potrebe da odgovor stigne odmah. Pre nego što pošalješ oštru poruku, pretvori prvu rečenicu u pitanje na koje druga osoba zaista može da odgovori."
+                },
+                {
+                    "title": "Sunce u opoziciji s Mesecom",
+                    "type": "Opozicija 180°",
+                    "desc": "U opoziciji su dve tačke na suprotnim stranama karte. U ovom primeru i obaveza i lična potreba mogu da zaslužuju pažnju. Pokušaj da za svaku odrediš vreme, umesto da onu manje hitnu ostaviš samo za trenutak koji preostane."
+                },
+                {
+                    "title": "Venera u trigonu sa Saturnom",
+                    "type": "Trigon 120°",
+                    "desc": "Venera i Saturn mogu da predstavljaju vezu između naklonosti i pouzdanosti. Običan primer je ispuniti dogovor bez podsećanja. Izaberi mali dogovor koji se teško održava i proveri s drugom osobom kako biste jasnije podelili obaveze."
+                },
+                {
+                    "title": "Mesec u kvadratu s Jupiterom",
+                    "type": "Kvadrat 90°",
+                    "desc": "Ovaj kvadrat služi kao primer napetosti između želje za više aktivnosti i potrebe da ostane vremena za odmor. Pogledaj sledeći poziv ili obavezu koju nameravaš da prihvatiš. Proveri da li bi manja obaveza ostavila prostora i za uživanje i za vreme za sebe."
+                },
+                {
+                    "title": "Merkur u konjunkciji s Venerom",
+                    "type": "Konjunkcija 0°",
+                    "desc": "Merkur i Venera nude simboličan primer razlike između ljubaznosti i topline. Ako želiš nekoga da pohvališ, spomeni tačan postupak ili detalj koji ti je značio. Jedna rečenica o onome što je uradio često vredi više od opšteg komplimenta."
+                },
+                {
+                    "title": "Mars u opoziciji sa Saturnom",
+                    "type": "Opozicija 180°",
+                    "desc": "Ovaj par se u astrologiji često koristi za situaciju u kojoj elan naiđe na ograničenje. Seti se nečega što pokušavaš da završiš. Koje ograničenje stvarno važi, a koje bi moglo da se promeni ako na vreme postaviš pitanje ili ponudiš manju verziju plana?"
+                },
+                {
+                    "title": "Jupiter u trigonu s Mesecom",
+                    "type": "Trigon 120°",
+                    "desc": "U ovom primeru širenje znači napraviti mesta da se neko pridruži postojećoj navici. Pozovi nekoga da ti se pridruži u šetnji ili na redovnom ručku. Ostavi mu izbor kada i na koji način želi da se uključi."
+                }
             ]
         };
 
-        const NARRATIVE_TEMPLATES = {
-            "en": {
-                "high": {
-                    "work": [
-                        "What unfinished project would benefit from one clear next step?"
-                    ],
-                    "love": [
-                        "What small gesture would help someone feel appreciated?"
-                    ],
-                    "health": [
-                        "Which part of your routine leaves you with a sense of balance?"
-                    ],
-                    "luck": [
-                        "What would you like to try out of curiosity?"
-                    ]
+        const DAILY_THEME_DESCRIPTIONS = {
+            "work": [
+                {
+                    "en": "Pick one task whose finish line keeps moving and write down what you can deliver today. For a draft, that might mean three complete sections and a list of open points, so the next person knows what is ready to review.",
+                    "sr": "Izaberite zadatak čiji se kraj stalno pomera i zapišite šta danas možete da završite. Ako radite na nacrtu, to mogu biti tri gotova odeljka i spisak otvorenih pitanja, da bi osoba koja preuzima posao znala šta je spremno za pregled."
                 },
-                "medium": {
-                    "work": [
-                        "Which task would be easier if you divided it into smaller steps?"
-                    ],
-                    "love": [
-                        "When was the last time you checked that you understood someone correctly?"
-                    ],
-                    "health": [
-                        "Which part of your day could you leave free of plans?"
-                    ],
-                    "luck": [
-                        "What detail have you overlooked in a familiar place?"
-                    ]
+                {
+                    "en": "Notice which interruptions break your concentration and which genuinely need a quick reply. If a few messages can wait, try answering them together after one focused stretch and leave a short note about where to resume if something urgent comes up.",
+                    "sr": "Obratite pažnju na to koji vam prekidi remete koncentraciju, a koji zaista traže brz odgovor. Ako nekoliko poruka može da sačeka, odgovorite na njih kada završite taj deo posla. Za slučaj hitnog prekida zabeležite gde bi trebalo da nastavite."
                 },
-                "low": {
-                    "work": [
-                        "What question would clarify a decision you are considering?"
-                    ],
-                    "love": [
-                        "How would you explain a boundary in one kind sentence?"
-                    ],
-                    "health": [
-                        "What helps you make space for quiet time?"
-                    ],
-                    "luck": [
-                        "What familiar assumption would you like to question?"
-                    ]
+                {
+                    "en": "When you ask someone to review your work, give them one question they can answer on the first pass. Ask where the instructions became unclear or which example should come first, then use their answer to make one targeted revision.",
+                    "sr": "Kada zamolite nekoga da pregleda vaš rad, postavite jedno pitanje na koje može da odgovori već pri prvom čitanju. Pitajte na kom mestu uputstvo postaje nejasno ili koji primer treba da bude prvi, pa na osnovu odgovora napravite konkretnu izmenu."
+                },
+                {
+                    "en": "Before a handoff, look at the project as someone opening the folder for the first time. Share the latest version, name the next decision, and point to the exact place to continue so your collaborator can get started without searching through old messages.",
+                    "sr": "Pre predaje posla pogledajte projekat očima nekoga ko prvi put otvara fasciklu. Pošaljite najnoviju verziju, navedite koja odluka predstoji i označite tačno mesto za nastavak. Tako će saradnik imati sve što mu treba da započne svoj deo posla."
+                },
+                {
+                    "en": "If a deadline feels hard to estimate, separate your work from the things you are waiting for. Put the earliest useful check-in on your calendar and decide which part can move while a reply, approval, or missing file is still pending.",
+                    "sr": "Ako vam je teško da procenite rok, odvojite svoj deo posla od onoga što zavisi od drugih. Zabeležite kada ima smisla da prvi put proverite stanje i odlučite šta možete da uradite dok čekate odgovor, odobrenje ili dokument."
+                },
+                {
+                    "en": "Choose a recurring step that takes more effort than it should and watch yourself do it once. If most of the time goes into finding the right information, put that information where you begin the task and see how the next attempt feels.",
+                    "sr": "Izaberite korak koji često ponavljate i obratite pažnju na to gde vam odlazi najviše vremena. Ako se zadržavate tražeći određeni podatak, stavite ga tamo gde započinjete zadatak, pa sledeći put proverite da li ste posao lakše obavili."
+                },
+                {
+                    "en": "Before your next meeting, write down one decision you would like the group to make. If the conversation drifts toward background details, return to the decision and ask what information the group still needs to make it with confidence.",
+                    "sr": "Pre sledećeg sastanka zapišite jednu odluku koju biste želeli da grupa donese. Ako se razgovor zadrži na pojedinostima koje su svima već poznate, vratite se na odluku i pitajte koji podatak još nedostaje da biste mogli da je donesete."
+                },
+                {
+                    "en": "If you feel stuck on a large task, try describing the difficulty in one specific sentence. The next step is easier to choose once you know whether you are missing an example, waiting for a decision, or unsure what the finished version should contain.",
+                    "sr": "Ako ste zastali na velikom zadatku, pokušajte da opišete prepreku jednom konkretnom rečenicom. Lakše je odabrati sledeći korak kada znate da li vam nedostaje primer, čekate da neko donese odluku ili vam je nejasno šta završna verzija treba da sadrži."
+                },
+                {
+                    "en": "Give an idea a rough first draft before you judge how polished it is. Sketch two ways to explain it, read both aloud, and keep the parts that make the main point easiest for someone else to follow.",
+                    "sr": "Pre nego što ocenite koliko je ideja razrađena, zabeležite je u grubom nacrtu. Isprobajte dva načina da je objasnite, pročitajte oba naglas i zadržite one delove koji bi drugoj osobi olakšali da razume ono što želite da kažete."
+                },
+                {
+                    "en": "If you are comparing two versions of something, change a single detail and pay attention to what happens. Keeping the rest steady makes it easier to tell whether a shorter opening, a clearer heading, or a better example helped the reader.",
+                    "sr": "Ako poredite dve verzije, promenite jednu pojedinost i pogledajte kakav je rezultat. Kada ostatak teksta ostane isti, lakše ćete videti da li je čitaocu pomogao kraći uvod, jasniji naslov ili primer koji bolje objašnjava ono što želite da prenesete."
+                },
+                {
+                    "en": "Think of a small work decision you have been putting off because several options look reasonable. If you can easily revise the choice, try one option on a small part of the project and decide in advance what would make you reconsider.",
+                    "sr": "Setite se manje odluke na poslu koju odlažete jer vam nekoliko mogućnosti deluje razumno. Ako odluku možete lako da promenite, isprobajte jednu mogućnost na malom delu projekta i unapred odredite šta bi vas navelo da ponovo razmotrite izbor."
+                },
+                {
+                    "en": "At the end of a work session, note one step that took less effort than you expected and one that took more. Use those details to choose where to start next time and to give yourself a more realistic amount of time.",
+                    "sr": "Na kraju rada zabeležite koji vam je korak bio lakši nego što ste očekivali i koji je tražio više truda. Iskoristite to da odlučite odakle ćete početi sledeći put i da odvojite onoliko vremena koliko vam zaista treba."
                 }
-            },
-            "sr": {
-                "high": {
-                    "work": [
-                        "Kom nedovršenom projektu bi pomogao jedan jasan sledeći korak?"
-                    ],
-                    "love": [
-                        "Koji mali gest bi pomogao nekome da se oseti cenjeno?"
-                    ],
-                    "health": [
-                        "Koja navika vam daje osećaj ravnoteže?"
-                    ],
-                    "luck": [
-                        "Šta biste isprobali iz radoznalosti?"
-                    ]
+            ],
+            "love": [
+                {
+                    "en": "A short reply is easy to read in the wrong tone, especially if you were expecting more detail. If the message matters, ask a straightforward question about the point you need clarified and give the person room to answer in their own time.",
+                    "sr": "Kratkoj poruci lako je pripisati pogrešan ton, naročito kad ste očekivali više detalja. Ako vam je razgovor važan, postavite jasno pitanje o onome što je ostalo nejasno i ostavite sagovorniku dovoljno vremena da odgovori svojim rečima."
                 },
-                "medium": {
-                    "work": [
-                        "Koji zadatak bi bio lakši ako ga podelite na manje korake?"
-                    ],
-                    "love": [
-                        "Kada ste poslednji put proverili da li ste nekoga dobro razumeli?"
-                    ],
-                    "health": [
-                        "Koji deo dana biste mogli ostaviti bez unapred dogovorenih planova?"
-                    ],
-                    "luck": [
-                        "Koji detalj vam je promakao na poznatom mestu?"
-                    ]
+                {
+                    "en": "Think of a favor you still remember, even if the person who did it has already moved on. Tell them what they did and why it stayed with you. A specific thank-you gives them a clearer picture of the moment you appreciated.",
+                    "sr": "Setite se usluge koju pamtite iako je osoba koja vam je pomogla možda već zaboravila na nju. Recite joj šta je uradila i zašto vam je taj trenutak ostao u sećanju. Tako će znati koji ste gest posebno cenili."
                 },
-                "low": {
-                    "work": [
-                        "Koje pitanje bi razjasnilo odluku o kojoj razmišljate?"
-                    ],
-                    "love": [
-                        "Kako biste ljubazno objasnili jednu svoju granicu?"
-                    ],
-                    "health": [
-                        "Šta vam pomaže da nađete vreme za mir i tišinu?"
-                    ],
-                    "luck": [
-                        "Koju uobičajenu pretpostavku biste preispitali?"
-                    ]
+                {
+                    "en": "If a shared plan feels too vague, make the next invitation easy to answer. Suggest a date, a place and a rough time, and ask what would make it easier to join. The response may show which part of the plan needs adjusting.",
+                    "sr": "Ako je zajednički plan ostao neodređen, olakšajte odgovor na sledeći poziv. Predložite datum, mesto i okvirno vreme, pa pitajte šta bi drugoj osobi olakšalo da dođe. Iz odgovora možete saznati koji deo dogovora vredi prilagoditi i kada."
+                },
+                {
+                    "en": "An extra request can be a small task for one person and the last item in an already full day for another. Before agreeing, check what you can actually offer. A definite time or a smaller commitment is useful information for both of you.",
+                    "sr": "Dodatna molba nekome je sitnica, a nekome poslednja stavka u već punom danu. Pre nego što pristanete, proverite šta zaista možete da ponudite. Ako navedete termin ili preuzmete manji deo posla, oboje ćete znati na šta možete da računate."
+                },
+                {
+                    "en": "If you missed a plan you had agreed to, acknowledge the specific inconvenience before offering a replacement. A friend who waited outside needs a different response from someone whose afternoon was still free. Let their experience guide the way you make amends.",
+                    "sr": "Ako ste propustili dogovor, prvo pomenite konkretnu neprijatnost koju je to izazvalo, pa ponudite novi termin. Prijatelj koji vas je čekao ispred zgrade i osoba kojoj je popodne još bilo slobodno različito su to doživeli. Uzmite to u obzir kad pokušate da ispravite stvar."
+                },
+                {
+                    "en": "Someone telling a difficult story may want ideas, company, or simply time to finish the thought. Try asking what would help before offering a solution. If they want to talk it through, repeat the part you understood and let them fill in anything you missed.",
+                    "sr": "Kad vam neko priča o teškoj situaciji, možda želi predlog, društvo ili vreme da dovrši misao. Pitajte šta bi toj osobi pomoglo pre nego što predložite rešenje. Ako želi razgovor, ukratko ponovite šta ste razumeli i ostavite joj prostora da dopuni detalje."
+                },
+                {
+                    "en": "When a recurring household task keeps landing on the same person, look at the whole job. Grocery shopping, for example, can also involve checking supplies and making a list. Discuss how to divide up the preparation, the errand and the follow-through.",
+                    "sr": "Kada se ista kućna obaveza stalno vraća jednoj osobi, pogledajte šta sve taj posao obuhvata. Odlazak u nabavku uključuje i proveru zaliha i pravljenje spiska. Dogovorite se kako ćete podeliti pripremu, odlazak u prodavnicu i raspremanje po povratku."
+                },
+                {
+                    "en": "If you want to get to know someone you keep meeting in passing, build on one detail they already shared. Ask how the book, recipe, or repair turned out. A simple follow-up carries the conversation forward while letting them decide how much to share.",
+                    "sr": "Ako želite bolje da upoznate nekoga koga često srećete u prolazu, nadovežite se na detalj koji je već pomenuo. Pitajte kakva je bila knjiga, kako je ispao recept ili da li je popravka uspela. Tako razgovor može da se nastavi tempom koji toj osobi prija."
+                },
+                {
+                    "en": "A disagreement can gather up several old topics before either person sees it happening. Name the latest issue in one sentence and ask whether you can deal with that first. Make a separate time to discuss an earlier concern if it still needs attention.",
+                    "sr": "U raspravu se lako uvuku stare teme pre nego što to iko primeti. U jednoj rečenici opišite pitanje oko kojeg ste se upravo razišli i predložite da prvo razgovarate o njemu. Ako ranija tema i dalje traži pažnju, dogovorite posebno vreme za nju."
+                },
+                {
+                    "en": "A reunion can feel awkward when the last conversation was months ago. If you would like to reconnect, mention a shared memory and offer something easy to decline, such as a short walk. The invitation can stay simple while you see whether the timing suits both of you.",
+                    "sr": "Ponovni susret može delovati neprijatno kada je od poslednjeg razgovora prošlo nekoliko meseci. Ako želite da obnovite kontakt, pomenite zajedničku uspomenu i predložite nešto jednostavno, poput kratke šetnje. Poziv može biti nenametljiv i ostaviti prostora da vidite da li vam oboma odgovara."
+                },
+                {
+                    "en": "People sometimes enjoy company most when their hands are occupied. Make a cup of tea, sort a stack of photos, or walk to a nearby shop together. Notice whether the activity gives each of you a comfortable chance to speak or stay quiet.",
+                    "sr": "Nekad je najprijatnije biti zajedno dok su ruke zauzete. Skuvajte čaj, prelistajte stare fotografije ili zajedno prošetajte do obližnje prodavnice. Obratite pažnju da li vam ta aktivnost oboma daje priliku da razgovarate ili ćutite, kako vam u trenutku prija."
+                },
+                {
+                    "en": "Think of a time someone changed their mind after you explained your point of view. What helped the conversation move along? Bring one detail from that memory into a current conversation, such as choosing a quieter moment or explaining what the decision means to you.",
+                    "sr": "Setite se razgovora posle kog je neko promenio mišljenje jer je bolje razumeo vaše gledište. Šta je tada pomoglo? Donesite jedan detalj iz tog iskustva u sadašnji razgovor, recimo mirniji trenutak za razgovor ili objašnjenje šta vam ta odluka znači."
                 }
-            }
-        };
-
-        const DAILY_NARRATIVE_OPENERS = {
-            "en": {
-                "high": [
-                    "Where would you like to take initiative?"
-                ],
-                "medium": [
-                    "Which task deserves most of your attention?"
-                ],
-                "low": [
-                    "What would you like to understand before you act?"
-                ]
-            },
-            "sr": {
-                "high": [
-                    "Gde biste želeli da preuzmete inicijativu?"
-                ],
-                "medium": [
-                    "Koji zadatak zaslužuje najviše vaše pažnje?"
-                ],
-                "low": [
-                    "Šta biste želeli da razumete pre nego što donesete odluku?"
-                ]
-            }
-        };
-
-        const DAILY_NARRATIVE_CLOSERS = {
-            "en": {
-                "high": [
-                    "Consider what you would like to say more clearly."
-                ],
-                "medium": [
-                    "Consider a moment when listening changed a conversation."
-                ],
-                "low": [
-                    "Consider what can wait until you have time to reflect."
-                ]
-            },
-            "sr": {
-                "high": [
-                    "Razmislite o tome šta biste želeli jasnije da kažete."
-                ],
-                "medium": [
-                    "Prisetite se razgovora u kojem je pažljivo slušanje nešto promenilo."
-                ],
-                "low": [
-                    "Razmislite šta može da sačeka dok prikupite utiske."
-                ]
-            }
+            ],
+            "health": [
+                {
+                    "en": "The end of a busy stretch can pass without a clear break. Try a small closing routine today, such as writing down the next task and putting away the materials you used. Notice whether the following part of the day feels easier to begin.",
+                    "sr": "Posle niza obaveza ponekad izostane jasna pauza. Probajte danas mali završni ritual, recimo da zapišete sledeći zadatak i sklonite stvari koje ste koristili. Obratite pažnju na to da li vam posle tog trenutka lakše počinje naredni deo dana."
+                },
+                {
+                    "en": "Look at the first few things you do after getting home. If you spend most of that time looking for somewhere to put keys, bags, or mail, try giving one of those things a regular spot. See how the arrangement works on the next ordinary day.",
+                    "sr": "Pogledajte šta prvo radite kad stignete kući. Ako tada uglavnom tražite gde ćete ostaviti ključeve, torbu ili poštu, odredite jedno stalno mesto za nešto od toga. Proverite sledećeg običnog dana da li vam taj mali raspored odgovara."
+                },
+                {
+                    "en": "A spare ten minutes often gets absorbed into the next task. If an unclaimed moment appears, decide deliberately how to spend it. Sit by a window, have your tea while it is still warm, or look out for the first lights coming on outside.",
+                    "sr": "Slobodnih deset minuta često zauzme sledeća obaveza. Ako se pojavi trenutak s kojim još nemate plan, izaberite kako želite da ga provedete. Sedite kraj prozora, popijte čaj dok je topao ili posmatrajte kako se napolju pale prva svetla."
+                },
+                {
+                    "en": "Walk through tomorrow morning in your head and identify the point where the routine usually gets crowded. Setting out a bag, finding your transit card, or writing down the first stop may make that moment simpler. Pick the preparation that fits the morning you actually have.",
+                    "sr": "Zamislite sutrašnje jutro i pronađite trenutak u kome obično nastane gužva. Možda ćete taj deo olakšati ako pripremite torbu, pronađete karticu za prevoz ili zapišete gde prvo idete. Izaberite pripremu koja odgovara jutru kakvo vas stvarno čeka."
+                },
+                {
+                    "en": "If a free evening has turned into several separate errands, group the stops on a map or rethink one deadline. You may find that two belong on the same route and another can wait. Decide how much of the evening you want to keep open.",
+                    "sr": "Ako se slobodno veče pretvorilo u niz odlazaka, pogledajte na mapi gde se sve zaustavljate i proverite rokove. Možda su dve obaveze na istom putu, a treća može da sačeka. Odlučite koliko vremena želite da ostavite otvorenim za sebe."
+                },
+                {
+                    "en": "Pay attention to the first thing that pulls you toward your phone during an otherwise quiet moment. It might be a message, a schedule check, or simple habit. Try an interval with the phone in a different place and see what you choose to do with the time.",
+                    "sr": "Primetićete možda da u mirnom trenutku prvo posegnete za telefonom zbog poruke, provere rasporeda ili iz navike. Obratite pažnju koji je povod kod vas. Ostavite telefon kratko na drugom mestu i pogledajte šta birate da uradite s tim vremenom."
+                },
+                {
+                    "en": "When a routine falls apart on a crowded day, it helps to know its smallest useful form. If tidying the room is too much, put the things you need tomorrow in one place. The smaller version can fit days when a full reset is impractical.",
+                    "sr": "Kad se u pretrpanom danu poremeti rutina, vredi znati njen najmanji koristan oblik. Ako je sređivanje cele sobe previše, stavite na jedno mesto stvari koje su vam potrebne sutra. Ta kratka verzija može da stane u dane kada nemate vremena za veliko sređivanje."
+                },
+                {
+                    "en": "Compare two places where you spend time at home. Which has the kind of light, sound, or seating you want for a short break? Move one small object there, such as a book or a coaster, to make it easier to use that spot.",
+                    "sr": "Uporedite dva mesta na kojima provodite vreme kod kuće. Gde vam svetlo, zvuk ili mesto za sedenje više odgovaraju za kratku pauzu? Prenesite na to mesto sitnicu, recimo knjigu ili podmetač, kako bi vam bilo pri ruci kada tamo sednete."
+                },
+                {
+                    "en": "A transition between two commitments can look spacious on a calendar and feel rushed in practice. Include the time it takes to travel, pack, or switch rooms when you look at the gap. See how much time is really available before adding something else.",
+                    "sr": "Prelaz između dve obaveze na kalendaru može delovati komotno, a u stvarnosti proći u žurbi. Uračunajte koliko vam treba za put, pakovanje ili prelazak u drugu prostoriju. Tek tada pogledajte koliko je vremena zaista slobodno pre nego što dodate još nešto."
+                },
+                {
+                    "en": "Describe the best part of an ordinary morning last week in concrete terms. Perhaps you had time to open a window, finish breakfast, or listen to the end of a song. Consider whether one of those details can be repeated with the schedule you have today.",
+                    "sr": "Opišite najbolji deo jednog običnog jutra prošle nedelje što konkretnije. Možda ste stigli da otvorite prozor, dovršite doručak ili poslušate pesmu do kraja. Razmislite da li neki od tih malih trenutaka možete da ponovite uz raspored koji imate danas."
+                },
+                {
+                    "en": "If several small reminders are running through your mind at once, write them in one place and mark the time-sensitive ones. Leave the list where you can find it later. Notice which items still feel important when you look at it with a little distance.",
+                    "sr": "Ako vam se nekoliko sitnih podsetnika istovremeno vrti po glavi, zapišite ih na jedno mesto i označite one koji imaju rok. Ostavite spisak tamo gde ćete ga lako naći. Primetite koje vam stavke i dalje deluju važno kad ga malo kasnije pogledate."
+                },
+                {
+                    "en": "Pick one routine you tend to repeat in the same order. Change something minor, such as when you start a playlist or where you leave a reusable bag. Give the change a few ordinary days and see whether it earns a place in the routine.",
+                    "sr": "Izaberite jednu rutinu koju obično ponavljate istim redosledom. Promenite sitnicu, recimo kada puštate muziku ili gde ostavljate platnenu torbu. Dajte promeni nekoliko običnih dana i proverite koliko vam odgovara kada je isprobate u različitim okolnostima tokom nedelje."
+                }
+            ],
+            "luck": [
+                {
+                    "en": "The next time you pass a familiar building, look above street level. A date, painted sign, or unusual window can give you a question about the place. Write it down and see what a local archive or an older map can tell you.",
+                    "sr": "Kad sledeći put prođete kraj poznate zgrade, pogledajte iznad visine ulice. Godina, oslikani natpis ili neobičan prozor mogu da vam daju pitanje o tom mestu. Zabeležite ga i pogledajte šta možete da saznate iz lokalnog arhiva ili starije mape."
+                },
+                {
+                    "en": "A strong first impression can contain several observations crowded into one feeling. Write down two things you actually noticed and one thing you inferred. If the distinction matters to a decision, look for another piece of information before deciding how much weight to give the feeling.",
+                    "sr": "Snažan prvi utisak može da objedini više zapažanja u jedan osećaj. Zapišite dve stvari koje ste primetili i jedan zaključak koji ste iz toga izveli. Ako je ta razlika važna za odluku, potražite još jedan podatak pre nego što se oslonite na utisak."
+                },
+                {
+                    "en": "Choose an everyday object whose shape you rarely think about. Look at the handle, the material, or the way it fits next to similar objects. Sketch one possible change and imagine what would happen when you used the object in a familiar task.",
+                    "sr": "Izaberite svakodnevni predmet o čijem obliku retko razmišljate. Pogledajte dršku, materijal ili način na koji se uklapa pored sličnih predmeta. Nacrtajte jednu moguću izmenu i zamislite šta bi se desilo kad biste ga koristili za zadatak koji često radite."
+                },
+                {
+                    "en": "If the evening sky is visible, choose one fixed landmark and note where the Moon or a bright patch of cloud appears beside it. Look from the same spot at another time when you can. Compare the two observations and record what was different, including visibility.",
+                    "sr": "Ako je večernje nebo vidljivo, izaberite nepomičan orijentir i zabeležite gde se pored njega vidi Mesec ili svetao oblak. Pogledajte sa istog mesta u drugom trenutku, kad budete mogli. Uporedite zapažanja i zapišite šta se promenilo, uključujući i vidljivost."
+                },
+                {
+                    "en": "Pick a detail from a song, film, or story that has stayed with you. See what happens when you listen or look again specifically for it. The scene around the detail may turn out to be as interesting as the part you remembered.",
+                    "sr": "Izaberite detalj iz pesme, filma ili priče koji vam se zadržao u sećanju. Ponovo poslušajte ili pogledajte delo i obratite pažnju baš na taj trenutak. Možda se pokaže da je ono što ga okružuje podjednako zanimljivo kao i deo koji pamtite."
+                },
+                {
+                    "en": "A familiar recipe or craft can be a quiet experiment. Pick one step and look for the moment when you decide it is ready. Write down the cue you use, then ask someone else what they watch for when they do the same thing.",
+                    "sr": "Poznat recept ili rad rukama može da posluži kao mali eksperiment. Izaberite jedan korak i primetite trenutak kada procenite da je gotov. Zapišite po čemu to zaključujete, pa pitajte nekoga drugog koji znak prati kada radi istu stvar."
+                },
+                {
+                    "en": "Make a low-stakes estimate and test it. Guess how long a familiar route takes, how many pages you can read in ten minutes, or how many steps separate two doors. Compare your estimate with what you measured and consider which detail you overlooked.",
+                    "sr": "Proverite jednu procenu kod koje nije važno da odmah pogodite. Ocenite koliko traje poznat put, koliko stranica pročitate za deset minuta ili koliko koraka ima između dvoja vrata. Uporedite procenu s merenjem i razmislite koji vam je detalj promakao."
+                },
+                {
+                    "en": "During a conversation, notice the point where you would normally add your own similar story. Ask how the other person's story turned out first. One extra question can send the exchange in a direction you would have missed if you followed the usual rhythm.",
+                    "sr": "U razgovoru primetite trenutak u kom biste obično dodali svoju sličnu priču. Najpre pitajte kako se završila priča osobe koja govori. Jedno dodatno pitanje može da otvori deo razgovora koji biste propustili da ste nastavili uobičajenim ritmom."
+                },
+                {
+                    "en": "Save one of those questions that occurs to you while washing dishes or waiting in line. Give it a little time later and see how far you get with a book, a map, or a search. Write down the new question the answer raises.",
+                    "sr": "Sačuvajte pitanje koje vam padne na pamet dok perete sudove ili čekate u redu. Kasnije mu posvetite malo vremena i proverite dokle možete da stignete uz knjigu, mapu ili pretragu. Zapišite i novo pitanje koje vam odgovor otvori."
+                },
+                {
+                    "en": "If you are choosing between two simple options, imagine spending an ordinary afternoon with each choice already made. Which detail creates the strongest reaction? Check the practical reason behind it, such as the time involved, who would join you, or how easily plans could change.",
+                    "sr": "Ako birate između dve jednostavne mogućnosti, zamislite kako biste proveli obično popodne posle svake odluke. Koji detalj vam najviše privlači pažnju? Proverite praktičan razlog iza toga, recimo koliko vremena treba, ko bi vam se pridružio ili koliko se lako plan može promeniti."
+                },
+                {
+                    "en": "Look for a symbol you have seen in two different settings, perhaps a crescent shape on a calendar and on a piece of jewelry. Describe what it does in each setting. You may come away with a better question about how people give images their meaning.",
+                    "sr": "Potražite simbol koji ste videli na dva različita mesta, recimo polumesec na kalendaru i na komadu nakita. Opišite čemu služi u svakom od tih okruženja. Možda ćete tako doći do preciznijeg pitanja o tome kako ljudi slikama daju značenje."
+                },
+                {
+                    "en": "Revisit a skill you were curious about before you knew what it actually involved. Spend a short session on the simplest version you can find, such as drawing a single letter or folding one paper shape. Note which part you would happily try a second time.",
+                    "sr": "Vratite se veštini koja vas je privlačila pre nego što ste znali šta sve podrazumeva. Pokušajte najjednostavniju varijantu, recimo crtanje jednog slova ili savijanje jednog oblika od papira. Zabeležite koji deo biste rado ponovili kad opet budete imali vremena."
+                }
+            ]
         };
 
         const KARMIC_NODE_VARIANTS = {
@@ -1344,6 +1548,7 @@
 
             const s = t();
             document.getElementById('header-subtitle').textContent = s.headerSubtitle;
+            document.getElementById('profile-wheel-link').textContent = s.profileWheelLink;
             document.getElementById('tab-daily-desktop').textContent = s.tabDailyDesktop;
             document.getElementById('tab-synastry-desktop').textContent = s.tabSynastryDesktop;
             document.getElementById('tab-history-desktop').textContent = s.tabHistoryDesktop;
@@ -1358,8 +1563,7 @@
             document.getElementById('tab-books-mobile').textContent = s.tabBooksMobile;
             document.getElementById('tab-merch-mobile').textContent = s.tabMerchMobile;
 
-            document.getElementById('hero-pill').textContent = s.heroPill;
-            document.getElementById('hero-title').innerHTML = s.heroTitle;
+            document.getElementById('birth-editor-title').textContent = s.birthEditorTitle;
             document.getElementById('hero-desc').textContent = s.heroDesc;
             document.getElementById('lbl-user-name').textContent = s.lblUserName;
             document.getElementById('user-name').placeholder = s.placeholderUserName;
@@ -1424,12 +1628,12 @@
 
             document.getElementById('syn-wheel-title').textContent = s.synWheelTitle;
             document.getElementById('syn-wheel-sub').textContent = s.synWheelSub;
-            document.getElementById('lbl-syn-emotion').textContent = s.lblSynEmotion;
-            document.getElementById('lbl-syn-passion').textContent = s.lblSynPassion;
-            document.getElementById('lbl-syn-comm').textContent = s.lblSynComm;
-            document.getElementById('lbl-syn-karma').textContent = s.lblSynKarma;
-            document.getElementById('vip-syn-title').textContent = s.vipSynTitle;
-            document.getElementById('vip-syn-badge').textContent = s.vipSynBadge;
+            document.getElementById('syn-aspect-count-label').textContent = s.synAspectCountLabel;
+            document.getElementById('syn-method-title').textContent = s.synMethodTitle;
+            document.getElementById('syn-method-description').textContent = s.synMethodDescription;
+            document.getElementById('syn-method-limit').textContent = s.synMethodLimit;
+            document.getElementById('syn-detail-title').textContent = s.synDetailTitle;
+            document.getElementById('syn-no-time').textContent = s.synNoTime;
 
             document.getElementById('footer-tagline').textContent = s.footerTagline;
             document.getElementById('footer-link-history').textContent = s.tabHistoryDesktop.replace(/^[^\w\s]+\s*/, '');
@@ -1451,6 +1655,7 @@
             document.getElementById('syn-result-kind').textContent = synastryExample ? s.synResultExample : s.synResultLive;
             document.getElementById('daily-result-kind').textContent = dailyExample ? s.dailyResultExample : s.dailyResultLive;
             initZodiacGrid();
+            updateBirthEditor();
             calculateDailyReading();
             calculateSynastryReading();
         }
@@ -1479,6 +1684,9 @@
         }
 
         const PROFILE_STORAGE_KEY = 'astralis_user_profile_v1';
+        let savedBirthProfile = null;
+        let savedProfileUsable = false;
+        let birthEditorOpen = true;
         const legacyProfileKeys = [
             'astralis_auth_state_v1',
             'astralis_profiles_by_email_v1',
@@ -1492,25 +1700,93 @@
             return `${date.getFullYear()}-${month}-${day}`;
         }
 
+        function readingCalendarDate(isoDate) {
+            const [year, month, day] = isoDate.split('-').map(Number);
+            const date = new Date(0);
+            date.setUTCFullYear(year, month - 1, day);
+            return date;
+        }
+
         function restoreBirthProfile() {
             try {
                 const profile = JSON.parse(localStorage.getItem(PROFILE_STORAGE_KEY) || 'null');
-                if (!profile || typeof profile !== 'object') return;
-
-                const inputs = {
-                    'user-name': profile.name,
-                    'birth-date': profile.birthDate,
-                    'birth-time': profile.birthTime,
-                    'birth-city-input': profile.cityText
-                };
-                for (const [id, value] of Object.entries(inputs)) {
-                    if (typeof value === 'string') document.getElementById(id).value = value;
-                }
-                const unknownTime = document.getElementById('unknown-time');
-                unknownTime.checked = profile.unknownTime === true;
-                document.getElementById('birth-time').disabled = unknownTime.checked;
-                dailyExample = !(selectCity('main') && document.getElementById('birth-date').value);
+                if (!profile || typeof profile !== 'object' || Array.isArray(profile)) return;
+                savedBirthProfile = profile;
+                applyBirthProfile(profile);
+                savedProfileUsable = Boolean(profile.birthDate && profile.cityText &&
+                    document.getElementById('birth-date').value && selectCity('main'));
+                birthEditorOpen = !savedProfileUsable;
+                dailyExample = !savedProfileUsable;
             } catch (e) {}
+        }
+
+        function applyBirthProfile(profile) {
+            const inputs = {
+                'user-name': profile.name,
+                'birth-date': profile.birthDate,
+                'birth-time': profile.birthTime,
+                'birth-city-input': profile.cityText
+            };
+            for (const [id, value] of Object.entries(inputs)) {
+                const input = document.getElementById(id);
+                input.value = typeof value === 'string' ? value : input.defaultValue;
+            }
+            document.getElementById('unknown-time').checked = profile.unknownTime === true;
+            document.getElementById('birth-time').disabled = profile.unknownTime === true;
+        }
+
+        function updateBirthEditor() {
+            const s = t();
+            const title = document.getElementById('hero-title');
+            if (savedProfileUsable) title.textContent = s.profileDayTitle;
+            else title.innerHTML = s.heroTitle;
+
+            const details = document.getElementById('btn-profile-details');
+            details.textContent = birthEditorOpen ? s.hideBirthDetails : s.showBirthDetails;
+            details.setAttribute('aria-expanded', String(birthEditorOpen));
+            details.hidden = !savedProfileUsable;
+            document.getElementById('daily-profile-actions').hidden = !savedBirthProfile;
+            document.getElementById('birth-form-card').hidden = !birthEditorOpen;
+            document.getElementById('hero-profile-grid').classList.toggle('profile-focused', !birthEditorOpen);
+
+            const notice = document.getElementById('saved-profile-notice');
+            notice.textContent = s.savedProfileNotice;
+            notice.hidden = !savedBirthProfile || savedProfileUsable;
+        }
+
+        function updateReadingDate(targetDay) {
+            const s = t();
+            const date = document.getElementById('profile-reading-date');
+            const formatter = new Intl.DateTimeFormat(currentLang === 'sr' ? 'sr-Latn-RS' : 'en-GB', { dateStyle: 'full', timeZone: 'UTC' });
+            date.dateTime = targetDay;
+            const calendarDate = readingCalendarDate(targetDay);
+            date.textContent = Number.isFinite(calendarDate.getTime()) ? formatter.format(calendarDate) : targetDay;
+            document.getElementById('reading-date-prefix').textContent = targetDay === getLocalDay() ? s.readingToday : s.readingFor;
+        }
+
+        function showSavedProfileToday(moveFocus = false) {
+            applyBirthProfile(savedBirthProfile);
+            document.getElementById('target-date').value = getLocalDay();
+            dailyExample = false;
+            birthEditorOpen = false;
+            updateBirthEditor();
+            calculateDailyReading();
+            if (moveFocus) {
+                document.getElementById('daily-page-header').scrollIntoView();
+                document.getElementById('btn-profile-details').focus({ preventScroll: true });
+            }
+        }
+
+        function toggleBirthEditor() {
+            if (!savedProfileUsable) return;
+            if (birthEditorOpen) {
+                showSavedProfileToday(true);
+            } else {
+                birthEditorOpen = true;
+                updateBirthEditor();
+                document.getElementById('birth-form-card').scrollIntoView();
+                document.getElementById('birth-editor-title').focus({ preventScroll: true });
+            }
         }
 
         function saveBirthProfile() {
@@ -1525,10 +1801,14 @@
 
             try {
                 localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
-                showToast(t().toastSavedBrowser, 'success');
             } catch (e) {
                 showToast(t().toastStorageError, 'error');
+                return;
             }
+            savedBirthProfile = profile;
+            savedProfileUsable = true;
+            showSavedProfileToday(true);
+            showToast(t().toastSavedBrowser, 'success');
         }
 
         function clearBirthProfile() {
@@ -1544,15 +1824,22 @@
             document.getElementById('synastry-form').reset();
             document.getElementById('birth-time').disabled = false;
             document.getElementById('target-date').value = getLocalDay();
+            savedBirthProfile = null;
+            savedProfileUsable = false;
+            birthEditorOpen = true;
             populateCitySelects();
             dailyExample = true;
             synastryExample = true;
+            updateBirthEditor();
             calculateDailyReading();
             calculateSynastryReading();
+            document.getElementById('birth-form-card').scrollIntoView();
+            document.getElementById('birth-editor-title').focus({ preventScroll: true });
             showToast(t().toastCleared, 'success');
         }
 
         function calculateDailyReading(reportError = false) {
+            updateReadingDate(document.getElementById('target-date').value || getLocalDay());
             if (!selectCity('main', reportError) || !document.getElementById('birth-date').value) return false;
             runCalculation(reportError);
             return true;
@@ -1645,29 +1932,32 @@
             const luck = Math.round(52 + seededRandom(targetSeed + 4) * 45);
             const overall = Math.round((work + love + health + luck) / 4);
 
-            const getLevel = (val) => val >= 78 ? 'high' : (val >= 65 ? 'medium' : 'low');
-            const overallLevel = overall >= 80 ? 'high' : (overall >= 68 ? 'medium' : 'low');
-
             const n1 = Math.floor(seededRandom(targetSeed + 11) * 9) + 1;
             const n2 = Math.floor(seededRandom(targetSeed + 12) * 18) + 10;
             const n3 = Math.floor(seededRandom(targetSeed + 13) * 20) + 28;
 
             const startHour = 9 + Math.floor(seededRandom(targetSeed + 14) * 9);
             const pool = ASPECTS_POOL[currentLang];
-            const idx1 = Math.floor(seededRandom(targetSeed + 15) * pool.length);
-            const step = 1 + Math.floor(seededRandom(targetSeed + 16) * (pool.length - 1));
-            const idx2 = (idx1 + step) % pool.length;
-
-            const templates = NARRATIVE_TEMPLATES[currentLang];
+            const calendarDay = readingCalendarDate(targetDateStr).getTime();
+            const ordinal = Number.isFinite(calendarDay) ? calendarDay / 86400000 : 0;
+            const repeatedProfileSeed = natal.birthSeed + natal.ascSign.id * 31;
+            const rotationIndex = (length, topicOffset) => {
+                const startingIndex = Math.floor(seededRandom(repeatedProfileSeed + topicOffset) * length);
+                return ((ordinal + startingIndex) % length + length) % length;
+            };
+            const themeText = (category, offset) => {
+                const entries = DAILY_THEME_DESCRIPTIONS[category];
+                return entries[rotationIndex(entries.length, offset)][currentLang];
+            };
+            const idx1 = rotationIndex(pool.length, 15);
+            const idx2 = (idx1 + Math.floor(pool.length / 2)) % pool.length;
 
             return {
                 work, love, health, luck, overall,
-                workText: pickVariant(templates[getLevel(work)].work, targetSeed + 101),
-                loveText: pickVariant(templates[getLevel(love)].love, targetSeed + 202),
-                healthText: pickVariant(templates[getLevel(health)].health, targetSeed + 303),
-                luckText: pickVariant(templates[getLevel(luck)].luck, targetSeed + 404),
-                narrativeOpener: pickVariant(DAILY_NARRATIVE_OPENERS[currentLang][overallLevel], targetSeed + 505),
-                narrativeCloser: pickVariant(DAILY_NARRATIVE_CLOSERS[currentLang][overallLevel], targetSeed + 606),
+                workText: themeText('work', 101),
+                loveText: themeText('love', 202),
+                healthText: themeText('health', 303),
+                luckText: themeText('luck', 404),
                 karmicNodeAdvice: pickVariant(KARMIC_NODE_VARIANTS[currentLang], natal.birthSeed + 707),
                 seventhHouseAdvice: pickVariant(SEVENTH_HOUSE_VARIANTS[currentLang], natal.birthSeed + 808),
                 luckyNumbers: `${n1}, ${n2}, ${n3}`,
@@ -1852,14 +2142,14 @@
 
             document.getElementById('transit-summary-pill').textContent = `${s.keyTransitPrefix}: ${forecast.aspects[0].title}`;
             document.getElementById('detailed-daily-narrative').innerHTML = `
-                <p>${s.narrativeP1(sunName, ascName, natal.sunSign.ruler[currentLang], forecast.narrativeOpener)}</p>
-                <p>${s.narrativeP2(moonName, forecast.luckyHours, forecast.narrativeCloser)}</p>
+                <p>${s.narrativeP1(sunName, natal.sunSign.ruler[currentLang])}</p>
+                <p>${s.narrativeP2(moonName)}</p>
             `;
 
             document.getElementById('active-aspects-list').innerHTML = forecast.aspects.map(a => `
                 <div class="p-3 rounded-xl bg-white/[0.04] border border-white/10">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-xs font-bold text-amber-300">${a.title}</span>
+                        <span class="daily-aspect-title text-xs font-bold text-amber-300">${a.title}</span>
                         <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">${a.type}</span>
                     </div>
                     <p class="text-[11px] text-slate-300">${a.desc}</p>
@@ -1874,6 +2164,121 @@
             if (showNotification) {
                 showToast(s.toastCalcSuccess(sunName), 'success');
             }
+        }
+
+        const synastryAspectTypes = [
+            { key: 'conjunction', angle: 0, orb: 7 },
+            { key: 'sextile', angle: 60, orb: 5 },
+            { key: 'square', angle: 90, orb: 6 },
+            { key: 'trine', angle: 120, orb: 7 },
+            { key: 'opposition', angle: 180, orb: 7 }
+        ];
+
+        // Each ordered pair compares the first person's body with the second person's body.
+        const synastryPairs = {
+            emotion: [['MO', 'MO'], ['MO', 'VE'], ['VE', 'MO'], ['MO', 'SA'], ['SA', 'MO']],
+            passion: [['VE', 'VE'], ['VE', 'MA'], ['MA', 'VE'], ['VE', 'JU'], ['JU', 'VE']],
+            comm: [['ME', 'ME'], ['ME', 'SO'], ['SO', 'ME'], ['ME', 'MA'], ['MA', 'ME']],
+            karma: [['SA', 'SA'], ['JU', 'JU'], ['JU', 'SA'], ['SA', 'JU'], ['SO', 'SA'], ['SA', 'SO']]
+        };
+
+        function compareSynastryPairs(natal1, natal2) {
+            const positionsA = new Map(natal1.planets.map(body => [body.key, body.deg]));
+            const positionsB = new Map(natal2.planets.map(body => [body.key, body.deg]));
+
+            return Object.entries(synastryPairs).map(([theme, pairs]) => {
+                const comparisons = pairs.map(([bodyA, bodyB]) => {
+                    const distance = Math.abs(positionsA.get(bodyA) - positionsB.get(bodyB)) % 360;
+                    const separation = Math.min(distance, 360 - distance);
+                    const type = synastryAspectTypes.reduce((nearest, candidate) => (
+                        Math.abs(separation - candidate.angle) < Math.abs(separation - nearest.angle)
+                            ? candidate
+                            : nearest
+                    ));
+                    const deviation = Math.abs(separation - type.angle);
+                    return { bodyA, bodyB, separation, type, deviation };
+                });
+                const matches = comparisons.filter(pair => pair.deviation <= pair.type.orb);
+                matches.sort((a, b) => a.deviation - b.deviation);
+                const nearest = comparisons.reduce((a, b) => (
+                    (a.deviation - a.type.orb) <= (b.deviation - b.type.orb) ? a : b
+                ));
+                return { theme, matches, nearest };
+            });
+        }
+
+        function synastryText(tag, classes, text) {
+            const item = document.createElement(tag);
+            item.className = classes;
+            item.textContent = text;
+            return item;
+        }
+
+        function renderSynastryPair(pair) {
+            const s = t();
+            const [nameA, meaningA] = s.synBodies[pair.bodyA];
+            const [nameB, meaningB] = s.synBodies[pair.bodyB];
+            const row = document.createElement('li');
+            row.className = 'p-3 rounded-lg bg-white/5 border border-white/10 space-y-1';
+            row.append(
+                synastryText('p', 'font-semibold text-pink-200', `A: ${nameA} ↔ B: ${nameB}`),
+                synastryText('p', 'text-xs text-slate-300',
+                    `${s.synAngle} ${pair.separation}° · ${s.synDeviation} ${pair.deviation}° · ${s.synOrb} ±${pair.type.orb}°`),
+                synastryText('p', 'text-xs text-slate-300',
+                    `${s.synTopic} — ${nameA}: ${meaningA} · ${nameB}: ${meaningB}`)
+            );
+            return row;
+        }
+
+        function renderSynastryDetails(natal1, natal2) {
+            const s = t();
+            const comparisons = compareSynastryPairs(natal1, natal2);
+            const total = comparisons.reduce((count, group) => count + group.matches.length, 0);
+            document.getElementById('syn-aspect-count').textContent = String(total);
+            document.getElementById('syn-no-time').hidden = !natal1.unknownTime && !natal2.unknownTime;
+
+            const cards = comparisons.map(({ theme, matches, nearest }) => {
+                const copy = s.synThemes[theme];
+                const card = document.createElement('article');
+                card.className = 'glass-card rounded-2xl p-4 sm:p-5 space-y-3 text-sm text-slate-200 leading-relaxed';
+                card.append(synastryText('h4', 'font-serif text-lg font-bold text-white', copy.title));
+
+                if (!matches.length) {
+                    const pairList = document.createElement('ul');
+                    pairList.append(renderSynastryPair(nearest));
+                    card.append(
+                        synastryText('p', 'text-slate-300', s.synNoMatch),
+                        synastryText('h5', 'text-sm font-semibold text-white',
+                            `${s.synNearest} · ${s.synAspects[nearest.type.key]} (${nearest.type.angle}°)`),
+                        pairList,
+                        synastryText('p', 'text-slate-200', copy.fallback)
+                    );
+                    return card;
+                }
+
+                const byType = new Map();
+                for (const match of matches) {
+                    const type = match.type.key;
+                    if (!byType.has(type)) byType.set(type, []);
+                    byType.get(type).push(match);
+                }
+                for (const [type, pairs] of byType) {
+                    const block = document.createElement('div');
+                    block.className = 'space-y-2 pt-3 border-t border-white/10';
+                    const pairList = document.createElement('ul');
+                    pairList.className = 'space-y-2';
+                    pairList.append(...pairs.map(renderSynastryPair));
+                    block.append(
+                        synastryText('h5', 'text-sm font-semibold text-white',
+                            `${s.synAspects[type]} (${pairs[0].type.angle}°)`),
+                        pairList,
+                        synastryText('p', 'text-slate-200', copy[type])
+                    );
+                    card.append(block);
+                }
+                return card;
+            });
+            document.getElementById('syn-aspect-groups').replaceChildren(...cards);
         }
 
         function computeAndRenderSynastry() {
@@ -1891,20 +2296,9 @@
             const natal1 = calculateNatalChart(date1, time1, city1, !time1);
             const natal2 = calculateNatalChart(date2, time2, city2, !time2);
 
-            const seed = (natal1.sunSign.id + 1) * 31 + (natal2.sunSign.id + 1) * 17 + (natal1.moonSign.id + natal2.moonSign.id) * 7;
-            const sameElement = natal1.sunSign.element.en === natal2.sunSign.element.en;
-            const bonus = sameElement ? 8 : 3;
-
-            const emotion = Math.min(97, Math.round(68 + seededRandom(seed + 1) * 24 + bonus));
-            const passion = Math.min(98, Math.round(66 + seededRandom(seed + 2) * 26 + bonus));
-            const comm = Math.min(96, Math.round(65 + seededRandom(seed + 3) * 25 + bonus));
-            const karma = Math.min(95, Math.round(67 + seededRandom(seed + 4) * 23 + bonus));
-            const total = Math.round((emotion + passion + comm + karma) / 4);
 
             const s1 = natal1.sunSign.name[currentLang];
             const s2 = natal2.sunSign.name[currentLang];
-            const m1 = natal1.moonSign.name[currentLang];
-            const m2 = natal2.moonSign.name[currentLang];
 
             document.getElementById('syn-result-kind').textContent = synastryExample ? s.synResultExample : s.synResultLive;
             document.getElementById('synastry-pair-title').textContent = `${name1} (${s1} ${natal1.sunSign.symbol}) & ${name2} (${s2} ${natal2.sunSign.symbol})`;
@@ -1914,21 +2308,7 @@
                 time1 ? natal1.ascSign.name[currentLang] : s.unknownHourValue,
                 time2 ? natal2.ascSign.name[currentLang] : s.unknownHourValue
             );
-            document.getElementById('synastry-total-score').textContent = `${total}/100`;
-            document.getElementById('synastry-overall-badge').textContent = s.matchWord;
-
-            document.getElementById('syn-score-emotion').textContent = `${emotion}/100`;
-            document.getElementById('syn-bar-emotion').style.width = `${emotion}%`;
-            document.getElementById('syn-score-passion').textContent = `${passion}/100`;
-            document.getElementById('syn-bar-passion').style.width = `${passion}%`;
-            document.getElementById('syn-score-comm').textContent = `${comm}/100`;
-            document.getElementById('syn-bar-comm').style.width = `${comm}%`;
-            document.getElementById('syn-score-karma').textContent = `${karma}/100`;
-            document.getElementById('syn-bar-karma').style.width = `${karma}%`;
-
-            document.getElementById('synastry-basic-summary').textContent = s.synBasicSummary(name1, name2, total);
-            document.getElementById('synastry-deep-text-1').textContent = s.synDeep1(m1, name1, m2, name2);
-            document.getElementById('synastry-deep-text-2').textContent = s.synDeep2();
+            renderSynastryDetails(natal1, natal2);
 
             renderNatalWheelSVG('synastry-wheel-svg', natal1, natal2);
         }
@@ -1963,6 +2343,8 @@
             const d = String(sign.startDay + 2).padStart(2, '0');
             document.getElementById('birth-date').value = `1992-${m}-${d}`;
             dailyExample = true;
+            birthEditorOpen = true;
+            updateBirthEditor();
             calculateDailyReading(true);
             switchMainView('daily');
         }
@@ -2018,12 +2400,20 @@
             }
             document.getElementById('btn-save-profile').addEventListener('click', saveBirthProfile);
             document.getElementById('btn-clear-profile').addEventListener('click', clearBirthProfile);
+            document.getElementById('btn-profile-details').addEventListener('click', toggleBirthEditor);
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && savedProfileUsable && !birthEditorOpen &&
+                    document.getElementById('target-date').value !== getLocalDay()) showSavedProfileToday();
+            });
 
             document.getElementById('btn-copy-horoscope').addEventListener('click', () => {
                 const title = document.getElementById('sun-sign-title').textContent;
                 const score = document.getElementById('overall-score').textContent;
                 const text = document.getElementById('detailed-daily-narrative').innerText;
-                const fullText = `ASTRALIS — ${t().detailedDailyTitle} — ${title} (${score})\n\n${text}`;
+                const date = document.getElementById('profile-reading-date').textContent;
+                const themes = ['work', 'love', 'health', 'luck'].map((key) =>
+                    `${document.getElementById(`card-${key}-title`).textContent}\n${document.getElementById(`text-${key}`).textContent}`);
+                const fullText = [`ASTRALIS — ${title} (${score})`, date, ...themes, text].join('\n\n');
                 const ta = document.createElement('textarea');
                 ta.value = fullText;
                 document.body.appendChild(ta);
